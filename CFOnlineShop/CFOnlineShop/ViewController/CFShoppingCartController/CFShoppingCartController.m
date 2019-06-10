@@ -13,12 +13,16 @@
 #import "productModel.h"
 #import "FSSettlementViewController.h"
 #import "PPNumberButton.h"
-
-@interface CFShoppingCartController ()<UICollectionViewDelegate,UICollectionViewDataSource,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
+#import "delcartModel.h"
+#import "commModel.h"
+@interface CFShoppingCartController ()<UICollectionViewDelegate,UICollectionViewDataSource,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate,PPNumberButtonDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic,strong) NSMutableArray* productList;
 @property (nonatomic, assign) CGFloat bottomHeight;
+@property (nonatomic,strong) NSString* productId;
+@property (nonatomic, assign) float totalPrice;
+@property (nonatomic,strong) UIButton* tprice;
 
 @end
 static NSInteger num_;
@@ -90,16 +94,28 @@ static NSInteger num_;
 }
 -(void)postDelUI
 {
-    NSMutableDictionary* dic=[NSMutableDictionary new];
-    NSDictionary *params = @{
-                             @"openId" : [MySingleton sharedMySingleton].openId,
-                             @"goodsId" : @"",
-                             @"page" : @"1",
-                             @"limits": @"10"
-                             };
-    [HttpTool get:[NSString stringWithFormat:@"renren-fast/mall/goodsshoppingcar/delete"] params:params success:^(id responseObj) {
-//        NSDictionary* a=responseObj[@"list"];
+    NSMutableArray* comm=[NSMutableArray new];
+    for (productModel* newCart in _productList) {
+        if ([newCart.productId isEqualToString:_productId]) {
+
+        delcartModel* c=[delcartModel new];
+        c.id=newCart.productId;
+        [comm addObject:c];
+        }
+    }
+    commModel* m=[commModel new];
+    m.list=[comm copy];
+    NSString* a=m.mj_JSONString;
+//    NSDictionary *params = @{
+//                             @"openId" : [MySingleton sharedMySingleton].openId,
+//                             @"id" : _productId
+//                             };
+    NSData *data =   [a dataUsingEncoding:NSUTF8StringEncoding];
+    [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/mall/goodsshoppingcar/deleteShoppingCar"] body:data showLoading:false success:^(NSDictionary *response) {
+        NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+        NSLog(@"");
         
+        //        weakself.segmentedControl.tapIndex=2;
         [_collectionView reloadData];
     } failure:^(NSError *error) {
         NSLog(@"");
@@ -141,7 +157,7 @@ static NSInteger num_;
         newCart.num = [NSString stringWithFormat:@"%ld", 1.0];
         newCart.logo = p.logo;
         newCart.name = p.name;
-        newCart.productPrice=p.priceName;
+        newCart.productPrice=p.marketPrice;
         newCart.goodNorm=p.goodNorm;
         newCart.idField = @"11111";
         [source addObject:newCart];
@@ -150,6 +166,20 @@ static NSInteger num_;
     confirmOrder.dataSource = source;
     confirmOrder.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:confirmOrder animated:YES];
+}
+- (void)pp_numberButton:(__kindof UIView *)numberButton number:(NSInteger)number increaseStatus:(BOOL)increaseStatus
+{
+    for (int i=0; i<_productList.count; i++) {
+        if (i==numberButton.tag) {
+            productModel* p=[_productList objectAtIndex:i];
+            p.num=number;
+        }
+    }
+//    for (productModel* p in _productList) {
+//        float s
+//    }
+    NSInteger b=numberButton.tag;
+    NSLog(@"");
 }
 #pragma mark - UICollectionViewDataSource
 
@@ -180,6 +210,10 @@ static NSInteger num_;
         [cell.imageView sd_setImageWithURL:[NSURL URLWithString:p.logo]];
         [cell setDeleteButtonAction:^(UIButton *button) {
             NSInteger a=indexPath.row;
+            productModel* p=[_productList objectAtIndex:indexPath.row];
+            _productId=p.productId;
+            [self postDelUI];
+
             [_productList removeObjectAtIndex:indexPath.row];
              [_collectionView reloadData];
             NSLog(@"删除操作");
@@ -191,9 +225,10 @@ static NSInteger num_;
         numberButton.inputFieldFont = 23;
         numberButton.increaseTitle = @"＋";
         numberButton.decreaseTitle = @"－";
-        num_ = (_lastNum == 0) ?  1 : [_lastNum integerValue];
+        num_ = p.num;
         numberButton.currentNumber = num_;
         numberButton.delegate = self;
+        numberButton.tag=indexPath.row;
         
         numberButton.resultBlock = ^(NSInteger num ,BOOL increaseStatus){
             num_ = num;

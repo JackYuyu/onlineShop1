@@ -10,7 +10,7 @@
 #import "FSShoppingCartInfoCell.h"
 #import "PPNumberButton.h"
 #import "AddressListController.h"
-
+#import "LogisticController.h"
 static NSString *const kOrderCellWithIdentifier = @"kOrderCellWithIdentifier";
 
 @interface FSSettlementViewController1 ()
@@ -98,10 +98,22 @@ static NSInteger num_;
     UIView* u=[[UIView alloc] initWithFrame:CGRectMake(0, 0, Main_Screen_Width, 44)];
     u.backgroundColor=[UIColor whiteColor];
     UILabel* l=[[UILabel alloc] initWithFrame:CGRectMake(20, 5, 150, 40)];
-    l.text=@"等待付款";
+    l.text=@"查看物流";
     [l setFont:[UIFont systemFontOfSize:16]];
+    l.userInteractionEnabled=YES;
+    UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(labelTouchUpInside:)];
+    
+    [l addGestureRecognizer:labelTapGestureRecognizer];
     [u addSubview:l];
-//    self.curTabView.tableHeaderView=u;
+    self.curTabView.tableFooterView=u;
+}
+-(void) labelTouchUpInside:(UITapGestureRecognizer *)recognizer{
+    
+    UILabel *label=(UILabel*)recognizer.view;
+    
+    NSLog(@"%@被点击了",label.text);
+    LogisticController* logi=[LogisticController new];
+    [self.navigationController pushViewController:logi animated:YES ];
 }
 -(void)initAddress
 {
@@ -187,13 +199,16 @@ static NSInteger num_;
     else if (section==1) {
         return 4;
     }
-    else {
+    else if (section==2) {
         return 3;
+    }
+    else {
+        return 1;
     }
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 3;
+    return 4;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section==0) {
@@ -257,6 +272,10 @@ static NSInteger num_;
         }
         if (indexPath.section>1&& indexPath.row==2) {
             cell.textLabel.text=@"支付方式:微信支付";
+            cell.detailTextLabel.text=@"";
+        }
+        if (indexPath.section>2&& indexPath.row==0) {
+            cell.textLabel.text=@"";
             cell.detailTextLabel.text=@"";
         }
         return cell;

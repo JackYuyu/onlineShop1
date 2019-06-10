@@ -306,7 +306,7 @@ static NSInteger num_;
         [comm addObject:c];
     }
     cartModel* m=[cartModel new];
-    m.goosOrderItemList=[comm copy];
+    m.goodsOrderItemList=[comm copy];
     
     cartOrderEntity* ce=[cartOrderEntity new];
     ce.deliverStatus=@"0";

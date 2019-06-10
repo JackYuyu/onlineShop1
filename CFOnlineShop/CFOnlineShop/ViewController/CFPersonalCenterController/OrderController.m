@@ -94,10 +94,12 @@
 -(void)postRecordUI
 {
     if (![MySingleton sharedMySingleton].openId) {
+        [self.navigationController pushViewController:[[MMZCViewController alloc]init] animated:YES];
+
         return;
     }
     NSDictionary *params = @{
-                             @"openId" : @"olEaQ4jE4SkGd1FdU73v4a0IgCD8",
+                             @"openId" : [MySingleton sharedMySingleton].openId,
                              @"payStatus" : @"-1"
                              };
     WeakSelf(self)
@@ -131,7 +133,7 @@
 -(void)postRecordUI1
 {
     NSDictionary *params = @{
-                             @"openId" : @"olEaQ4jE4SkGd1FdU73v4a0IgCD8",
+                             @"openId" : [MySingleton sharedMySingleton].openId,
                              @"payStatus" : @"0"
                              };
     WeakSelf(self)
@@ -155,7 +157,7 @@
 -(void)postRecordUI2
 {
     NSDictionary *params = @{
-                             @"openId" : @"olEaQ4jE4SkGd1FdU73v4a0IgCD8",
+                             @"openId" : [MySingleton sharedMySingleton].openId,
                              @"payStatus" : @"1"
                              };
     WeakSelf(self)
@@ -179,7 +181,7 @@
 -(void)postRecordUI3
 {
     NSDictionary *params = @{
-                             @"openId" : @"olEaQ4jE4SkGd1FdU73v4a0IgCD8",
+                             @"openId" : [MySingleton sharedMySingleton].openId,
                              @"payStatus" : @"4"
                              };
     WeakSelf(self)
@@ -215,6 +217,7 @@
 //设置每行的UITableViewCell
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     OrderCell * cell = [tableView dequeueReusableCellWithIdentifier:@"OrderCell"];
+    cell.selectionStyle=UITableViewCellSelectionStyleNone;
 //    if (cell==nil) {
 //        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cellID"];
 //
@@ -248,6 +251,13 @@
         cell.status.text=@"待支付";
 
     }
+    else if ([e.payStatus isEqualToString:@"3"]){
+        cell.status.text=@"已取消";
+        cell.cancel.hidden=YES;
+        [cell.paybtn setBackgroundColor:[UIColor whiteColor]];
+        [cell.paybtn setTitle:@"删除订单" forState:UIControlStateNormal];
+        [cell.paybtn setTitleColor:KDarkTextColor forState:UIControlStateNormal];
+    }
     else{
         cell.status.text=@"已支付";
         [cell.cancel setBackgroundColor:[UIColor redColor]];
@@ -280,17 +290,40 @@
         c.dataSource=source;
         [self.navigationController pushViewController:c animated:YES];
     }
-    else{
-    LogisticController* logi=[LogisticController new];
-    [self.navigationController pushViewController:logi animated:YES ];
+    else if ([sender.titleLabel.text isEqualToString:@"删除订单"]){
+        [self deleteOrder:sender];
     }
+//    else{
+//    LogisticController* logi=[LogisticController new];
+//    [self.navigationController pushViewController:logi animated:YES ];
+//    }
 }
 -(void)delete:(UIButton*)sender
 {
     OrderEntity* e=[_checkList objectAtIndex:sender.tag];
 
     NSDictionary *params = @{
-                             @"id" : e.orderNo
+                             @"id" : e.id,
+                             @"payStatus" : @"3",
+                             @"openId" : [MySingleton sharedMySingleton].openId,
+                             };
+    NSData *data =    [NSJSONSerialization dataWithJSONObject:params options:NSUTF8StringEncoding error:nil];
+    [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/mall/goodsorder/update"] body:data showLoading:false success:^(NSDictionary *response) {
+        NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+        NSLog(@"");
+        [_tableView reloadData];
+    } failure:^(NSError *error) {
+        NSLog(@"");
+    }];
+}
+
+-(void)deleteOrder:(UIButton*)sender
+{
+    OrderEntity* e=[_checkList objectAtIndex:sender.tag];
+    
+    NSDictionary *params = @{
+                             @"id" : e.id,
+                             @"openId" : [MySingleton sharedMySingleton].openId,
                              };
     NSData *data =    [NSJSONSerialization dataWithJSONObject:params options:NSUTF8StringEncoding error:nil];
     [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/mall/goodsorder/delete"] body:data showLoading:false success:^(NSDictionary *response) {

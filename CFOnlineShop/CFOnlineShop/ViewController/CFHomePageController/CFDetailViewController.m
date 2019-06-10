@@ -119,6 +119,9 @@
 }
 -(void)postFavUI
 {
+    if (![MySingleton sharedMySingleton].openId) {
+        return;
+    }
     NSMutableDictionary* dic=[NSMutableDictionary new];
     NSDictionary *params = @{
                              @"openId" : [MySingleton sharedMySingleton].openId,
@@ -181,6 +184,9 @@
 }
 -(void)postBrowseInfoUI
 {
+    if (![MySingleton sharedMySingleton].openId) {
+        return;
+    }
     NSString* b=[MySingleton sharedMySingleton].openId;
     NSDictionary *params = @{
                              @"openId" : [MySingleton sharedMySingleton].openId,
@@ -440,7 +446,11 @@
 }
 - (void)addAction
 {
-
+    if (![MySingleton sharedMySingleton].openId) {
+        [self.navigationController pushViewController:[[MMZCViewController alloc]init] animated:YES];
+        
+        return;
+    }
     if (_addActionWithBlock) {
         _addActionWithBlock();
     }

@@ -65,12 +65,15 @@
     [self showLeftBackButton];
     _segmentTitles = @[@"积分规则",@"获得记录"];
     _current=0;
-    
+    [self postInfo];
 }
 -(void)postUI
 {
     NSDictionary *params = @{
-                             @"openId" : [MySingleton sharedMySingleton].openId
+                             @"openId" : [MySingleton sharedMySingleton].openId,
+                             @"todayScore" : @"1",
+                             @"conDays" : @"1",
+                             @"score" : @"1"
                              };
     NSData *data =    [NSJSONSerialization dataWithJSONObject:params options:NSUTF8StringEncoding error:nil];
     [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/mall/usersigininfo/save"] body:data showLoading:false success:^(NSDictionary *response) {
@@ -107,6 +110,8 @@
 -(void)postRecordUI
 {
     if (![MySingleton sharedMySingleton].openId) {
+        [self.navigationController pushViewController:[[MMZCViewController alloc]init] animated:YES];
+
         return;
     }
     NSDictionary *params = @{
@@ -134,6 +139,45 @@
 
             });
         }
+    } failure:^(NSError *error) {
+        NSLog(@"");
+    }];
+}
+-(void)postInfo
+{
+    if (![MySingleton sharedMySingleton].openId) {
+        [self.navigationController pushViewController:[[MMZCViewController alloc]init] animated:YES];
+        
+        return;
+    }
+    NSDictionary *params = @{
+                             @"openId" : [MySingleton sharedMySingleton].openId,
+                             @"todayScore" : @"1",
+                             @"conDays" : @"1",
+                             @"score" : @"1"
+                             };
+    WeakSelf(self)
+    NSString* urlstring=[NSString stringWithFormat:@"renren-fast/mall/usersigininfo/info/%@",[MySingleton sharedMySingleton].openId];
+    [HttpTool get:[NSString stringWithFormat:urlstring] params:nil success:^(id responseObj) {
+        NSDictionary* a=responseObj[@"userSiginInfo"][@"list"][@"userSiginInfoEntity"];
+        //
+        for (NSDictionary* products in responseObj[@"userSiginInfo"][@"list"][@"userSiginInfoEntity"]) {
+            checkModel* t=[checkModel mj_objectWithKeyValues:products];
+            NSDate *date = [NSDate date];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+            NSString *strDate = [dateFormatter stringFromDate:date];
+            if ([t.signTime containsString:strDate]) {
+                NSLog(@"");
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.progressView1.check.text=@"已签到";
+                    [self.progressView1 reload];
+                });
+            }
+            NSLog(@"");
+            //            [_topicList addObject:t];
+        }
+//        [_tableView reloadData];
     } failure:^(NSError *error) {
         NSLog(@"");
     }];

@@ -104,7 +104,7 @@
     label.textColor=[UIColor grayColor];
     label.textAlignment=UITextAlignmentCenter;
     label.font=[UIFont systemFontOfSize:14];
-    [self.view addSubview:label];
+//    [self.view addSubview:label];
 }
 
 -(void)createTextFields

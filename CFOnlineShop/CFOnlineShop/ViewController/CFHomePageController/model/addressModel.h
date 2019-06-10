@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * cityName;
 @property (nonatomic, copy) NSString * areaName;
 @property (nonatomic, copy) NSString * street;
+@property (nonatomic, copy) NSString * addid;
 
 @end
 

@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong) NSString* input;
 @property (nonatomic,strong) NSString* input1;
 @property (nonatomic,strong) NSString* input3;
+@property (nonatomic,strong) NSString* addid;
+@property (nonatomic,assign) BOOL edit;
+
 @end
 
 NS_ASSUME_NONNULL_END

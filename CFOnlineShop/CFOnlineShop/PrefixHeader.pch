@@ -23,7 +23,7 @@
 #import "CFBaseController.h"
 #import "UIImageView+WebCache.h"
 #import "MySingleton.h"
-
+#import "MMZCViewController.h"
 //不包含实时音视频的添加
 #ifdef __OBJC__
 #import <HelpDeskLite/HelpDeskLite.h>

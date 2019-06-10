@@ -56,6 +56,8 @@
 -(void)postRecordUI
 {
     if (![MySingleton sharedMySingleton].openId) {
+        [self.navigationController pushViewController:[[MMZCViewController alloc]init] animated:YES];
+
         return;
     }
     NSMutableDictionary* dic=[NSMutableDictionary new];

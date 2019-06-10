@@ -98,7 +98,7 @@
     
     _photoButton = [self btnWithImage:[UIImage imageNamed:@"HelpDeskUIResource.bundle/hd_chat_image_normal"]
                     highlightedImage:[UIImage imageNamed:@"HelpDeskUIResource.bundle/hd_chat_image_pressed"]
-                               title:NSLocalizedString(@"attach_picture", @"Picture")];
+                               title:@"添加图片"];
     [_photoButton setFrame:CGRectMake(insets, 10, CHAT_BUTTON_SIZE.width , CHAT_BUTTON_SIZE.height)];
     
     [_photoButton addTarget:self action:@selector(photoAction) forControlEvents:UIControlEventTouchUpInside];
@@ -107,7 +107,7 @@
     
     _takePicButton = [self btnWithImage:[UIImage imageNamed:@"HelpDeskUIResource.bundle/hd_chat_takepic_normal"]
                        highlightedImage:[UIImage imageNamed:@"HelpDeskUIResource.bundle/hd_chat_takepic_pressed"]
-                                  title:NSLocalizedString(@"attach_take_pic", @"Image")];
+                                  title:@"拍照"];
     [_takePicButton setFrame:CGRectMake(insets * 2 + CHAT_BUTTON_SIZE.width, 10, CHAT_BUTTON_SIZE.width , CHAT_BUTTON_SIZE.height)];
     
     [_takePicButton addTarget:self action:@selector(takePicAction) forControlEvents:UIControlEventTouchUpInside];
@@ -127,7 +127,7 @@
 //    
     _videoCallButton = [self btnWithImage:[UIImage imageNamed:@"HelpDeskUIResource.bundle/em_chat_video_normal"]
                          highlightedImage:[UIImage imageNamed:@"HelpDeskUIResource.bundle/em_chat_video_pressed"]
-                                    title:NSLocalizedString(@"attach_call_video", @"Call Video")];
+                                    title:@"摄影"];
     
     [_videoCallButton setFrame:CGRectMake(insets * 3 + CHAT_BUTTON_SIZE.width * 2, 10, CHAT_BUTTON_SIZE.width , CHAT_BUTTON_SIZE.height)];
     [_videoCallButton addTarget:self action:@selector(takeVideoCallAction) forControlEvents:UIControlEventTouchUpInside];
@@ -137,7 +137,7 @@
     
     _locationButton = [self btnWithImage:[UIImage imageNamed:@"HelpDeskUIResource.bundle/hd_chat_location_normal"]
                         highlightedImage:[UIImage imageNamed:@"HelpDeskUIResource.bundle/hd_chat_location_pressed"]
-                                   title:NSLocalizedString(@"attach_location", @"Location")];
+                                   title:@"定位"];
     [_locationButton setFrame:CGRectMake(insets * 4 + CHAT_BUTTON_SIZE.width * 3, 10, CHAT_BUTTON_SIZE.width , CHAT_BUTTON_SIZE.height)];
     
     [_locationButton addTarget:self action:@selector(locationAction) forControlEvents:UIControlEventTouchUpInside];
@@ -146,7 +146,7 @@
     
     _leaveMessageButton = [self btnWithImage:[UIImage imageNamed:@"HelpDeskUIResource.bundle/em_chat_phrase_normal"]
                             highlightedImage:[UIImage imageNamed:@"HelpDeskUIResource.bundle/em_chat_phrase_pressed"]
-                                       title:NSLocalizedString(@"leave_title", @"Note")];
+                                       title:@"离开"];
     [_leaveMessageButton setFrame:CGRectMake(insets, 10 * 2 + CHAT_BUTTON_SIZE.height + 10, CHAT_BUTTON_SIZE.width , CHAT_BUTTON_SIZE.height)];
 
     [_leaveMessageButton addTarget:self action:@selector(leaveMessageAction) forControlEvents:UIControlEventTouchUpInside];
@@ -157,7 +157,7 @@
     
     _evaluationButton = [self btnWithImage:[UIImage imageNamed:@"HelpDeskUIResource.bundle/em_chat_evaluation_normal"]
                           highlightedImage:[UIImage imageNamed:@"HelpDeskUIResource.bundle/em_chat_evaluation_pressed"]
-                                     title:NSLocalizedString(@"evaluation", @"Evaluation")];
+                                     title:@"评估"];
     
     [_evaluationButton setFrame:CGRectMake(insets * 2 + CHAT_BUTTON_SIZE.width, 10 * 2 + CHAT_BUTTON_SIZE.height + 10, CHAT_BUTTON_SIZE.width , CHAT_BUTTON_SIZE.height)];
     

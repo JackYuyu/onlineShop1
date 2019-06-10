@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface cartModel : NSObject
 @property (nonatomic,strong) cartOrderEntity* goodsOrderEntity;
-@property (nonatomic, strong) NSArray * goosOrderItemList;
+@property (nonatomic, strong) NSArray * goodsOrderItemList;
 
 @end
 

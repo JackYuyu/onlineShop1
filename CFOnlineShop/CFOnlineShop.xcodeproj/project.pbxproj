@@ -21,6 +21,7 @@
 		04CABDA422ACF392008C53DD /* DCCollectionHeaderLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CABDA322ACF391008C53DD /* DCCollectionHeaderLayout.m */; };
 		04CABDA722ACF5A9008C53DD /* DCFeatureItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CABDA622ACF5A9008C53DD /* DCFeatureItem.m */; };
 		04CABDAA22AD010A008C53DD /* skuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CABDA922AD010A008C53DD /* skuModel.m */; };
+		04CABDB322AE334C008C53DD /* delcartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CABDB222AE334C008C53DD /* delcartModel.m */; };
 		04ECF68022A5674100C25026 /* OrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04ECF67F22A5674100C25026 /* OrderController.m */; };
 		04ECF68322A5676A00C25026 /* MyPointController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04ECF68222A5676A00C25026 /* MyPointController.m */; };
 		04ECF68622A5694400C25026 /* MyFootController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04ECF68522A5694400C25026 /* MyFootController.m */; };
@@ -368,6 +369,8 @@
 		04CABDA622ACF5A9008C53DD /* DCFeatureItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCFeatureItem.m; sourceTree = "<group>"; };
 		04CABDA822AD010A008C53DD /* skuModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = skuModel.h; sourceTree = "<group>"; };
 		04CABDA922AD010A008C53DD /* skuModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = skuModel.m; sourceTree = "<group>"; };
+		04CABDB122AE334C008C53DD /* delcartModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = delcartModel.h; sourceTree = "<group>"; };
+		04CABDB222AE334C008C53DD /* delcartModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = delcartModel.m; sourceTree = "<group>"; };
 		04ECF67E22A5674100C25026 /* OrderController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderController.h; sourceTree = "<group>"; };
 		04ECF67F22A5674100C25026 /* OrderController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderController.m; sourceTree = "<group>"; };
 		04ECF68122A5676A00C25026 /* MyPointController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyPointController.h; sourceTree = "<group>"; };
@@ -2147,6 +2150,8 @@
 				04CABD9922ACF098008C53DD /* DCFeatureList.m */,
 				04CABD9F22ACF187008C53DD /* DCFeatureTitleItem.h */,
 				04CABDA022ACF188008C53DD /* DCFeatureTitleItem.m */,
+				04CABDB122AE334C008C53DD /* delcartModel.h */,
+				04CABDB222AE334C008C53DD /* delcartModel.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -2528,6 +2533,7 @@
 				04CABDA122ACF188008C53DD /* DCFeatureTitleItem.m in Sources */,
 				DD69105422A915F700595D6C /* EMSDWebImageDecoder.m in Sources */,
 				DD69104D22A915F700595D6C /* MWPhotoBrowser.m in Sources */,
+				04CABDB322AE334C008C53DD /* delcartModel.m in Sources */,
 				DD69103A22A915F700595D6C /* MJRefreshHeader.m in Sources */,
 				DD6910BD22A915F700595D6C /* HDTextView.m in Sources */,
 				DDD278FE22A7A28500D5419E /* FSSettlementViewController1.m in Sources */,

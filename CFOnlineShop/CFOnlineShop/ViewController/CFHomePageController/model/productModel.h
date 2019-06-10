@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString * name;
 @property (nonatomic, copy) NSString * goodNorm;
+@property (nonatomic, assign) int num;
 
 @end
 

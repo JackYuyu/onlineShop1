@@ -12,6 +12,7 @@
 @property (nonatomic, strong) NSArray *segmentTitles;
 @property (nonatomic,strong) NSMutableArray* checkList;
 @property (nonatomic,strong) UITableView* tableView;
+@property (nonatomic,assign) BOOL defaultadd;
 
 
 @end
@@ -49,7 +50,12 @@
     if (!_province&&!_city&&!_area&&!_input3&&!_input1&&!_input) {
         return;
     }
+    if (_edit) {
+        [self postUIupdate];
+    }
+    else{
     [self postUI];
+    }
 }
 -(void)postUI
 {
@@ -79,6 +85,42 @@
         [userd setObject:[NSString stringWithFormat:@"%@-%@-%@",_province,_city,_area] forKey:@"address"];
         [userd setObject:_input3 forKey:@"street"];
 
+        [userd synchronize];
+        [self.navigationController popViewControllerAnimated:YES];
+        NSLog(@"");
+    } failure:^(NSError *error) {
+        NSLog(@"");
+    }];
+}
+-(void)postUIupdate
+{
+    NSDictionary *params = @{
+                             @"openId" : [MySingleton sharedMySingleton].openId,
+                             @"receiptAddress" : @"1",
+                             @"province" : @"1",
+                             @"provinceName" : _province,
+                             @"city" : @"1",
+                             @"cityName" : _city,
+                             @"area" : @"1",
+                             @"areaName" : _area,
+                             @"street" : _input3,
+                             @"receiptTelphone" : _input1,
+                             @"defaultFlag" : @"1",
+                             @"receiptName" : _input,
+                             @"postCode" : @"1",
+                             @"status" : @"1",
+                             @"remarks" : @"1",
+                             @"id" : _addid,
+                             };
+    NSData *data =    [NSJSONSerialization dataWithJSONObject:params options:NSUTF8StringEncoding error:nil];
+    [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/mall/useraddress/update"] body:data showLoading:false success:^(NSDictionary *response) {
+        NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+        
+        NSUserDefaults *userd = [NSUserDefaults standardUserDefaults];
+        [userd setObject:_input forKey:@"nickname"];
+        [userd setObject:[NSString stringWithFormat:@"%@-%@-%@",_province,_city,_area] forKey:@"address"];
+        [userd setObject:_input3 forKey:@"street"];
+        
         [userd synchronize];
         [self.navigationController popViewControllerAnimated:YES];
         NSLog(@"");
@@ -187,7 +229,13 @@
             }
         }
         if (indexPath.row==4) {
-            cell.accessoryType=UITableViewCellAccessoryCheckmark;
+            if (_defaultadd) {
+                cell.accessoryType=UITableViewCellAccessoryCheckmark;
+
+            }
+            else
+                cell.accessoryType=UITableViewCellAccessoryNone;
+
         }
         
     }
@@ -258,6 +306,10 @@
             _area=county;
             [_tableView reloadData];
         };
+    }
+    if (indexPath.row==4) {
+        _defaultadd=!_defaultadd;
+        [_tableView reloadData];
     }
 }
 

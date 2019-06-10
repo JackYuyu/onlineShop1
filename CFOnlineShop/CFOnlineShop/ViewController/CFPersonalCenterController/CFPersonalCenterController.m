@@ -36,9 +36,12 @@
     _myIcons = @[@"icon_my_01",@"icon_my_02",@"icon_my_03",@"icon_my_04",@"icon_my_05",@"icon_my_06",@"icon_my_07",@"icon_my_07"];
 
     self.navigationView.backgroundColor = kWhiteColor;
+//    [self setUI];
+}
+-(void)viewWillAppear:(BOOL)animated
+{
     [self setUI];
 }
-
 - (void)setUI
 {
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, TopHeight, Main_Screen_Width, Main_Screen_Height - TopHeight - TabbarHeight)];
@@ -73,11 +76,11 @@
     imageView.layer.borderWidth = 1;
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(Main_Screen_Width/2-50, -40, 100, 20)];
-    label.backgroundColor = kWhiteColor;
+//    label.backgroundColor = kWhiteColor;
     label.textAlignment = NSTextAlignmentCenter;
-    label.textColor = KDarkTextColor;
+    label.textColor = kWhiteColor;
     label.font = SYSTEMFONT(16);
-    label.text = @"黄金脆皮鱼";
+    label.text = @"登录/注册";
     NSUserDefaults *userd = [NSUserDefaults standardUserDefaults];
     if ([userd objectForKey:@"phone"]) {
         label.text=[userd objectForKey:@"phone"];
@@ -87,6 +90,9 @@
 }
 -(void)menuTapped
 {
+    if ([MySingleton sharedMySingleton].openId) {
+        return;
+    }
 //    DCLoginViewController* login=[DCLoginViewController new];
     MMZCViewController *login=[[MMZCViewController alloc]init];
     [self.navigationController pushViewController:login animated:YES];
@@ -191,6 +197,8 @@
     if (indexPath.section==1&&indexPath.row==2) {
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
         [user removeObjectForKey:@"openid"];
+        [user removeObjectForKey:@"phone"];
+
         [user synchronize];
         [MySingleton sharedMySingleton].openId=nil;
         [self.tabBarController setSelectedIndex:0];

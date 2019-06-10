@@ -50,11 +50,16 @@
     self.navigationBgView.backgroundColor = kWhiteColor;
     self.navigationBgView.alpha = 1;
     [self showLeftBackButton];
+//    [self postRecordUI];
+}
+-(void)viewWillAppear:(BOOL)animated
+{
     [self postRecordUI];
 }
 -(void)addAction
 {
     NewAddressController* n=[NewAddressController new];
+    n.edit=NO;
     [self.navigationController pushViewController:n animated:YES];
 }
 -(void)postUI
@@ -80,6 +85,8 @@
 -(void)postRecordUI
 {
     if (![MySingleton sharedMySingleton].openId) {
+        [self.navigationController pushViewController:[[MMZCViewController alloc]init] animated:YES];
+
         return;
     }
     NSDictionary *params = @{
@@ -92,6 +99,7 @@
         //
         for (NSDictionary* products in responseObj[@"page"][@"list"]) {
                         addressModel* t=[addressModel mj_objectWithKeyValues:products];
+            t.addid=[products objectForKey:@"id"];
             NSLog(@"");
             //            [_topicList addObject:t];
                         [_checkList addObject:t];
@@ -185,6 +193,8 @@
     n.input=_input;
     n.input1=_input1;
     n.input3=_input3;
+    n.addid=a.addid;
+    n.edit=YES;
     [self.navigationController pushViewController:n animated:YES];
 }
 

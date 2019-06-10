@@ -14,6 +14,8 @@
 {
     UIView *bgView;
     UITextField *passward;
+    UITextField *nickname;
+
 }
 
 @end
@@ -48,7 +50,7 @@
 //    [self.view addSubview:label];
     
     CGRect frame=[UIScreen mainScreen].bounds;
-    bgView=[[UIView alloc]initWithFrame:CGRectMake(10, 110, frame.size.width-20, 50)];
+    bgView=[[UIView alloc]initWithFrame:CGRectMake(10, 110, frame.size.width-20, 100)];
     bgView.layer.cornerRadius=3.0;
     bgView.backgroundColor=[UIColor whiteColor];
     [self.view addSubview:bgView];
@@ -56,6 +58,9 @@
     passward=[self createTextFielfFrame:CGRectMake(100, 10, 200, 30) font:[UIFont systemFontOfSize:14] placeholder:@"6-20位字母或数字"];
     passward.clearButtonMode = UITextFieldViewModeWhileEditing;
     passward.secureTextEntry=YES;
+    
+    nickname=[self createTextFielfFrame:CGRectMake(100, 50, 200, 30) font:[UIFont systemFontOfSize:14] placeholder:@"昵称名字"];
+    nickname.clearButtonMode = UITextFieldViewModeWhileEditing;
    
     UILabel *phonelabel=[[UILabel alloc]initWithFrame:CGRectMake(20, 12, 50, 25)];
     phonelabel.text=@"密码";
@@ -63,14 +68,21 @@
     phonelabel.textAlignment=UITextAlignmentLeft;
     phonelabel.font=[UIFont systemFontOfSize:14];
     
+    UILabel *nicklabel=[[UILabel alloc]initWithFrame:CGRectMake(20, 52, 50, 25)];
+    nicklabel.text=@"昵称";
+    nicklabel.textColor=[UIColor blackColor];
+    nicklabel.textAlignment=UITextAlignmentLeft;
+    nicklabel.font=[UIFont systemFontOfSize:14];
     
     UIButton *landBtn=[self createButtonFrame:CGRectMake(10, bgView.frame.size.height+bgView.frame.origin.y+30,self.view.frame.size.width-20, 37) backImageName:nil title:@"下一步" titleColor:[UIColor whiteColor]  font:[UIFont systemFontOfSize:17] target:self action:@selector(landClick)];
     landBtn.backgroundColor=[UIColor colorWithRed:248/255.0f green:144/255.0f blue:34/255.0f alpha:1];
     landBtn.layer.cornerRadius=5.0f;
     
     [bgView addSubview:passward];
-    
+    [bgView addSubview:nickname];
+
     [bgView addSubview:phonelabel];
+    [bgView addSubview:nicklabel];
     [self.view addSubview:landBtn];
 }
 
@@ -79,7 +91,9 @@
     NSMutableDictionary* dic=[NSMutableDictionary new];
     NSDictionary *params = @{
                              @"mobile" : _phone,
-                             @"password": passward.text
+                             @"password": passward.text,
+                             @"nickname": nickname.text
+                             
                              };
     NSData *data =    [NSJSONSerialization dataWithJSONObject:params options:NSUTF8StringEncoding error:nil];
     [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/app/register"] body:data showLoading:false success:^(NSDictionary *response) {
