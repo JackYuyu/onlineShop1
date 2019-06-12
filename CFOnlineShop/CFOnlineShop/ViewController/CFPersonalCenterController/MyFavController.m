@@ -10,6 +10,7 @@
 #import "math.h"
 #import "CFSegmentedControl.h"
 #import "productModel.h"
+#import "CFDetailInfoController.h"
 @interface MyFavController ()<UITableViewDataSource,UITableViewDelegate,CFSegmentedControlDataSource,CFSegmentedControlDelegate>
 @property (nonatomic, strong) NSArray *segmentTitles;
 @property (nonatomic, strong) CFSegmentedControl *segmentedControl;
@@ -67,7 +68,7 @@
 - (void)control:(CFSegmentedControl *)control didSelectAtIndex:(NSInteger)index
 {
     if (index==1) {
-                [self postRecordUI];
+        [self postRecordUI];
     }
     else
     {
@@ -96,6 +97,7 @@
         //
         for (NSDictionary* products in responseObj[@"list"]) {
                         productModel* t=[productModel mj_objectWithKeyValues:products];
+            t.productId=products[@"id"];
             NSLog(@"");
             //            [_topicList addObject:t];
                         [_checkList addObject:t];
@@ -118,6 +120,8 @@
         //
         for (NSDictionary* products in responseObj[@"list"]) {
             productModel* t=[productModel mj_objectWithKeyValues:products];
+            t.productId=products[@"id"];
+
             NSLog(@"");
             //            [_topicList addObject:t];
             [_checkList addObject:t];
@@ -206,7 +210,15 @@
 
 //选中cell时调用的方法
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    CFDetailInfoController *vc = [[CFDetailInfoController alloc] init];
     
+    productModel* p=[_checkList objectAtIndex:indexPath.row];
+    vc.productId=p.productId;
+    UIImageView* iv=[UIImageView new];
+    [iv sd_setImageWithURL:[NSURL URLWithString:p.logo]];
+    vc.image = iv.image;
+    //            vc.image = [UIImage imageNamed:imageName];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

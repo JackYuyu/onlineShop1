@@ -88,6 +88,16 @@
 
 -(void)landClick
 {
+        if([passward.text isEqualToString:@""])
+        {
+            [MBProgressHUD showMBProgressHud:self.view withText:@"您还未设置密码" withTime:1];
+            return;
+        }
+        else if (passward.text.length <6)
+        {
+            [MBProgressHUD showMBProgressHud:self.view withText:@"亲,密码长度至少六位" withTime:1];
+            return;
+        }
     NSMutableDictionary* dic=[NSMutableDictionary new];
     NSDictionary *params = @{
                              @"mobile" : _phone,
@@ -106,16 +116,7 @@
     }];
 //    [self.navigationController pushViewController:[[MMZCViewController alloc]init] animated:YES];
 
-//    if([passward.text isEqualToString:@""])
-//    {
-//        //[SVProgressHUD showInfoWithStatus:@"您还未设置密码"];
-//        return;
-//    }
-//    else if (passward.text.length <6)
-//    {
-//        //[SVProgressHUD showInfoWithStatus:@"亲,密码长度至少六位"];
-//        return;
-//    }
+
 //    [self.navigationController pushViewController:[[settinhHeaderViewController alloc]init] animated:YES];
     //[CheckTools savePassword:passward.text];
 }

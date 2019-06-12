@@ -385,12 +385,15 @@
     NSMutableArray* source=[NSMutableArray new];
     for (productModel* p in e.productLists) {
         FSShopCartList *newCart = [FSShopCartList new];
-        newCart.num = [NSString stringWithFormat:@"%ld", 1.0];
+        newCart.num = [NSString stringWithFormat:@"%d", p.num];
         newCart.logo = p.logo;
         newCart.name = p.name;
         newCart.productPrice=p.priceName;
         newCart.goodNorm=p.goodNorm;
         newCart.idField = @"11111";
+        
+        newCart.goodsId=p.productId;
+        newCart.goodsSkuId=p.goodsSkuId;
         [source addObject:newCart];
     }
     

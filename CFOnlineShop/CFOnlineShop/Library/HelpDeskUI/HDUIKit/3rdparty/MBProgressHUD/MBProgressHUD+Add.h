@@ -12,4 +12,11 @@
 + (void)showSuccess:(NSString *)success toView:(UIView *)view;
 
 + (MBProgressHUD *)showMessag:(NSString *)message toView:(UIView *)view;
+
+// MBProgressHUD 文本提示框
++ (void) showMBProgressHud:(UIView* )view withText:(NSString* )str withTime:(CGFloat)time;
+
++ (void) showMBProgressHud:(UIView *)view withTitle:(NSString *)str detail:(NSString* )detail withTime:(CGFloat)time;
++ (void) showMBProgressHud:(UIView *)view withTitle:(NSString *)str detail:(NSString* )detail withTime:(CGFloat)time completion:(void(^)())block;
+
 @end

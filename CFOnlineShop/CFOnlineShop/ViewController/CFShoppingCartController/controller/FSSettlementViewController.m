@@ -41,6 +41,8 @@ static NSString *const kOrderCellWithIdentifier = @"kOrderCellWithIdentifier";
 @property (nonatomic, strong) NSArray *detailTitles;
 @property (nonatomic, strong) NSArray *rightTitles;
 
+@property (nonatomic, copy) NSString * totalPrice;
+
 @end
 static NSInteger num_;
 
@@ -70,6 +72,19 @@ static NSInteger num_;
     self.navigationBgView.backgroundColor = kWhiteColor;
     self.navigationBgView.alpha = 0;
     [self showLeftBackButton];
+    
+    //
+    double pro;
+    double sum=0.0;
+    for (int i=0; i<self.dataSource.count; i++) {
+        FSShopCartList* p=[self.dataSource objectAtIndex:i];
+        pro=[p.productPrice doubleValue]*[p.num doubleValue];
+        sum=sum+pro;
+    }
+    _totalPrice=[NSString stringWithFormat:@"¥%.2f",sum];
+//    if ([_productList count]>0) {
+//        [self setBottomView];
+//    }
 }
 
 - (void)initSubview {
@@ -117,34 +132,6 @@ static NSInteger num_;
 
 - (void)requestAddress {
     
-//    NSMutableDictionary *p = [NSMutableDictionary dictionary];
-//    [p setObject:@"3406" forKey:@"appkey"];
-//    [p setObject:[FSLoginManager manager].token forKey:@"token"];
-//
-//    [FSProgressHUD showHUDWithIndeterminate:@"Loading..."];
-//    [[FSRequestManager manager] POST:kAddress_List parameters:p success:^(id  _Nullable responseObj) {
-//        [FSProgressHUD hideHUD];
-//        if (!responseObj || ![responseObj isKindOfClass:[NSDictionary class]]) {
-//            return;
-//        }
-//
-//        if ([responseObj[@"returns"] integerValue] == 1) {
-//            NSArray *JSONArray = [responseObj[@"address"] mj_JSONObject];
-//            if (JSONArray.count) {
-//                [self.addressResult addObjectsFromArray:[FSShopCartList mj_objectArrayWithKeyValuesArray:JSONArray]];
-//                [self reloadAddressInfo:[self.addressResult firstObject]];
-//            }
-//        }else {
-//            [FSProgressHUD showHUDWithLongText:@"Please add address" delay:1.0];
-//            [self addToAddress];
-//        }
-//
-//        [self.tableView reloadData];
-//
-//    } failure:^(NSError * _Nonnull error) {
-//
-//        [FSProgressHUD hideHUD];
-//    }];
 }
 
 - (void)addToAddress {
@@ -153,29 +140,49 @@ static NSInteger num_;
 //    [self.navigationController pushViewController:addAddress animated:YES];
 }
 
-//- (void)reloadAddressInfo:(FSShopCartList *)model {
-//    if (!model) return;
-//    
-//    self.addressID = model.idField;
-//    
-//    self.telLabel.text = model.tel;
-//    self.nameLabel.text = model.name;
-//    self.addressLabel.text = model.address;
-//}
-
 - (void)popToController {
     
-//    for (UIViewController *controller in self.navigationController.viewControllers) {
-//        if ([controller isKindOfClass:[FSProductDetailViewController class]]) {
-//            FSProductDetailViewController *vc1 = (FSProductDetailViewController *)controller;
-//            [self.navigationController popToViewController:vc1 animated:YES];
-//        }if ([controller isKindOfClass:[FSMeInfoViewController class]]) {
-//            FSMeInfoViewController *vc2 = (FSMeInfoViewController *)controller;
-//            [self.navigationController popToViewController:vc2 animated:YES];
+}
+- (void)pp_numberButton:(__kindof UIView *)numberButton number:(NSInteger)number increaseStatus:(BOOL)increaseStatus
+{
+    FSShopCartList* fsc=self.dataSource[0];
+    double pro0=[fsc.productPrice doubleValue]*number;
+    _totalPrice=[NSString stringWithFormat:@"¥%.2f",pro0];
+    
+    
+    double pro;
+    double sum=0.0;
+    for (int i=0; i<self.dataSource.count; i++) {
+        if (i==numberButton.tag) {
+            FSShopCartList* p=[self.dataSource objectAtIndex:i];
+            p.num=[NSString stringWithFormat:@"%i", number];
+            pro=[p.productPrice doubleValue]*number;
+        }
+        else
+        {
+            FSShopCartList* p=[self.dataSource objectAtIndex:i];
+            pro=[p.productPrice doubleValue]*[p.num doubleValue];
+        }
+        sum=sum+pro;
+    }
+    _totalPrice=[NSString stringWithFormat:@"¥%.2f",sum];
+    NSLog(@"");
+    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:1 inSection:3];
+    
+    NSArray *indexArray=[NSArray arrayWithObject:indexPath];
+    [_curTabView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationAutomatic];
+//    [_curTabView reloadData];
+//    for (int i=0; i<_productList.count; i++) {
+//        if (i==numberButton.tag) {
+//            productModel* p=[_productList objectAtIndex:i];
+//            p.num=number;
 //        }
 //    }
+    //    for (productModel* p in _productList) {
+    //        float s
+    //    }
+    NSInteger b=numberButton.tag;
 }
-
 #pragma mark - <UITableViewDataSource>
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -205,13 +212,17 @@ static NSInteger num_;
         PPNumberButton *numberButton = [PPNumberButton numberButtonWithFrame:CGRectZero];
         numberButton.shakeAnimation = YES;
         numberButton.minValue = 1;
-        numberButton.inputFieldFont = 23;
+        numberButton.inputFieldFont = 14;
         numberButton.increaseTitle = @"＋";
         numberButton.decreaseTitle = @"－";
         num_ = (_lastNum == 0) ?  1 : [_lastNum integerValue];
-        numberButton.currentNumber = num_;
-        numberButton.delegate = self;
         
+        FSShopCartList* p=[self.dataSource objectAtIndex:indexPath.row];
+
+        numberButton.currentNumber = [p.num integerValue];
+        numberButton.delegate = self;
+        numberButton.tag=indexPath.row;
+
         numberButton.resultBlock = ^(NSInteger num ,BOOL increaseStatus){
             num_ = num;
         };
@@ -219,7 +230,7 @@ static NSInteger num_;
         [numberButton mas_makeConstraints:^(MASConstraintMaker *make) {
             [make.right.mas_equalTo(cell.contentView)setOffset:-10];
             [make.bottom.mas_equalTo(cell.contentView)setOffset:10];
-            make.size.mas_equalTo(CGSizeMake(110, 60));
+            make.size.mas_equalTo(CGSizeMake(100, 60));
         }];
     }
     return cell;
@@ -244,7 +255,12 @@ static NSInteger num_;
         if (indexPath.section>0 && indexPath.row==1) {
             FSShopCartList* fsc=[FSShopCartList new];
             fsc=self.dataSource[0];
-            cell.detailTextLabel.text=fsc.productPrice;
+            if (!_totalPrice) {
+                cell.detailTextLabel.text=fsc.productPrice;
+            }
+            else{
+                cell.detailTextLabel.text=_totalPrice;
+            }
 
         }
         return cell;
@@ -331,7 +347,7 @@ static NSInteger num_;
     [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/mall/goodsorder/save"] body:data showLoading:false success:^(NSDictionary *response) {
         NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
         NSLog(@"");
-        
+        [MBProgressHUD showMBProgressHud:self.view withText:@"新增订单成功" withTime:1];
     } failure:^(NSError *error) {
         NSLog(@"");
     }];

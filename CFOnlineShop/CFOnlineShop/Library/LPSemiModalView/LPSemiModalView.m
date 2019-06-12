@@ -25,7 +25,7 @@
 @property (strong , nonatomic)UICollectionView *collectionView;
 
 @property (weak , nonatomic)DCFeatureChoseTopCell *cell;
-
+@property (nonatomic,assign) NSInteger tag;
 @end
 
 static NSInteger num_;
@@ -124,6 +124,12 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
     self.collectionView.frame = CGRectMake(0, Main_Screen_Height-360+100 ,Main_Screen_Width , 150);
     //collectionview的背景色在lazy中设置不能成功
     [self.collectionView setBackgroundColor:[UIColor whiteColor]];
+}
+- (void)pp_numberButton:(__kindof UIView *)numberButton number:(NSInteger)number increaseStatus:(BOOL)increaseStatus
+{
+    FSShopCartList *newCart = _cartItem;
+    newCart.num=[NSString stringWithFormat:@"%i",number];
+
 }
 #pragma mark - <UICollectionViewDataSource>
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -267,8 +273,9 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
         NSLog(@"");
     }];
 }
-- (void)open
+- (void)open:(NSInteger)tag
 {
+    self.tag=tag;
     if (!self.narrowedOff) {
         //self.contentView.hidden = YES;
         CATransform3D t = CATransform3DIdentity;
@@ -348,6 +355,10 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
             if (self.baseViewController) {
                 if (self.baseViewController.navigationController) {
                     if (self.block) {
+                        if (self.tag==0) {
+                            [MBProgressHUD showMBProgressHud:self.baseViewController.view withText:@"亲,加入购物车成功" withTime:1];
+                        }
+                        else{
                         FSSettlementViewController* confirmOrder=[[FSSettlementViewController alloc] initWithNibName:@"FSSettlementViewController" bundle:nil];
 //                        FSShopCartList *newCart = [FSShopCartList new];
 //                        newCart.num = [NSString stringWithFormat:@"%ld", 1.0];
@@ -356,6 +367,7 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
 //                        newCart.idField = @"11111";
                         confirmOrder.dataSource = [NSMutableArray arrayWithObjects:_cartItem, nil];
                         [self.baseViewController.navigationController pushViewController:confirmOrder animated:YES];
+                        }
                     }
                     else
                     {

@@ -41,7 +41,7 @@
     self.navigationBgView.alpha = 0;
     [self showLeftBackButton];
     self.title = @"登录";
-    self.title=@"找回密码1/2";
+    self.title=@"修改密码1/1";
     self.view.backgroundColor=[UIColor colorWithRed:240/255.0f green:240/255.0f blue:240/255.0f alpha:1];
     UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(clickaddBtn)];
     [addBtn setImage:[UIImage imageNamed:@"goback_back_orange_on"]];
@@ -81,7 +81,7 @@
     _phone.keyboardType=UIKeyboardTypeNumberPad;
     //phone.text=@"15527002684";
     
-    code=[self createTextFielfFrame:CGRectMake(100, 60, 90, 30) font:[UIFont systemFontOfSize:14]  placeholder:@"4位数字" ];
+    code=[self createTextFielfFrame:CGRectMake(100, 60, 90, 30) font:[UIFont systemFontOfSize:14]  placeholder:@"旧密码" ];
     code.clearButtonMode = UITextFieldViewModeWhileEditing;
     //code.text=@"mojun1992225";
     //密文样式
@@ -89,7 +89,7 @@
     code.keyboardType=UIKeyboardTypeNumberPad;
     
     
-    code1=[self createTextFielfFrame:CGRectMake(100, 110, 90, 30) font:[UIFont systemFontOfSize:14]  placeholder:@"4位数字" ];
+    code1=[self createTextFielfFrame:CGRectMake(100, 110, 90, 30) font:[UIFont systemFontOfSize:14]  placeholder:@"新密码" ];
     code1.clearButtonMode = UITextFieldViewModeWhileEditing;
     //code.text=@"mojun1992225";
     //密文样式
@@ -250,23 +250,33 @@
 //验证码
 -(void)landClick
 {
-//    
-//    if ([_phone.text isEqualToString:@""])
-//    {
-//        //[SVProgressHUD showInfoWithStatus:@"亲,请输入注册手机号码"];
-//        return;
-//    }
-//    else if (_phone.text.length <11)
-//    {
-//        //[SVProgressHUD showInfoWithStatus:@"您输入的手机号码格式不正确"];
-//        return;
-//    }
-//    else if ([_phone.text isEqualToString:@""])
-//    {
-//        //[SVProgressHUD showInfoWithStatus:@"亲,请输入密码"];
-//        return;
-//    }
-  
+    if ([_phone.text isEqualToString:@""])
+    {
+        [MBProgressHUD showMBProgressHud:self.view withText:@"亲,请输入注册手机号码" withTime:1];
+        return;
+    }
+    else if (_phone.text.length <11)
+    {
+        [MBProgressHUD showMBProgressHud:self.view withText:@"您输入的手机号码格式不正确" withTime:1];
+        return;
+    }
+    else if ([code.text isEqualToString:@""])
+    {
+        [MBProgressHUD showMBProgressHud:self.view withText:@"亲,请输入旧密码" withTime:1];
+        return;
+    }
+    else if ([code1.text isEqualToString:@""])
+    {
+        [MBProgressHUD showMBProgressHud:self.view withText:@"亲,请输入新密码" withTime:1];
+        return;
+    }
+    else if (code1.text.length <6)
+    {
+        //[SVProgressHUD showInfoWithStatus:@"亲,密码长度至少六位"];
+        [MBProgressHUD showMBProgressHud:self.view withText:@"亲,密码长度至少六位" withTime:1];
+        
+        return;
+    }
     NSMutableDictionary* dic=[NSMutableDictionary new];
     NSDictionary *params = @{
                              @"mobile" : _phone.text,
@@ -278,9 +288,12 @@
     [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/app/update"] body:data showLoading:false success:^(NSDictionary *response) {
         NSString * str  =[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
         NSLog(@"");
-        [self.navigationController popViewControllerAnimated:YES];
+        [MBProgressHUD showMBProgressHud:self.view withTitle:@"修改密码成功" detail:@"" withTime:1 completion:^{
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
         
     } failure:^(NSError *error) {
+        [MBProgressHUD showMBProgressHud:self.view withText:@"修改密码失败" withTime:1];
         NSLog(@"");
     }];
 //        newPassWardViewController *new=[[newPassWardViewController alloc]init];

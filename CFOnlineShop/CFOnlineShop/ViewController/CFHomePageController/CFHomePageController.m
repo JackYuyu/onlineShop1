@@ -22,7 +22,7 @@
 #import "topicModel.h"
 #import "HomeSpecialController.h"
 #import "SeachViewController.h"
-@interface CFHomePageController ()<UICollectionViewDelegate,UICollectionViewDataSource>
+@interface CFHomePageController ()<UICollectionViewDelegate,UICollectionViewDataSource,SDCycleScrollViewDelegate>
 
 @property (nonatomic, strong) UIButton *searchBtn;
 @property (nonatomic, strong) UIImageView *searchImageView;
@@ -254,7 +254,13 @@
         HomeCollectionCatCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:collectionCell forIndexPath:indexPath];
         productModel* p=[_recommendList objectAtIndex:indexPath.row];
         cell.titleStr.text = p.productName;
+        [cell.addButton setTitle:[NSString stringWithFormat:@"¥%@",p.priceName] forState:UIControlStateNormal];
         
+        NSMutableAttributedString *str1 = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@"¥%@",p.costPrice]];
+        NSRange strRange1 = {0,[str1 length]};
+        [str1 addAttribute:NSStrikethroughStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:strRange1];
+        [cell.titleStr2 setAttributedText:str1];
+        cell.titleStr1.text=[NSString stringWithFormat:@"销量:%@",p.saleCount];
         NSString *imageName = [NSString stringWithFormat:@"commodity_%ld",(long)indexPath.row + 1];
         
         [cell.imageView sd_setImageWithURL:[NSURL URLWithString:p.logo]];
@@ -305,6 +311,7 @@
         topicModel* t=[topicModel new];
         t.ad=_adList;
         [headerView setModel:t];
+        headerView.cycleScrollView.delegate=self;
     }
     else if (kind == UICollectionElementKindSectionHeader && indexPath.section == 1){
         
@@ -392,7 +399,32 @@
     }
     
 }
-
+- (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index;
+{
+    if(index==0)
+    {
+        HomeSpecialController* hs=[HomeSpecialController new];
+        hs.categoryId=@"0";
+        [self.navigationController pushViewController:hs animated:YES];
+    }
+    else if(index==1)
+    {
+        HomeSpecialController* hs=[HomeSpecialController new];
+        hs.categoryId=@"1";
+        [self.navigationController pushViewController:hs animated:YES];
+    }
+    else if(index==2)
+    {
+        HomeSpecialController* hs=[HomeSpecialController new];
+        hs.categoryId=@"2";
+        [self.navigationController pushViewController:hs animated:YES];
+    }
+    else{
+        HomeSpecialController* hs=[HomeSpecialController new];
+        hs.categoryId=@"2";
+        [self.navigationController pushViewController:hs animated:YES];
+    }
+}
 #pragma mark --UIScllowViewDelegate
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset

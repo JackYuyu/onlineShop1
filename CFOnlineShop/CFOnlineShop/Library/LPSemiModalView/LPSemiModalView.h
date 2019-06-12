@@ -28,6 +28,6 @@ typedef void (^SemiModalViewDidCloseBlock)();
 
 - (id)initWithSize:(CGSize)size andBaseViewController:(UIViewController *)baseViewController;
 - (void)close;
-- (void)open;
+- (void)open:(NSInteger)tag;
 
 @end

@@ -59,6 +59,31 @@
 }
 -(void)postUI
 {
+    if ([_input isEqualToString:@""])
+    {
+        [MBProgressHUD showMBProgressHud:self.view withText:@"亲,请输入收货人" withTime:1];
+        return;
+    }
+    else if ([_input1 isEqualToString:@""])
+    {
+        [MBProgressHUD showMBProgressHud:self.view withText:@"您输入的手机号码格式不正确" withTime:1];
+        return;
+    }
+    else if (_input1.length <11)
+    {
+        [MBProgressHUD showMBProgressHud:self.view withText:@"您输入的手机号码格式不正确" withTime:1];
+        return;
+    }
+    else if ([_input3 isEqualToString:@""])
+    {
+        [MBProgressHUD showMBProgressHud:self.view withText:@"亲,请输入详细地址" withTime:1];
+        return;
+    }
+    else if ([_province isEqualToString:@""])
+    {
+        [MBProgressHUD showMBProgressHud:self.view withText:@"亲,请选择地区" withTime:1];
+        return;
+    }
     NSDictionary *params = @{
                              @"openId" : [MySingleton sharedMySingleton].openId,
                              @"receiptAddress" : @"1",
@@ -86,8 +111,11 @@
         [userd setObject:_input3 forKey:@"street"];
 
         [userd synchronize];
-        [self.navigationController popViewControllerAnimated:YES];
+        [MBProgressHUD showMBProgressHud:self.view withTitle:@"添加地址成功" detail:@"" withTime:1 completion:^{
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
         NSLog(@"");
+        
     } failure:^(NSError *error) {
         NSLog(@"");
     }];
@@ -124,6 +152,9 @@
         [userd synchronize];
         [self.navigationController popViewControllerAnimated:YES];
         NSLog(@"");
+        [MBProgressHUD showMBProgressHud:self.view withTitle:@"更新地址成功" detail:@"" withTime:1 completion:^{
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
     } failure:^(NSError *error) {
         NSLog(@"");
     }];
@@ -191,11 +222,11 @@
 }
 //设置每行的UITableViewCell
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellID"];
-    if (cell==nil) {
+    UITableViewCell * cell;
+//    if (cell==nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cellID"];
 //        cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
-    }
+//    }
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
     cell.textLabel.text = [_checkList objectAtIndex:indexPath.row];
 //    cell.detailTextLabel.text = [NSString stringWithFormat:@"第%d行",indexPath.row];

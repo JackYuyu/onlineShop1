@@ -23,6 +23,7 @@
         _cycleScrollView.autoScrollTimeInterval = 3;
         _cycleScrollView.bannerImageViewContentMode = UIViewContentModeScaleAspectFill;
         _cycleScrollView.currentPageDotColor = kRedColor;
+        _cycleScrollView.delegate=self;
         [self addSubview:_cycleScrollView];
         
     }
@@ -32,4 +33,5 @@
 {
         [_cycleScrollView setImageURLStringsGroup:model.ad];
 }
+
 @end

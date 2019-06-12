@@ -27,15 +27,25 @@
         _titleStr.textColor = KDarkTextColor;
         [self.contentView addSubview:_titleStr];
         
-        UIButton *addButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
-        addButton.frame = CGRectMake(15, MaxY(_titleStr) + 10, 80, 20);
-        addButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        addButton.titleLabel.font = SYSTEMFONT(14);
-        [addButton setTitle:@"加入购物车" forState:(UIControlStateNormal)];
-        [addButton setTitleColor:kRedColor forState:(UIControlStateNormal)];
-        [addButton addTarget:self action:@selector(addAction:) forControlEvents:(UIControlEventTouchUpInside)];
-        [self.contentView addSubview:addButton];
+        _addButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
+        _addButton.frame = CGRectMake(15, MaxY(_titleStr) + 10, 80, 20);
+        _addButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        _addButton.titleLabel.font = SYSTEMFONT(14);
+        [_addButton setTitle:@"加入购物车" forState:(UIControlStateNormal)];
+        [_addButton setTitleColor:kRedColor forState:(UIControlStateNormal)];
+        [_addButton addTarget:self action:@selector(addAction:) forControlEvents:(UIControlEventTouchUpInside)];
         
+        [self.contentView addSubview:_addButton];
+        
+        _titleStr2 = [[UILabel alloc] initWithFrame:CGRectMake(_addButton.mj_w-25, MaxY(_titleStr) + 10, 40, 20)];
+        _titleStr2.font = SYSTEMFONT(14);
+        _titleStr2.textColor = KDarkTextColor;
+        [self.contentView addSubview:_titleStr2];
+        
+        _titleStr1 = [[UILabel alloc] initWithFrame:CGRectMake(_addButton.mj_w+25, MaxY(_titleStr) + 10, 80, 20)];
+        _titleStr1.font = SYSTEMFONT(14);
+        _titleStr1.textColor = KDarkTextColor;
+        [self.contentView addSubview:_titleStr1];
     }
     
     return self;
