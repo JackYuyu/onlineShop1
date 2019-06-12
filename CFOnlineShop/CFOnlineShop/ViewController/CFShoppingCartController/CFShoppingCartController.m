@@ -81,7 +81,7 @@ static NSInteger num_;
         for (NSDictionary* products in responseObj[@"list"]) {
             productModel* p=[productModel mj_objectWithKeyValues:products];
             p.productName=[products objectForKey:@"name"];
-            p.productId=[products objectForKey:@"goodsId"];
+            p.productId=[products objectForKey:@"id"];
             NSLog(@"");
             [_productList addObject:p];
         }

@@ -263,7 +263,7 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
                              @"goodsId" : _cartItem.goodsId,
                              @"openId" : [MySingleton sharedMySingleton].openId,
                              @"goodsSkuId" : _cartItem.goodsSkuId,
-                             @"num": @"1"
+                             @"num": _cartItem.num
                              };
     NSData *data =    [NSJSONSerialization dataWithJSONObject:params options:NSUTF8StringEncoding error:nil];
     [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/mall/goodsshoppingcar/save"] body:data showLoading:false success:^(NSDictionary *response) {
