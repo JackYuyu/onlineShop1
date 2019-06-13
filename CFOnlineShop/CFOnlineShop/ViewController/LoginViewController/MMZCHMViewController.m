@@ -161,6 +161,7 @@
         
     } failure:^(NSError *error) {
         NSLog(@"");
+        [MBProgressHUD showMBProgressHud:self.view withText:@"发送验证码失败" withTime:1];
     }];
 }
 - (void)reduceTime:(NSTimer *)codeTimer {

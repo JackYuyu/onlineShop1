@@ -26,6 +26,8 @@
 
 @property (weak , nonatomic)DCFeatureChoseTopCell *cell;
 @property (nonatomic,assign) NSInteger tag;
+@property (nonatomic,assign) BOOL norm;
+
 @end
 
 static NSInteger num_;
@@ -114,7 +116,7 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
 #pragma mark - 退出当前界面
 - (void)dismissFeatureViewControllerWithTag:(NSInteger)tag
 {
-    [self close];
+    [self close:tag];
 }
 -(void)setup{
 //    self.backgroundColor=[UIColor whiteColor];
@@ -165,6 +167,7 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
 #pragma mark - <UICollectionViewDelegate>
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    self.norm=YES;
     for (DCFeatureItem* l in _featureAttr) {
         for (DCFeatureList* d in l.list ) {
             d.isSelect=NO;
@@ -176,6 +179,7 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
         if (i==indexPath.row) {
             l=[item.list objectAtIndex:indexPath.row];
             l.isSelect=YES;
+            _cartItem.goodsSkuId=l.goodsSkuId;
         }
         
     }
@@ -253,7 +257,10 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
 //        [SVProgressHUD dismissWithDelay:1.0];
 //        return;
 //    }
-    
+    if (!self.norm) {
+        [MBProgressHUD showMBProgressHud:self.baseViewController.view withText:@"请选择商品属性" withTime:1];
+        return;
+    }
     [self dismissFeatureViewControllerWithTag:button.tag];
     [self postUI];
 }
@@ -332,7 +339,7 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
     [self setUpBottonView];
 }
 
-- (void)close
+- (void)close:(NSInteger)tag
 {
     if (self.semiModalViewWillCloseBlock) {
         self.semiModalViewWillCloseBlock();
@@ -355,6 +362,10 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
             if (self.baseViewController) {
                 if (self.baseViewController.navigationController) {
                     if (self.block) {
+                        if (tag==100) {
+                            [self.baseViewController.view sendSubviewToBack:self];
+                            return;
+                        }
                         if (self.tag==0) {
                             [MBProgressHUD showMBProgressHud:self.baseViewController.view withText:@"亲,加入购物车成功" withTime:1];
                         }

@@ -389,7 +389,7 @@
         newCart.logo = p.logo;
         newCart.name = p.name;
         newCart.productPrice=p.priceName;
-        newCart.goodNorm=p.goodNorm;
+        newCart.goodNorm=p.goodsNorm;
         newCart.idField = @"11111";
         
         newCart.goodsId=p.productId;

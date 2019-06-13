@@ -312,7 +312,7 @@
 
         return;
     }
-    else if (user.text.length <11)
+    else if (user.text.length != 11)
     {
         //[SVProgressHUD showInfoWithStatus:@"您输入的手机号码格式不正确"];
         [MBProgressHUD showMBProgressHud:self.view withText:@"您输入的手机号码格式不正确" withTime:1];

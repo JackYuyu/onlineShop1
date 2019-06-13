@@ -81,7 +81,7 @@ static NSInteger num_;
         pro=[p.productPrice doubleValue]*[p.num doubleValue];
         sum=sum+pro;
     }
-    _totalPrice=[NSString stringWithFormat:@"¥%.2f",sum];
+    _totalPrice=[NSString stringWithFormat:@"%.2f",sum];
 //    if ([_productList count]>0) {
 //        [self setBottomView];
 //    }
@@ -147,7 +147,7 @@ static NSInteger num_;
 {
     FSShopCartList* fsc=self.dataSource[0];
     double pro0=[fsc.productPrice doubleValue]*number;
-    _totalPrice=[NSString stringWithFormat:@"¥%.2f",pro0];
+    _totalPrice=[NSString stringWithFormat:@"%.2f",pro0];
     
     
     double pro;
@@ -165,7 +165,7 @@ static NSInteger num_;
         }
         sum=sum+pro;
     }
-    _totalPrice=[NSString stringWithFormat:@"¥%.2f",sum];
+    _totalPrice=[NSString stringWithFormat:@"%.2f",sum];
     NSLog(@"");
     NSIndexPath *indexPath=[NSIndexPath indexPathForRow:1 inSection:3];
     
@@ -259,7 +259,7 @@ static NSInteger num_;
                 cell.detailTextLabel.text=fsc.productPrice;
             }
             else{
-                cell.detailTextLabel.text=_totalPrice;
+                cell.detailTextLabel.text=[NSString stringWithFormat:@"¥%@",_totalPrice];
             }
 
         }
@@ -330,10 +330,10 @@ static NSInteger num_;
     ce.logisticsCode=@"0";
     ce.logisticsNo=@"0";
     ce.payStatus=@"0";
-    ce.totalPrice=@"0.02";
+    ce.totalPrice=_totalPrice;
     ce.hasDefaultAddress=@"0";
-    ce.totalGoodsPrice=@"0.02";
-    ce.actualPrice=@"0.02";
+    ce.totalGoodsPrice=_totalPrice;
+    ce.actualPrice=_totalPrice;
     ce.openId=[MySingleton sharedMySingleton].openId;
     ce.status=@"0";
     ce.remarks=@"买入一件";

@@ -171,6 +171,7 @@
             list.infoname=p.goodsNorm;
             list.plusprice=p.priceName;
             list.priceId=p.priceId;
+            list.goodsSkuId=p.id;
             [feat addObject:list];
             //            [_productList addObject:p];
         }

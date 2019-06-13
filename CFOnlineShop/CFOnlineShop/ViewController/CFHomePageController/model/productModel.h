@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * detailInfo;
 
 @property (nonatomic, copy) NSString * name;
-@property (nonatomic, copy) NSString * goodNorm;
+@property (nonatomic, copy) NSString * goodsNorm;
 @property (nonatomic, assign) int num;
 @property (nonatomic, copy) NSString * saleCount;
 @property (nonatomic, copy) NSString * goodsId;

@@ -166,7 +166,7 @@
     HomeCollectionCatCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:collectionCell forIndexPath:indexPath];
     productModel* p=[_productList objectAtIndex:indexPath.row];
     cell.titleStr.text = p.productName;
-    [cell.addButton setTitle:[NSString stringWithFormat:@"¥%@",p.marketPrice] forState:UIControlStateNormal];
+    [cell.addButton setTitle:[NSString stringWithFormat:@"¥%@",p.priceName] forState:UIControlStateNormal];
     
     NSMutableAttributedString *str1 = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@"¥%@",p.costPrice]];
     NSRange strRange1 = {0,[str1 length]};
