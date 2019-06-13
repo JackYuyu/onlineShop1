@@ -38,7 +38,9 @@ static NSInteger num_;
     _productListM=[NSMutableArray new];
     
     [self setTitle:@"购物车"];
-    self.navigationView.backgroundColor = kWhiteColor;
+    self.navigationBgView.backgroundColor = kWhiteColor;
+    self.navigationBgView.alpha = 1;
+    [self showLeftBackButton];
     [self setCollectionView];
 }
 -(void)viewWillAppear:(BOOL)animated
