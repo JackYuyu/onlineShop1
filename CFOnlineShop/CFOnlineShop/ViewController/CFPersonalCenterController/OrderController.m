@@ -23,6 +23,8 @@
 
 @property (nonatomic,strong) NSMutableArray* checkList;
 @property (nonatomic,strong) UITableView* tableView;
+@property (nonatomic,assign) NSInteger selectIndex;
+
 @end
 
 @implementation OrderController
@@ -42,7 +44,7 @@
     self.navigationBgView.backgroundColor = kWhiteColor;
     self.navigationBgView.alpha = 1;
     [self showLeftBackButton];
-    _segmentTitles = @[@"全部订单",@"待支付",@"待发货",@"已完成"];
+    _segmentTitles = @[@"全部订单",@"待支付",@"待发货",@"待收货",@"已完成"];
     
 //    UIView * view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50)];
 //    view.backgroundColor = [UIColor whiteColor];
@@ -88,6 +90,10 @@
     else if (index==3) {
         [self postRecordUI3];
     }
+    else if (index==4) {
+        [self postRecordUI4];
+    }
+    _selectIndex=index;
     NSLog(@"");
     //    [_bgScrollView setContentOffset:CGPointMake(Main_Screen_Width * index, 0) animated:YES];
 }
@@ -140,13 +146,23 @@
     [HttpTool get:[NSString stringWithFormat:@"renren-fast/mall/goodsorder/querylist"] params:params success:^(id responseObj) {
         NSDictionary* a=responseObj[@"result"];
         _checkList=[[NSMutableArray alloc] init];
+        _productList=[[NSMutableArray alloc] init];
+        
         //
         for (NSDictionary* products in responseObj[@"result"]) {
             OrderModel* t=[OrderModel mj_objectWithKeyValues:products];
             OrderEntity* e=[OrderEntity mj_objectWithKeyValues:t.goodsOrderEntity];
+            NSMutableArray* tm=[NSMutableArray new];
+            for (NSDictionary* m in t.goodsOrderItemVO) {
+                productModel* p=[productModel mj_objectWithKeyValues:m];
+                NSLog(@"");
+                [tm addObject:p];
+            }
+            e.productLists=tm;
             NSLog(@"");
             //            [_topicList addObject:t];
             [_checkList addObject:e];
+            
         }
         //        weakself.segmentedControl.tapIndex=2;
         [_tableView reloadData];
@@ -164,13 +180,23 @@
     [HttpTool get:[NSString stringWithFormat:@"renren-fast/mall/goodsorder/querylist"] params:params success:^(id responseObj) {
         NSDictionary* a=responseObj[@"result"];
         _checkList=[[NSMutableArray alloc] init];
+        _productList=[[NSMutableArray alloc] init];
+        
         //
         for (NSDictionary* products in responseObj[@"result"]) {
             OrderModel* t=[OrderModel mj_objectWithKeyValues:products];
             OrderEntity* e=[OrderEntity mj_objectWithKeyValues:t.goodsOrderEntity];
+            NSMutableArray* tm=[NSMutableArray new];
+            for (NSDictionary* m in t.goodsOrderItemVO) {
+                productModel* p=[productModel mj_objectWithKeyValues:m];
+                NSLog(@"");
+                [tm addObject:p];
+            }
+            e.productLists=tm;
             NSLog(@"");
             //            [_topicList addObject:t];
             [_checkList addObject:e];
+            
         }
         //        weakself.segmentedControl.tapIndex=2;
         [_tableView reloadData];
@@ -182,19 +208,63 @@
 {
     NSDictionary *params = @{
                              @"openId" : [MySingleton sharedMySingleton].openId,
+                             @"payStatus" : @"2"
+                             };
+    WeakSelf(self)
+    [HttpTool get:[NSString stringWithFormat:@"renren-fast/mall/goodsorder/querylist"] params:params success:^(id responseObj) {
+        NSDictionary* a=responseObj[@"result"];
+        _checkList=[[NSMutableArray alloc] init];
+        _productList=[[NSMutableArray alloc] init];
+        
+        //
+        for (NSDictionary* products in responseObj[@"result"]) {
+            OrderModel* t=[OrderModel mj_objectWithKeyValues:products];
+            OrderEntity* e=[OrderEntity mj_objectWithKeyValues:t.goodsOrderEntity];
+            NSMutableArray* tm=[NSMutableArray new];
+            for (NSDictionary* m in t.goodsOrderItemVO) {
+                productModel* p=[productModel mj_objectWithKeyValues:m];
+                NSLog(@"");
+                [tm addObject:p];
+            }
+            e.productLists=tm;
+            NSLog(@"");
+            //            [_topicList addObject:t];
+            [_checkList addObject:e];
+            
+        }
+        //        weakself.segmentedControl.tapIndex=2;
+        [_tableView reloadData];
+    } failure:^(NSError *error) {
+        NSLog(@"");
+    }];
+}
+-(void)postRecordUI4
+{
+    NSDictionary *params = @{
+                             @"openId" : [MySingleton sharedMySingleton].openId,
                              @"payStatus" : @"4"
                              };
     WeakSelf(self)
     [HttpTool get:[NSString stringWithFormat:@"renren-fast/mall/goodsorder/querylist"] params:params success:^(id responseObj) {
         NSDictionary* a=responseObj[@"result"];
         _checkList=[[NSMutableArray alloc] init];
+        _productList=[[NSMutableArray alloc] init];
+        
         //
         for (NSDictionary* products in responseObj[@"result"]) {
             OrderModel* t=[OrderModel mj_objectWithKeyValues:products];
             OrderEntity* e=[OrderEntity mj_objectWithKeyValues:t.goodsOrderEntity];
+            NSMutableArray* tm=[NSMutableArray new];
+            for (NSDictionary* m in t.goodsOrderItemVO) {
+                productModel* p=[productModel mj_objectWithKeyValues:m];
+                NSLog(@"");
+                [tm addObject:p];
+            }
+            e.productLists=tm;
             NSLog(@"");
             //            [_topicList addObject:t];
             [_checkList addObject:e];
+            
         }
         //        weakself.segmentedControl.tapIndex=2;
         [_tableView reloadData];
@@ -237,7 +307,7 @@
     cell.payprice.text=[NSString stringWithFormat:@"应付款: ¥:%@",e.totalPrice];
     [cell.paybtn setBackgroundColor:[UIColor redColor]];
     [cell.paybtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [cell.paybtn addTarget:self action:@selector(logi:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.paybtn addTarget:self action:@selector(pay:) forControlEvents:UIControlEventTouchUpInside];
     cell.paybtn.tag=indexPath.row;
     
     [cell.cancel setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -249,7 +319,12 @@
     [cell.cancel.layer setMasksToBounds:YES]; [cell.cancel.layer setCornerRadius:3.0];
     if ([e.payStatus isEqualToString:@"0"]) {
         cell.status.text=@"待支付";
-
+        [cell.cancel setBackgroundColor:[UIColor whiteColor]];
+        [cell.cancel setTitle:@"取消订单" forState:UIControlStateNormal];
+        [cell.cancel setTitleColor:KDarkTextColor forState:UIControlStateNormal];
+        [cell.paybtn setBackgroundColor:[UIColor redColor]];
+        [cell.paybtn setTitle:@"立即付款" forState:UIControlStateNormal];
+        [cell.paybtn setTitleColor:KDarkTextColor forState:UIControlStateNormal];
     }
     else if ([e.payStatus isEqualToString:@"3"]){
         cell.status.text=@"已取消";
@@ -258,7 +333,7 @@
         [cell.paybtn setTitle:@"删除订单" forState:UIControlStateNormal];
         [cell.paybtn setTitleColor:KDarkTextColor forState:UIControlStateNormal];
     }
-    else{
+    else if ([e.payStatus isEqualToString:@"1"]){
         cell.status.text=@"已支付";
         [cell.cancel setBackgroundColor:[UIColor redColor]];
         [cell.cancel setTitle:@"申请退款" forState:UIControlStateNormal];
@@ -267,34 +342,96 @@
         [cell.paybtn setTitle:@"暂未发货" forState:UIControlStateNormal];
         [cell.paybtn setTitleColor:KDarkTextColor forState:UIControlStateNormal];
     }
+    else if ([e.payStatus isEqualToString:@"2"]){
+        cell.status.hidden=YES;
+        cell.cancel.hidden=YES;
+        cell.paybtn.hidden=YES;
+    }
+    else if ([e.payStatus isEqualToString:@"4"]){
+        cell.status.text=@"已完成";
+        [cell.cancel setBackgroundColor:[UIColor redColor]];
+        [cell.cancel setTitle:@"删除订单" forState:UIControlStateNormal];
+        [cell.cancel setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [cell.paybtn setBackgroundColor:[UIColor redColor]];
+        [cell.paybtn setTitle:@"发表评价" forState:UIControlStateNormal];
+        [cell.paybtn setTitleColor:KDarkTextColor forState:UIControlStateNormal];
+    }
+    else if ([e.payStatus isEqualToString:@"5"]){
+        cell.status.text=@"待收货";
+        [cell.cancel setBackgroundColor:[UIColor redColor]];
+        [cell.cancel setTitle:@"申请退款" forState:UIControlStateNormal];
+        [cell.cancel setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        [cell.paybtn setBackgroundColor:[UIColor whiteColor]];
+        [cell.paybtn setTitle:@"确认收货" forState:UIControlStateNormal];
+        [cell.paybtn setTitleColor:KDarkTextColor forState:UIControlStateNormal];
+    }
+    else if ([e.payStatus isEqualToString:@"6"]){
+        cell.status.text=@"退款/货处理中";
+        [cell.cancel setBackgroundColor:[UIColor redColor]];
+        [cell.cancel setTitle:@"申请退款" forState:UIControlStateNormal];
+        [cell.cancel setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        cell.cancel.hidden=YES;
+        [cell.paybtn setBackgroundColor:[UIColor redColor]];
+        [cell.paybtn setTitle:@"退款/退货中" forState:UIControlStateNormal];
+        [cell.paybtn setTitleColor:KDarkTextColor forState:UIControlStateNormal];
+    }
+    else if ([e.payStatus isEqualToString:@"7"]){
+        cell.status.text=@"退款/货完成";
+        [cell.cancel setBackgroundColor:[UIColor redColor]];
+        [cell.cancel setTitle:@"退款完成" forState:UIControlStateNormal];
+        [cell.cancel setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        cell.cancel.hidden=YES;
+        [cell.paybtn setBackgroundColor:[UIColor whiteColor]];
+        [cell.paybtn setTitle:@"删除订单" forState:UIControlStateNormal];
+        [cell.paybtn setTitleColor:KDarkTextColor forState:UIControlStateNormal];
+    }
     return cell;
 }
--(void)logi:(UIButton*)sender
+-(void)pay:(UIButton*)sender
 {
     NSInteger a=sender.tag;
-//    if (sender.tag==0) {
-//        CommentController* c=[CommentController new];
-//        
-//        OrderEntity* e=[_checkList objectAtIndex:sender.tag];
-//        NSMutableArray* source=[NSMutableArray new];
-//        for (productModel* p in e.productLists) {
-//            FSShopCartList *newCart = [FSShopCartList new];
-//            newCart.num = [NSString stringWithFormat:@"%ld", 1.0];
-//            newCart.logo = p.logo;
-//            newCart.name = p.name;
-//            newCart.productPrice=p.priceName;
-//            newCart.goodNorm=p.goodNorm;
-//            newCart.idField = @"11111";
-//            [source addObject:newCart];
-//        }
-//        c.dataSource=source;
-//        [self.navigationController pushViewController:c animated:YES];
-//    }
+    if ([sender.titleLabel.text isEqualToString:@"发表评价"]) {
+        CommentController* c=[CommentController new];
+        
+        OrderEntity* e=[_checkList objectAtIndex:sender.tag];
+        NSMutableArray* source=[NSMutableArray new];
+        for (productModel* p in e.productLists) {
+            FSShopCartList *newCart = [FSShopCartList new];
+            newCart.num = [NSString stringWithFormat:@"%ld", 1.0];
+            newCart.logo = p.logo;
+            newCart.name = p.name;
+            newCart.productPrice=p.priceName;
+            newCart.goodNorm=p.goodsNorm;
+            newCart.idField = @"11111";
+            [source addObject:newCart];
+        }
+        c.dataSource=source;
+        [self.navigationController pushViewController:c animated:YES];
+            return;
+    }
 //    else if ([sender.titleLabel.text isEqualToString:@"删除订单"]){
 //        [self deleteOrder:sender];
 //    }
     if ([sender.titleLabel.text isEqualToString:@"删除订单"]){
         [self deleteOrder:sender];
+    }
+    if ([sender.titleLabel.text isEqualToString:@"确认收货"]){
+        OrderEntity* e=[_checkList objectAtIndex:sender.tag];
+        
+        NSDictionary *params = @{
+                                 @"id" : e.id,
+                                 @"payStatus" : @"2",
+                                 @"openId" : [MySingleton sharedMySingleton].openId,
+                                 };
+
+        NSData *data =    [NSJSONSerialization dataWithJSONObject:params options:NSUTF8StringEncoding error:nil];
+        [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/mall/goodsorder/update"] body:data showLoading:false success:^(NSDictionary *response) {
+            NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            NSLog(@"");
+            [self postRecordUI];
+        } failure:^(NSError *error) {
+            NSLog(@"");
+        }];
     }
 //    else{
 //    LogisticController* logi=[LogisticController new];
@@ -303,6 +440,10 @@
 }
 -(void)delete:(UIButton*)sender
 {
+    if ([sender.titleLabel.text isEqualToString:@"删除订单"]){
+        [self deleteOrder:sender];
+        return;
+    }
     OrderEntity* e=[_checkList objectAtIndex:sender.tag];
 
     NSDictionary *params = @{
@@ -310,6 +451,13 @@
                              @"payStatus" : @"3",
                              @"openId" : [MySingleton sharedMySingleton].openId,
                              };
+    if ([sender.titleLabel.text isEqualToString:@"申请退款"]){
+        params = @{
+                   @"id" : e.id,
+                   @"payStatus" : @"6",
+                   @"openId" : [MySingleton sharedMySingleton].openId,
+                   };
+    }
     NSData *data =    [NSJSONSerialization dataWithJSONObject:params options:NSUTF8StringEncoding error:nil];
     [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/mall/goodsorder/update"] body:data showLoading:false success:^(NSDictionary *response) {
         NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
@@ -339,11 +487,7 @@
 }
 //设置行高
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    //    if (indexPath.section==0) {
-    //        return 100;
-    //    }else{
     return 144;
-    //    }
 }
 //设置分区尾视图高度
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{

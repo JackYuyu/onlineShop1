@@ -26,7 +26,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="￥75" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nob-WN-bFD" userLabel="priceLabel">
-                        <rect key="frame" x="40" y="61.5" width="70" height="23"/>
+                        <rect key="frame" x="20" y="61.5" width="70" height="23"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="70" id="dDw-t0-6ro"/>
                         </constraints>
@@ -56,7 +56,7 @@
                     <constraint firstItem="zZU-hh-R0t" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="5" id="Opd-JC-gK1"/>
                     <constraint firstItem="Hj0-d2-Y9c" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="86" id="adm-Uk-UVE"/>
                     <constraint firstAttribute="bottom" secondItem="nob-WN-bFD" secondAttribute="bottom" constant="15" id="lWI-mK-kYP"/>
-                    <constraint firstItem="nob-WN-bFD" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="40" id="lwR-bi-Dnf"/>
+                    <constraint firstItem="nob-WN-bFD" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="lwR-bi-Dnf"/>
                     <constraint firstItem="zZU-hh-R0t" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="mG0-pd-oLx"/>
                     <constraint firstItem="zZU-hh-R0t" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="nCJ-7d-7lk"/>
                     <constraint firstItem="UoQ-da-VzB" firstAttribute="centerY" secondItem="nob-WN-bFD" secondAttribute="centerY" id="pLg-0w-X2u"/>

@@ -553,7 +553,7 @@
         [cell.contentView addSubview:v];
         
         [comName mas_makeConstraints:^(MASConstraintMaker *make) {
-            [make.left.mas_equalTo(cell.contentView)setOffset:10];
+            [make.left.mas_equalTo(cell.contentView)setOffset:20];
             [make.top.mas_equalTo(cell.contentView)setOffset:5];
             make.size.mas_equalTo(CGSizeMake(100, 40));
 
@@ -569,7 +569,7 @@
             make.size.mas_equalTo(CGSizeMake(180, 40));
         }];
         [comm mas_makeConstraints:^(MASConstraintMaker *make) {
-            [make.left.mas_equalTo(cell.contentView)setOffset:10];
+            [make.left.mas_equalTo(cell.contentView)setOffset:20];
             [make.top.mas_equalTo(comName.mas_bottom)setOffset:0];
             make.size.mas_equalTo(CGSizeMake(Main_Screen_Width-20,40));
         }];
