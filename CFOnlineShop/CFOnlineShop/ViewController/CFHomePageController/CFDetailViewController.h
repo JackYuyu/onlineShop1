@@ -16,7 +16,7 @@
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSString *productId;
 
-@property (nonatomic, strong) void (^addActionWithBlock)(void);
+@property (nonatomic, strong) void (^addActionWithBlock)(NSInteger tag);
 @property (nonatomic, strong) void (^featureBlock)(DCFeatureItem* features);
 
 @property (nonatomic, strong) void (^scrollViewDidScroll)(UIScrollView *scrollView);

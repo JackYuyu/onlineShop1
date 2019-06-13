@@ -161,6 +161,7 @@
         
     } failure:^(NSError *error) {
         NSLog(@"");
+        [MBProgressHUD showMBProgressHud:self.view withText:@"发送验证码失败" withTime:1];
     }];
 }
 - (void)reduceTime:(NSTimer *)codeTimer {
@@ -250,26 +251,27 @@
 -(void)next
 {
     
-//    if ([phone.text isEqualToString:@""])
-//    {
-//        //[SVProgressHUD showInfoWithStatus:@"亲,请输入注册手机号码"];
-//        return;
-//    }
-//    else if (phone.text.length <11)
-//    {
-//        ///[SVProgressHUD showInfoWithStatus:@"您输入的手机号码格式不正确"];
-//        return;
-//    }
-//    else if ([code.text isEqualToString:@""])
-//    {
-//        //[SVProgressHUD showInfoWithStatus:@"亲,请输入验证码"];
-//        return;
-//    }
+    if ([phone.text isEqualToString:@""])
+    {
+        [MBProgressHUD showMBProgressHud:self.view withText:@"亲,请输入注册手机号码" withTime:1];
+        return;
+    }
+    else if (phone.text.length <11)
+    {
+        [MBProgressHUD showMBProgressHud:self.view withText:@"您输入的手机号码格式不正确" withTime:1];
+        return;
+    }
+    else if ([code.text isEqualToString:@""])
+    {
+        [MBProgressHUD showMBProgressHud:self.view withText:@"亲,请输入验证码" withTime:1];
+        return;
+    }
 //    else if (self.smsId.length == 0)
 //    {
-//        //[SVProgressHUD showInfoWithStatus:@"验证码错误"];
+//        [MBProgressHUD showMBProgressHud:self.view withText:@"验证码错误" withTime:1];
 //        return;
 //   }
+
     NSDictionary *params = @{
                              @"phone" : phone.text,
                              @"code" : code.text
@@ -282,6 +284,7 @@
         [self.navigationController pushViewController:s animated:YES];
 
     } failure:^(NSError *error) {
+        [MBProgressHUD showMBProgressHud:self.view withText:@"验证码错误" withTime:1];
         NSLog(@"");
     }];
     

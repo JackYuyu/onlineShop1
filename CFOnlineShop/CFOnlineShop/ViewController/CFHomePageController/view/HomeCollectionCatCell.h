@@ -13,6 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HomeCollectionCatCell : UICollectionViewCell
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UILabel *titleStr;
+@property (nonatomic, strong) UIButton *addButton;
+@property (nonatomic, strong) UILabel *titleStr1;
+@property (nonatomic, strong) UILabel *titleStr2;
 
 @property (nonatomic, strong) void (^addToShoppingCar)(UIImageView *imageView);
 @end

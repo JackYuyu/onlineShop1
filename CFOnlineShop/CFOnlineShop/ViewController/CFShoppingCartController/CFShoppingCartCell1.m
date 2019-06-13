@@ -15,7 +15,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 60, 60)];
+        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 60, 60)];
         _imageView.contentMode = UIViewContentModeScaleAspectFit;
         [self.contentView addSubview:_imageView];
         
@@ -28,9 +28,38 @@
         _priceStr.font = SYSTEMFONT(14);
         _priceStr.textColor = [UIColor redColor];
         [self.contentView addSubview:_priceStr];
+        
+        
+        _normStr = [[UILabel alloc] initWithFrame:CGRectMake(MaxX(_priceStr) - 55, 45, 150, 20)];
+        _normStr.font = SYSTEMFONT(14);
+        _normStr.textColor = kBlackColor;
+        [self.contentView addSubview:_normStr];
+        
+        [self.contentView addSubview:self.imageView1];
+        
+        [_imageView1 mas_makeConstraints:^(MASConstraintMaker *make) {
+            
+            make.top.mas_equalTo(self.contentView).mas_offset(25);
+            make.left.mas_equalTo(self.contentView).mas_offset(5);
+            make.size.mas_equalTo(CGSizeMake(20, 20));
+            //        make.centerX.mas_equalTo(self.contentView);
+        }];
     }
     
     return self;
 }
 
+
+-(UIImageView *)imageView1{
+    
+    if (!_imageView1) {
+        
+        _imageView1 = [[UIImageView alloc] init];
+        _imageView1.contentMode = UIViewContentModeScaleAspectFill;
+//        _imageView.layer.cornerRadius = 20;
+//        _imageView.layer.masksToBounds = YES;
+        
+    }
+    return _imageView1;
+}
 @end

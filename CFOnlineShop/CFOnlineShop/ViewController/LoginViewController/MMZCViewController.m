@@ -82,8 +82,8 @@
 //    [self.view addSubview:lanel];
     
     
-    [self createImageViews];
-    [self createLabel];
+//    [self createImageViews];
+//    [self createLabel];
     [self createTextFields];
     [self createButtons];
 
@@ -104,7 +104,7 @@
     label.textColor=[UIColor grayColor];
     label.textAlignment=UITextAlignmentCenter;
     label.font=[UIFont systemFontOfSize:14];
-//    [self.view addSubview:label];
+    [self.view addSubview:label];
 }
 
 -(void)createTextFields
@@ -185,7 +185,7 @@
     UIButton *newUserBtn=[self createButtonFrame:CGRectMake(5, 235+44, 70, 30) backImageName:nil title:@"快速注册" titleColor:[UIColor grayColor] font:[UIFont systemFontOfSize:13] target:self action:@selector(registration:)];
     //newUserBtn.backgroundColor=[UIColor lightGrayColor];
     
-    UIButton *forgotPwdBtn=[self createButtonFrame:CGRectMake(self.view.frame.size.width-75, 235+44, 60, 30) backImageName:nil title:@"找回密码" titleColor:[UIColor grayColor] font:[UIFont systemFontOfSize:13] target:self action:@selector(fogetPwd:)];
+    UIButton *forgotPwdBtn=[self createButtonFrame:CGRectMake(self.view.frame.size.width-75, 235+44, 60, 30) backImageName:nil title:@"修改密码" titleColor:[UIColor grayColor] font:[UIFont systemFontOfSize:13] target:self action:@selector(fogetPwd:)];
     //fogotPwdBtn.backgroundColor=[UIColor lightGrayColor];
     
     
@@ -308,21 +308,29 @@
     if ([user.text isEqualToString:@""])
     {
         //[SVProgressHUD showInfoWithStatus:@"亲,请输入用户名"];
+        [MBProgressHUD showMBProgressHud:self.view withText:@"亲,请输入用户名" withTime:1];
+
         return;
     }
-    else if (user.text.length <11)
+    else if (user.text.length != 11)
     {
         //[SVProgressHUD showInfoWithStatus:@"您输入的手机号码格式不正确"];
+        [MBProgressHUD showMBProgressHud:self.view withText:@"您输入的手机号码格式不正确" withTime:1];
+
         return;
     }
     else if ([pwd.text isEqualToString:@""])
     {
         //[SVProgressHUD showInfoWithStatus:@"亲,请输入密码"];
+        [MBProgressHUD showMBProgressHud:self.view withText:@"亲,请输入密码" withTime:1];
+
         return;
     }
     else if (pwd.text.length <6)
     {
         //[SVProgressHUD showInfoWithStatus:@"亲,密码长度至少六位"];
+        [MBProgressHUD showMBProgressHud:self.view withText:@"亲,密码长度至少六位" withTime:1];
+
         return;
     }
     NSMutableDictionary* dic=[NSMutableDictionary new];
@@ -335,6 +343,10 @@
         //        NSString * str  =[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
         //        NSData * datas = [str dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+        if ([[jsonDict objectForKey:@"msg"] isEqualToString:@"手机号或密码错误"]) {
+            [MBProgressHUD showMBProgressHud:self.view withText:@"亲,用户名和密码不匹配" withTime:1];
+            return;
+        }
         [MySingleton sharedMySingleton].openId=[jsonDict objectForKey:@"openid"];
         NSLog(@"");
         NSString *passWord = [jsonDict objectForKey:@"openid"];
@@ -345,6 +357,8 @@
         
         [self.navigationController popToRootViewControllerAnimated:YES];
     } failure:^(NSError *error) {
+        [MBProgressHUD showMBProgressHud:self.view withText:@"亲,用户名和密码不匹配" withTime:1];
+
         NSLog(@"");
     }];
 //    [self.navigationController popToRootViewControllerAnimated:YES];

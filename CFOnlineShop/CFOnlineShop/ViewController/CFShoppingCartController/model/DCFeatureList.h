@@ -18,5 +18,6 @@
 
 /** 是否点击 */
 @property (nonatomic,assign)BOOL isSelect;
+@property (nonatomic, copy) NSString *goodsSkuId;
 
 @end

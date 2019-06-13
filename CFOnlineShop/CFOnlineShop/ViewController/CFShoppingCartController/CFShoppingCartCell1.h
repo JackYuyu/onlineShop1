@@ -13,5 +13,8 @@
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UILabel *titleStr;
 @property (nonatomic, strong) UILabel *priceStr;
+@property (nonatomic, strong) UILabel *normStr;
+
+@property (nonatomic, strong) UIImageView *imageView1;
 
 @end

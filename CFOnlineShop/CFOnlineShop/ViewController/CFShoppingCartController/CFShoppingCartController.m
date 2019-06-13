@@ -15,14 +15,15 @@
 #import "PPNumberButton.h"
 #import "delcartModel.h"
 #import "commModel.h"
+#import "CFDetailInfoController.h"
 @interface CFShoppingCartController ()<UICollectionViewDelegate,UICollectionViewDataSource,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate,PPNumberButtonDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic,strong) NSMutableArray* productList;
 @property (nonatomic, assign) CGFloat bottomHeight;
 @property (nonatomic,strong) NSString* productId;
-@property (nonatomic, assign) float totalPrice;
-@property (nonatomic,strong) UIButton* tprice;
+@property (nonatomic, strong) NSString* totalPrice;
+@property (nonatomic,strong) UIButton* addButton;
 
 @end
 static NSInteger num_;
@@ -57,6 +58,7 @@ static NSInteger num_;
     [_collectionView registerClass:[CFShoppingCartHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];
     _collectionView.emptyDataSetSource=self;
     _collectionView.emptyDataSetDelegate=self;
+    _collectionView.allowsMultipleSelection=YES;
     [self.view addSubview:_collectionView];
     
     //去掉顶部偏移
@@ -84,6 +86,15 @@ static NSInteger num_;
             NSLog(@"");
             [_productList addObject:p];
         }
+        
+        double pro;
+        double sum=0.0;
+        for (int i=0; i<_productList.count; i++) {
+                productModel* p=[_productList objectAtIndex:i];
+                pro=[p.marketPrice doubleValue]*p.num;
+            sum=sum+pro;
+        }
+        _totalPrice=[NSString stringWithFormat:@"¥%.2f",sum];
         if ([_productList count]>0) {
             [self setBottomView];
         }
@@ -133,9 +144,10 @@ static NSInteger num_;
     addButton.frame = CGRectMake(bottomView.mj_w/2, 0, bottomView.mj_w/4, 55);
     addButton.backgroundColor = [UIColor whiteColor];
     addButton.titleLabel.font = SYSTEMFONT(16);
-    [addButton setTitle:@"合计:150" forState:(UIControlStateNormal)];
+    [addButton setTitle:[NSString stringWithFormat:@"合计:%@",_totalPrice] forState:(UIControlStateNormal)];
     [addButton setTitleColor:[UIColor redColor] forState:(UIControlStateNormal)];
     [addButton addTarget:self action:@selector(addAction) forControlEvents:(UIControlEventTouchUpInside)];
+    _addButton=addButton;
     [bottomView addSubview:addButton];
     
     UIButton *addimButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
@@ -154,12 +166,15 @@ static NSInteger num_;
     NSMutableArray* source=[NSMutableArray new];
     for (productModel* p in _productList) {
         FSShopCartList *newCart = [FSShopCartList new];
-        newCart.num = [NSString stringWithFormat:@"%ld", 1.0];
+        newCart.num = [NSString stringWithFormat:@"%d", p.num];
         newCart.logo = p.logo;
         newCart.name = p.name;
         newCart.productPrice=p.marketPrice;
-        newCart.goodNorm=p.goodNorm;
+        newCart.goodNorm=p.goodsNorm;
         newCart.idField = @"11111";
+        
+        newCart.goodsId=p.productId;
+        newCart.goodsSkuId=p.goodsSkuId;
         [source addObject:newCart];
     }
     
@@ -169,17 +184,41 @@ static NSInteger num_;
 }
 - (void)pp_numberButton:(__kindof UIView *)numberButton number:(NSInteger)number increaseStatus:(BOOL)increaseStatus
 {
+    double pro;
+    double sum=0.0;
     for (int i=0; i<_productList.count; i++) {
         if (i==numberButton.tag) {
             productModel* p=[_productList objectAtIndex:i];
             p.num=number;
+            pro=[p.marketPrice doubleValue]*number;
         }
+        else
+        {
+            productModel* p=[_productList objectAtIndex:i];
+            pro=[p.marketPrice doubleValue]*p.num;
+        }
+        sum=sum+pro;
     }
-//    for (productModel* p in _productList) {
-//        float s
-//    }
+    _totalPrice=[NSString stringWithFormat:@"¥%.2f",sum];
+    [_addButton setTitle:[NSString stringWithFormat:@"合计:%@",_totalPrice] forState:UIControlStateNormal];
+
     NSInteger b=numberButton.tag;
     NSLog(@"");
+}
+-(void) labelTouchUpInside:(UITapGestureRecognizer *)recognizer{
+    
+    UILabel *label=(UILabel*)recognizer.view;
+    productModel* p=[_productList objectAtIndex:label.tag];
+
+    CFDetailInfoController *vc = [[CFDetailInfoController alloc] init];
+    vc.productId=p.productId;
+    UIImageView* iv=[UIImageView new];
+    [iv sd_setImageWithURL:[NSURL URLWithString:p.logo]];
+    vc.image = iv.image;
+    //            vc.image = [UIImage imageNamed:imageName];
+    [self.navigationController pushViewController:vc animated:YES];
+    NSLog(@"%@被点击了",label.text);
+    
 }
 #pragma mark - UICollectionViewDataSource
 
@@ -204,7 +243,13 @@ static NSInteger num_;
         productModel* p=[_productList objectAtIndex:indexPath.row];
         //cell.backgroundColor = kRedColor;
         cell.titleStr.text = p.productName;
+        cell.titleStr.userInteractionEnabled=YES;
+        cell.titleStr.tag=indexPath.row;
+        UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(labelTouchUpInside:)];
+        
+        [cell.titleStr addGestureRecognizer:labelTapGestureRecognizer];
         cell.priceStr.text=[NSString stringWithFormat:@"￥:%@",p.marketPrice];
+        cell.normStr.text=p.goodsNorm;
         NSString *imageName = [NSString stringWithFormat:@"commodity_%ld",(long)indexPath.row + 1];
 //        cell.imageView.image = [UIImage imageNamed:imageName];
         [cell.imageView sd_setImageWithURL:[NSURL URLWithString:p.logo]];
@@ -321,8 +366,17 @@ static NSInteger num_;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"click collectionView row");
+    CFShoppingCartCell1 *cell = (CFShoppingCartCell1 *)[collectionView cellForItemAtIndexPath:indexPath];
+    [cell.imageView1 setImage:[UIImage imageNamed:@"circular"]];
 }
 
+-(void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    CFShoppingCartCell1 *cell = (CFShoppingCartCell1 *)[collectionView cellForItemAtIndexPath:indexPath];
+    [cell.imageView1 setImage:[UIImage imageNamed:@"circle"]];
+    
+    //    [cell.contentView setBackgroundColor:[UIColor whiteColor]];
+}
 #pragma mark - <DZNEmptyDataSetSource>
 
 - (NSAttributedString *)buttonTitleForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state {

@@ -131,8 +131,8 @@
             
         }
     }];
-    [_detailViewController setAddActionWithBlock:^{
-        [weakself.narrowedModalView open];
+    [_detailViewController setAddActionWithBlock:^(NSInteger tag) {
+        [weakself.narrowedModalView open:tag];
     }];
     
     //活动

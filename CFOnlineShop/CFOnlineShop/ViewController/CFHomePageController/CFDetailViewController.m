@@ -84,6 +84,7 @@
             cart.name=p.productName;
             cart.productPrice=p.priceName;
             cart.logo=p.logo;
+            cart.num=@"1";
             [MySingleton sharedMySingleton].cartItem=cart;
             NSLog(@"");
 //            [_productList addObject:p];
@@ -170,6 +171,7 @@
             list.infoname=p.goodsNorm;
             list.plusprice=p.priceName;
             list.priceId=p.priceId;
+            list.goodsSkuId=p.id;
             [feat addObject:list];
             //            [_productList addObject:p];
         }
@@ -323,7 +325,8 @@
     addButton.titleLabel.font = SYSTEMFONT(16);
     [addButton setTitle:@"加入购物车" forState:(UIControlStateNormal)];
     [addButton setTitleColor:kWhiteColor forState:(UIControlStateNormal)];
-    [addButton addTarget:self action:@selector(addAction) forControlEvents:(UIControlEventTouchUpInside)];
+    addButton.tag=0;
+    [addButton addTarget:self action:@selector(addAction:) forControlEvents:(UIControlEventTouchUpInside)];
     [bottomView addSubview:addButton];
     
     UIButton *addimButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
@@ -332,15 +335,16 @@
     addimButton.titleLabel.font = SYSTEMFONT(16);
     [addimButton setTitle:@"立即购买" forState:(UIControlStateNormal)];
     [addimButton setTitleColor:kWhiteColor forState:(UIControlStateNormal)];
-    [addimButton addTarget:self action:@selector(addAction) forControlEvents:(UIControlEventTouchUpInside)];
+    addimButton.tag=1;
+    [addimButton addTarget:self action:@selector(addAction:) forControlEvents:(UIControlEventTouchUpInside)];
     [bottomView addSubview:addimButton];
     
 }
 #pragma mark - 收藏 购物车
 - (void)setUpLeftTwoButton
 {
-    NSArray *imagesNor = @[@"tabr_07shoucang_up",@"tabr_07shoucang_up",@"tabr_08gouwuche"];
-    NSArray *imagesSel = @[@"tabr_07shoucang_down",@"tabr_07shoucang_down",@"tabr_08gouwuche"];
+    NSArray *imagesNor = @[@"tabr_07shoucang_up",@"ptgd_icon_xiaoxi",@"tabr_08gouwuche"];
+    NSArray *imagesSel = @[@"tabr_07shoucang_down",@"ptgd_icon_xiaoxi",@"tabr_08gouwuche"];
     CGFloat buttonW = Main_Screen_Width * 0.15;
     CGFloat buttonH = _bottomHeight;
     CGFloat buttonY = Main_Screen_Height - buttonH;
@@ -444,7 +448,7 @@
     chatVC.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:chatVC animated:YES];
 }
-- (void)addAction
+- (void)addAction:(UIButton*)sender
 {
     if (![MySingleton sharedMySingleton].openId) {
         [self.navigationController pushViewController:[[MMZCViewController alloc]init] animated:YES];
@@ -452,7 +456,7 @@
         return;
     }
     if (_addActionWithBlock) {
-        _addActionWithBlock();
+        _addActionWithBlock(sender.tag);
     }
 }
 

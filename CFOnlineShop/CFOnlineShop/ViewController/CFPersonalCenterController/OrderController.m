@@ -272,25 +272,28 @@
 -(void)logi:(UIButton*)sender
 {
     NSInteger a=sender.tag;
-    if (sender.tag==0) {
-        CommentController* c=[CommentController new];
-        
-        OrderEntity* e=[_checkList objectAtIndex:sender.tag];
-        NSMutableArray* source=[NSMutableArray new];
-        for (productModel* p in e.productLists) {
-            FSShopCartList *newCart = [FSShopCartList new];
-            newCart.num = [NSString stringWithFormat:@"%ld", 1.0];
-            newCart.logo = p.logo;
-            newCart.name = p.name;
-            newCart.productPrice=p.priceName;
-            newCart.goodNorm=p.goodNorm;
-            newCart.idField = @"11111";
-            [source addObject:newCart];
-        }
-        c.dataSource=source;
-        [self.navigationController pushViewController:c animated:YES];
-    }
-    else if ([sender.titleLabel.text isEqualToString:@"删除订单"]){
+//    if (sender.tag==0) {
+//        CommentController* c=[CommentController new];
+//        
+//        OrderEntity* e=[_checkList objectAtIndex:sender.tag];
+//        NSMutableArray* source=[NSMutableArray new];
+//        for (productModel* p in e.productLists) {
+//            FSShopCartList *newCart = [FSShopCartList new];
+//            newCart.num = [NSString stringWithFormat:@"%ld", 1.0];
+//            newCart.logo = p.logo;
+//            newCart.name = p.name;
+//            newCart.productPrice=p.priceName;
+//            newCart.goodNorm=p.goodNorm;
+//            newCart.idField = @"11111";
+//            [source addObject:newCart];
+//        }
+//        c.dataSource=source;
+//        [self.navigationController pushViewController:c animated:YES];
+//    }
+//    else if ([sender.titleLabel.text isEqualToString:@"删除订单"]){
+//        [self deleteOrder:sender];
+//    }
+    if ([sender.titleLabel.text isEqualToString:@"删除订单"]){
         [self deleteOrder:sender];
     }
 //    else{
@@ -311,7 +314,7 @@
     [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/mall/goodsorder/update"] body:data showLoading:false success:^(NSDictionary *response) {
         NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
         NSLog(@"");
-        [_tableView reloadData];
+        [self postRecordUI];
     } failure:^(NSError *error) {
         NSLog(@"");
     }];
@@ -329,7 +332,7 @@
     [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/mall/goodsorder/delete"] body:data showLoading:false success:^(NSDictionary *response) {
         NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
         NSLog(@"");
-        [_tableView reloadData];
+        [self postRecordUI];
     } failure:^(NSError *error) {
         NSLog(@"");
     }];
@@ -382,12 +385,15 @@
     NSMutableArray* source=[NSMutableArray new];
     for (productModel* p in e.productLists) {
         FSShopCartList *newCart = [FSShopCartList new];
-        newCart.num = [NSString stringWithFormat:@"%ld", 1.0];
+        newCart.num = [NSString stringWithFormat:@"%d", p.num];
         newCart.logo = p.logo;
         newCart.name = p.name;
         newCart.productPrice=p.priceName;
-        newCart.goodNorm=p.goodNorm;
+        newCart.goodNorm=p.goodsNorm;
         newCart.idField = @"11111";
+        
+        newCart.goodsId=p.productId;
+        newCart.goodsSkuId=p.goodsSkuId;
         [source addObject:newCart];
     }
     

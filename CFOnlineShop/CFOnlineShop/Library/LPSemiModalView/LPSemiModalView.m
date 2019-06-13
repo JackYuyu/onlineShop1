@@ -25,6 +25,8 @@
 @property (strong , nonatomic)UICollectionView *collectionView;
 
 @property (weak , nonatomic)DCFeatureChoseTopCell *cell;
+@property (nonatomic,assign) NSInteger tag;
+@property (nonatomic,assign) BOOL norm;
 
 @end
 
@@ -114,7 +116,7 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
 #pragma mark - 退出当前界面
 - (void)dismissFeatureViewControllerWithTag:(NSInteger)tag
 {
-    [self close];
+    [self close:tag];
 }
 -(void)setup{
 //    self.backgroundColor=[UIColor whiteColor];
@@ -124,6 +126,12 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
     self.collectionView.frame = CGRectMake(0, Main_Screen_Height-360+100 ,Main_Screen_Width , 150);
     //collectionview的背景色在lazy中设置不能成功
     [self.collectionView setBackgroundColor:[UIColor whiteColor]];
+}
+- (void)pp_numberButton:(__kindof UIView *)numberButton number:(NSInteger)number increaseStatus:(BOOL)increaseStatus
+{
+    FSShopCartList *newCart = _cartItem;
+    newCart.num=[NSString stringWithFormat:@"%i",number];
+
 }
 #pragma mark - <UICollectionViewDataSource>
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -159,6 +167,7 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
 #pragma mark - <UICollectionViewDelegate>
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    self.norm=YES;
     for (DCFeatureItem* l in _featureAttr) {
         for (DCFeatureList* d in l.list ) {
             d.isSelect=NO;
@@ -170,6 +179,7 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
         if (i==indexPath.row) {
             l=[item.list objectAtIndex:indexPath.row];
             l.isSelect=YES;
+            _cartItem.goodsSkuId=l.goodsSkuId;
         }
         
     }
@@ -247,7 +257,10 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
 //        [SVProgressHUD dismissWithDelay:1.0];
 //        return;
 //    }
-    
+    if (!self.norm) {
+        [MBProgressHUD showMBProgressHud:self.baseViewController.view withText:@"请选择商品属性" withTime:1];
+        return;
+    }
     [self dismissFeatureViewControllerWithTag:button.tag];
     [self postUI];
 }
@@ -257,7 +270,7 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
                              @"goodsId" : _cartItem.goodsId,
                              @"openId" : [MySingleton sharedMySingleton].openId,
                              @"goodsSkuId" : _cartItem.goodsSkuId,
-                             @"num": @"1"
+                             @"num": _cartItem.num
                              };
     NSData *data =    [NSJSONSerialization dataWithJSONObject:params options:NSUTF8StringEncoding error:nil];
     [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/mall/goodsshoppingcar/save"] body:data showLoading:false success:^(NSDictionary *response) {
@@ -267,8 +280,9 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
         NSLog(@"");
     }];
 }
-- (void)open
+- (void)open:(NSInteger)tag
 {
+    self.tag=tag;
     if (!self.narrowedOff) {
         //self.contentView.hidden = YES;
         CATransform3D t = CATransform3DIdentity;
@@ -325,7 +339,7 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
     [self setUpBottonView];
 }
 
-- (void)close
+- (void)close:(NSInteger)tag
 {
     if (self.semiModalViewWillCloseBlock) {
         self.semiModalViewWillCloseBlock();
@@ -348,6 +362,14 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
             if (self.baseViewController) {
                 if (self.baseViewController.navigationController) {
                     if (self.block) {
+                        if (tag==100) {
+                            [self.baseViewController.view sendSubviewToBack:self];
+                            return;
+                        }
+                        if (self.tag==0) {
+                            [MBProgressHUD showMBProgressHud:self.baseViewController.view withText:@"亲,加入购物车成功" withTime:1];
+                        }
+                        else{
                         FSSettlementViewController* confirmOrder=[[FSSettlementViewController alloc] initWithNibName:@"FSSettlementViewController" bundle:nil];
 //                        FSShopCartList *newCart = [FSShopCartList new];
 //                        newCart.num = [NSString stringWithFormat:@"%ld", 1.0];
@@ -356,6 +378,7 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
 //                        newCart.idField = @"11111";
                         confirmOrder.dataSource = [NSMutableArray arrayWithObjects:_cartItem, nil];
                         [self.baseViewController.navigationController pushViewController:confirmOrder animated:YES];
+                        }
                     }
                     else
                     {

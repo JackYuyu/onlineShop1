@@ -40,4 +40,39 @@
     hud.dimBackground = YES;
     return hud;
 }
+
+// MBProgressHUD 文本提示框
++ (void) showMBProgressHud:(UIView* )view withText:(NSString* )str withTime:(CGFloat)time
+{
+    MBProgressHUD* proHUD = [[MBProgressHUD alloc] initWithView:view];
+    [view addSubview:proHUD];
+    proHUD.mode = MBProgressHUDModeText;
+    proHUD.labelText = str;
+    proHUD.labelFont = [UIFont systemFontOfSize:15];
+    [proHUD show:YES];
+    [proHUD hide:YES afterDelay:time];
+}
+
++ (void) showMBProgressHud:(UIView *)view withTitle:(NSString *)str detail:(NSString* )detail withTime:(CGFloat)time
+{
+    MBProgressHUD* proHUD = [[MBProgressHUD alloc] initWithView:view];
+    [view addSubview:proHUD];
+    proHUD.mode = MBProgressHUDModeText;
+    proHUD.labelText = str;
+    proHUD.detailsLabelText = detail;
+    [proHUD show:YES];
+    [proHUD hide:YES afterDelay:time];
+}
+
++ (void) showMBProgressHud:(UIView *)view withTitle:(NSString *)str detail:(NSString* )detail withTime:(CGFloat)time completion:(void(^)())block
+{
+    MBProgressHUD* proHUD = [[MBProgressHUD alloc] initWithView:view];
+    [view addSubview:proHUD];
+    proHUD.completionBlock = block;
+    proHUD.mode = MBProgressHUDModeText;
+    proHUD.labelText = str;
+    proHUD.detailsLabelText = detail;
+    [proHUD show:YES];
+    [proHUD hide:YES afterDelay:time];
+}
 @end
