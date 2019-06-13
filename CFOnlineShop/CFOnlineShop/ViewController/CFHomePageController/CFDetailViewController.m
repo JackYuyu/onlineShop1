@@ -471,7 +471,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if(section==1)
-        return 2;
+        return 3;
     else
         return 1;
 }
@@ -482,8 +482,11 @@
     if (indexPath.section==0) {
         return 100;
     }
-    else if (indexPath.section==1){
+    else if (indexPath.section==1&&indexPath.row!=0){
         return 80;
+    }
+    else if (indexPath.section==1&&indexPath.row==0){
+        return 40;
     }
     else if (indexPath.section==2) {
         return 80;
@@ -533,7 +536,25 @@
         cell.oPriceLabel.text=[NSString stringWithFormat:@"市场价:￥%@",_pmodel.costPrice];
         return cell;
     }
-    if (indexPath.section==1&&indexPath.row==0) {
+    if(indexPath.section==1&&indexPath.row==0){
+        UIView* v=[[UIView alloc] initWithFrame:CGRectMake(0, 0, Main_Screen_Width, 80)];
+        UIButton* b=[UIButton new];
+        [b setTitle:[NSString stringWithFormat:@"商品评论(%d)",_commentList.count] forState:UIControlStateNormal];
+        [b setFont:[UIFont systemFontOfSize:13]];
+        [b setTitleColor:KDarkTextColor forState:(UIControlStateNormal)];
+        [b addTarget:self action:@selector(comment) forControlEvents:UIControlEventTouchUpInside];
+        [v addSubview:b];
+        [cell.contentView addSubview:v];
+        
+        [b mas_makeConstraints:^(MASConstraintMaker *make) {
+            [make.centerY.mas_equalTo(cell.contentView)setOffset:(0)];
+            [make.left.mas_equalTo(cell.contentView)setOffset:(0)];
+            make.size.mas_equalTo(CGSizeMake(120, 40));
+        }];
+        cell.textLabel.text=@"";
+        return cell;
+    }
+    if (indexPath.section==1&&indexPath.row==1) {
         UIView* v=[[UIView alloc] initWithFrame:CGRectMake(0, 0, Main_Screen_Width, 80)];
         UILabel*comName=[UILabel new];
         StarView* star=[StarView new];
@@ -576,7 +597,7 @@
         cell.textLabel.text=@"";
         return cell;
     }
-    else if(indexPath.section==1&&indexPath.row==1){
+    else if(indexPath.section==1&&indexPath.row==2){
         UIView* v=[[UIView alloc] initWithFrame:CGRectMake(0, 0, Main_Screen_Width, 80)];
         UIButton* b=[UIButton new];
         [b setTitle:@"查看更多评论" forState:UIControlStateNormal];
