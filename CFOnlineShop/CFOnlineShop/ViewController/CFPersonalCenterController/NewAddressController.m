@@ -109,6 +109,7 @@
         [userd setObject:_input forKey:@"nickname"];
         [userd setObject:[NSString stringWithFormat:@"%@-%@-%@",_province,_city,_area] forKey:@"address"];
         [userd setObject:_input3 forKey:@"street"];
+        [userd setObject:_input1 forKey:@"cartPhone"];
 
         [userd synchronize];
         [MBProgressHUD showMBProgressHud:self.view withTitle:@"添加地址成功" detail:@"" withTime:1 completion:^{
@@ -148,7 +149,8 @@
         [userd setObject:_input forKey:@"nickname"];
         [userd setObject:[NSString stringWithFormat:@"%@-%@-%@",_province,_city,_area] forKey:@"address"];
         [userd setObject:_input3 forKey:@"street"];
-        
+        [userd setObject:_input1 forKey:@"cartPhone"];
+
         [userd synchronize];
         [self.navigationController popViewControllerAnimated:YES];
         NSLog(@"");

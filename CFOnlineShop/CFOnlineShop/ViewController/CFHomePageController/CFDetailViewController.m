@@ -85,6 +85,7 @@
             cart.productPrice=p.priceName;
             cart.logo=p.logo;
             cart.num=@"1";
+            cart.goodNorm=p.goodsNorm;
             [MySingleton sharedMySingleton].cartItem=cart;
             NSLog(@"");
 //            [_productList addObject:p];

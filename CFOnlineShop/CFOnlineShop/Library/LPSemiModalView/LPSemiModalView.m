@@ -180,6 +180,7 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
             l=[item.list objectAtIndex:indexPath.row];
             l.isSelect=YES;
             _cartItem.goodsSkuId=l.goodsSkuId;
+            _cartItem.goodNorm=l.infoname;
         }
         
     }

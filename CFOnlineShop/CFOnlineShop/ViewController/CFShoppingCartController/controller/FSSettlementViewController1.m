@@ -129,8 +129,9 @@ static NSInteger num_;
 -(void)initAddress
 {
     NSUserDefaults *userd = [NSUserDefaults standardUserDefaults];
-    _nameLabel.text=[NSString stringWithFormat:@"收货人:",[userd objectForKey:@"nickname"] ];
-    _telLabel.text=[userd objectForKey:@"phone"];
+    NSString* a=[userd objectForKey:@"nickname"];
+    _nameLabel.text=[NSString stringWithFormat:@"收货人:%@",[userd objectForKey:@"nickname"] ];
+    _telLabel.text=[userd objectForKey:@"cartPhone"];
     _addressLabel.text=[NSString stringWithFormat:@"收货地址:%@%@",[userd objectForKey:@"address"],[userd objectForKey:@"street"]];
 }
 
@@ -212,13 +213,13 @@ static NSInteger num_;
         PPNumberButton *numberButton = [PPNumberButton numberButtonWithFrame:CGRectZero];
         numberButton.shakeAnimation = YES;
         numberButton.minValue = 1;
-        numberButton.inputFieldFont = 23;
+        numberButton.inputFieldFont = 14;
         numberButton.increaseTitle = @"＋";
         numberButton.decreaseTitle = @"－";
         num_ = (_lastNum == 0) ?  1 : [_lastNum integerValue];
         
         FSShopCartList* p=[self.dataSource objectAtIndex:indexPath.row];
-        numberButton.currentNumber = p.num;
+        numberButton.currentNumber = [p.num integerValue];
         numberButton.delegate = self;
         numberButton.tag=indexPath.row;
         
@@ -230,6 +231,18 @@ static NSInteger num_;
             [make.right.mas_equalTo(cell.contentView)setOffset:-10];
             [make.bottom.mas_equalTo(cell.contentView)setOffset:10];
             make.size.mas_equalTo(CGSizeMake(110, 60));
+        }];
+        
+        UILabel* _normStr = [[UILabel alloc] init];
+        _normStr.font = SYSTEMFONT(14);
+        _normStr.textColor = kBlackColor;
+        FSShopCartList* ff=self.dataSource[indexPath.row];
+        _normStr.text=ff.goodNorm;
+        [cell.contentView addSubview:_normStr];
+        [_normStr mas_makeConstraints:^(MASConstraintMaker *make) {
+            [make.right.mas_equalTo(numberButton)setOffset:-110];
+            [make.centerY.mas_equalTo(numberButton)setOffset:-3];
+            make.size.mas_equalTo(CGSizeMake(80, 40));
         }];
     }
     return cell;

@@ -20,6 +20,8 @@
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic,strong) NSMutableArray* productList;
+@property (nonatomic,strong) NSMutableArray* productListM;
+
 @property (nonatomic, assign) CGFloat bottomHeight;
 @property (nonatomic,strong) NSString* productId;
 @property (nonatomic, strong) NSString* totalPrice;
@@ -33,6 +35,7 @@ static NSInteger num_;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    _productListM=[NSMutableArray new];
     
     [self setTitle:@"购物车"];
     self.navigationView.backgroundColor = kWhiteColor;
@@ -162,6 +165,9 @@ static NSInteger num_;
 }
 -(void)addAction
 {
+    if (_productListM.count>0) {
+        _productList=[_productListM copy];
+    }
     FSSettlementViewController* confirmOrder=[[FSSettlementViewController alloc] initWithNibName:@"FSSettlementViewController" bundle:nil];
     NSMutableArray* source=[NSMutableArray new];
     for (productModel* p in _productList) {
@@ -173,7 +179,7 @@ static NSInteger num_;
         newCart.goodNorm=p.goodsNorm;
         newCart.idField = @"11111";
         
-        newCart.goodsId=p.productId;
+        newCart.goodsId=p.goodsId;
         newCart.goodsSkuId=p.goodsSkuId;
         [source addObject:newCart];
     }
@@ -368,13 +374,18 @@ static NSInteger num_;
     NSLog(@"click collectionView row");
     CFShoppingCartCell1 *cell = (CFShoppingCartCell1 *)[collectionView cellForItemAtIndexPath:indexPath];
     [cell.imageView1 setImage:[UIImage imageNamed:@"circular"]];
+    productModel* p=[_productList objectAtIndex:indexPath.row];
+    [_productListM addObject:p];
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     CFShoppingCartCell1 *cell = (CFShoppingCartCell1 *)[collectionView cellForItemAtIndexPath:indexPath];
     [cell.imageView1 setImage:[UIImage imageNamed:@"circle"]];
-    
+    productModel* p=[_productList objectAtIndex:indexPath.row];
+    if ([_productListM containsObject:p]) {
+        [_productListM removeObject:p];
+    }
     //    [cell.contentView setBackgroundColor:[UIColor whiteColor]];
 }
 #pragma mark - <DZNEmptyDataSetSource>

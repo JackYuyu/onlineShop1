@@ -119,7 +119,7 @@ static NSInteger num_;
 {
     NSUserDefaults *userd = [NSUserDefaults standardUserDefaults];
     _nameLabel.text=[userd objectForKey:@"nickname"];
-    _telLabel.text=[userd objectForKey:@"phone"];
+    _telLabel.text=[userd objectForKey:@"cartPhone"];
     _addressLabel.text=[NSString stringWithFormat:@"%@%@",[userd objectForKey:@"address"],[userd objectForKey:@"street"]];
 }
 
@@ -205,7 +205,8 @@ static NSInteger num_;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section==0) {
 
-    FSShoppingCartInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:kOrderCellWithIdentifier];
+//    FSShoppingCartInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:kOrderCellWithIdentifier];
+    FSShoppingCartInfoCell *cell = [[NSBundle mainBundle]loadNibNamed:@"FSShoppingCartInfoCell" owner:self options:nil].firstObject;
     if (self.dataSource.count > indexPath.row) {
         cell.model = self.dataSource[indexPath.row];
         cell.hideAdd = YES;
@@ -231,6 +232,19 @@ static NSInteger num_;
             [make.right.mas_equalTo(cell.contentView)setOffset:-10];
             [make.bottom.mas_equalTo(cell.contentView)setOffset:10];
             make.size.mas_equalTo(CGSizeMake(100, 60));
+        }];
+        
+        
+       UILabel* _normStr = [[UILabel alloc] init];
+        _normStr.font = SYSTEMFONT(14);
+        _normStr.textColor = kBlackColor;
+        FSShopCartList* ff=self.dataSource[indexPath.row];
+        _normStr.text=ff.goodNorm;
+        [cell.contentView addSubview:_normStr];
+        [_normStr mas_makeConstraints:^(MASConstraintMaker *make) {
+            [make.right.mas_equalTo(numberButton)setOffset:-110];
+            [make.centerY.mas_equalTo(numberButton)setOffset:-3];
+            make.size.mas_equalTo(CGSizeMake(80, 40));
         }];
     }
     return cell;
@@ -316,7 +330,7 @@ static NSInteger num_;
         c.goodsId=newCart.goodsId;
         c.goodsSkuId=newCart.goodsSkuId;
         c.priceId=@"1027013640128811079";
-        c.num=@"1";
+        c.num=newCart.num;
         c.evaluateStatus=@"0";
         c.status=@"0";
         [comm addObject:c];
