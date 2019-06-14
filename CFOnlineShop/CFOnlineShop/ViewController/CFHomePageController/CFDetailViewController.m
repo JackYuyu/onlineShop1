@@ -78,6 +78,11 @@
             p.productId=[products objectForKey:@"id"];
             _pmodel=p;
             
+            [MySingleton sharedMySingleton].pModel=p;
+            [_basecontroller.activityController loadWeb];
+            _basecontroller.othersController.productId=p.productId;
+            [_basecontroller.othersController postRecordUI];
+            
             FSShopCartList* cart =[FSShopCartList new];
             cart.goodsId=p.productId;
             cart.goodsSkuId=p.goodsSkuId;
@@ -415,6 +420,7 @@
                 
             }];
         }
+//        [_basecontroller.segmentedControl didSelectIndex:1];
     }
     if (scrollView == _webView.scrollView) {
         if (offset < -50) {
@@ -427,6 +433,8 @@
                 
             }];
         }
+//        [_basecontroller.segmentedControl didSelectIndex:1];
+
     }
 }
 

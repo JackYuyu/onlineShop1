@@ -9,5 +9,7 @@
 #import "CFBaseController.h"
 
 @interface CFActivityController : CFBaseController
+@property (nonatomic,strong)productModel* pmodel;
+-(void)loadWeb;
 
 @end

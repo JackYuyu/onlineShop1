@@ -33,6 +33,7 @@
     _segmentTitles = @[@"全部订单",@"待支付",@"待发货",@"已完成"];
     [self postRecordUI];
 }
+
 -(void)postUI
 {
     NSDictionary *params = @{
@@ -55,6 +56,9 @@
 
 -(void)postRecordUI
 {
+    if (!_productId) {
+        return;
+    }
     if (![MySingleton sharedMySingleton].openId) {
         [self.navigationController pushViewController:[[MMZCViewController alloc]init] animated:YES];
 
@@ -66,6 +70,7 @@
                              @"page" : @"1",
                              @"limits": @"10"
                              };
+    
     [HttpTool get:[NSString stringWithFormat:@"renren-fast/mall/goodscomment/list"] params:params success:^(id responseObj) {
         NSDictionary* a=responseObj[@"page"][@"list"];
         _checkList =[NSMutableArray new];

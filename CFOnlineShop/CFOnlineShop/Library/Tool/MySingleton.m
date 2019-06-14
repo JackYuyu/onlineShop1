@@ -10,6 +10,7 @@
 @implementation MySingleton
 @synthesize openId,token;
 @synthesize cartItem;
+@synthesize pModel;
 
 static MySingleton* _sharedMySingleton = nil;
 

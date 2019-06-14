@@ -24,6 +24,7 @@
 @property (nonatomic,strong) NSMutableArray* checkList;
 @property (nonatomic,strong) UITableView* tableView;
 @property (nonatomic,assign) NSInteger selectIndex;
+@property (nonatomic,strong) UITextField* textfield;
 
 @end
 
@@ -360,7 +361,7 @@
         cell.status.text=@"待收货";
         [cell.cancel setBackgroundColor:[UIColor redColor]];
         [cell.cancel setTitle:@"申请退款" forState:UIControlStateNormal];
-        [cell.cancel setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        [cell.cancel setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [cell.paybtn setBackgroundColor:[UIColor whiteColor]];
         [cell.paybtn setTitle:@"确认收货" forState:UIControlStateNormal];
         [cell.paybtn setTitleColor:KDarkTextColor forState:UIControlStateNormal];
@@ -445,7 +446,10 @@
         return;
     }
     OrderEntity* e=[_checkList objectAtIndex:sender.tag];
-
+    if ([sender.titleLabel.text isEqualToString:@"申请退款"]){
+        [self refund:e.id];
+        return;
+    }
     NSDictionary *params = @{
                              @"id" : e.id,
                              @"payStatus" : @"3",
@@ -484,6 +488,53 @@
     } failure:^(NSError *error) {
         NSLog(@"");
     }];
+}
+-(void)refund:(NSString*)eid
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"请输入申请退款原因" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    
+    
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+        NSLog(@"点击取消");
+        
+    }]];
+    
+    
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSString* b=_textfield.text;
+        NSLog(@"点击确认");
+        NSDictionary *params = @{
+                                 @"id" : eid,
+                                 @"payStatus" : @"6",
+                                 @"openId" : [MySingleton sharedMySingleton].openId,
+                                 @"refundReason" : b,
+                                 };
+
+        NSData *data =    [NSJSONSerialization dataWithJSONObject:params options:NSUTF8StringEncoding error:nil];
+        [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/mall/goodsorder/update"] body:data showLoading:false success:^(NSDictionary *response) {
+            NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            NSLog(@"");
+            [self postRecordUI];
+        } failure:^(NSError *error) {
+            NSLog(@"");
+        }];
+    }]];
+    
+    
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        _textfield=textField;
+        NSLog(@"添加一个textField就会调用 这个block");
+        
+    }];
+    
+    
+    
+    // 由于它是一个控制器 直接modal出来就好了
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 //设置行高
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

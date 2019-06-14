@@ -13,13 +13,14 @@
 #import "CFActivityController.h"
 #import "CFOthersController.h"
 #import "FSSettlementViewController.h"
+#import "MoreCommentController.h"
 
 @interface CFDetailInfoController ()<CFSegmentedControlDataSource,CFSegmentedControlDelegate,UIScrollViewDelegate>
 
 //动画缩放视图
 @property (nonatomic, strong) LPSemiModalView *narrowedModalView;
 
-@property (nonatomic, strong) CFSegmentedControl *segmentedControl;
+//@property (nonatomic, strong) CFSegmentedControl *segmentedControl;
 
 //能左右滑动的scrollview
 @property (nonatomic, strong) UIScrollView *bgScrollView;
@@ -35,7 +36,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    _segmentTitles = @[@"详情",@"活动",@"其他"];
+    _segmentTitles = @[@"商品",@"详情",@"评论"];
     
     self.navigationBgView.backgroundColor = kWhiteColor;
     self.navigationBgView.alpha = 0;
@@ -95,6 +96,7 @@
     _detailViewController = [[CFDetailViewController alloc] init];
     _detailViewController.productId=_productId;
     _detailViewController.image = _image;
+    _detailViewController.basecontroller=self;
     
     _detailViewController.featureBlock = ^(DCFeatureItem *features) {
         _featureAttr=[NSMutableArray new];
@@ -136,17 +138,19 @@
     }];
     
     //活动
-    CFActivityController *activityController = [[CFActivityController alloc] init];
+    CFActivityController* activityController = [[CFActivityController alloc] init];
     [self addChildViewController:activityController];
     [activityController didMoveToParentViewController:self];
     [activityController.view setFrame:CGRectMake(Main_Screen_Width, 0, Main_Screen_Width, Main_Screen_Height)];
-    [_bgScrollView addSubview:activityController.view];
+    _activityController=activityController;
+    [_bgScrollView addSubview:_activityController.view];
     
     //其他
-    CFOthersController *othersController = [[CFOthersController alloc] init];
+    MoreCommentController *othersController = [[MoreCommentController alloc] init];
     [self addChildViewController:othersController];
     [othersController didMoveToParentViewController:self];
     [othersController.view setFrame:CGRectMake(Main_Screen_Width*2, 0, Main_Screen_Width, Main_Screen_Height)];
+    _othersController=othersController;
     [_bgScrollView addSubview:othersController.view];
 }
 

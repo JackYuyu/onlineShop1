@@ -8,11 +8,17 @@
 
 #import "CFBaseController.h"
 #import "DCFeatureItem.h"
+#import "CFSegmentedControl.h"
+#import "CFActivityController.h"
+#import "CFOthersController.h"
+#import "MoreCommentController.h"
 @interface CFDetailInfoController : CFBaseController
 
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, weak) UIImageView *imageView;
 @property (nonatomic, strong) NSString *productId;
 @property (strong , nonatomic)NSMutableArray <DCFeatureItem *> *featureAttr;
-
+@property (nonatomic, strong) CFSegmentedControl *segmentedControl;
+@property (nonatomic,strong) CFActivityController *activityController;
+@property (nonatomic,strong) MoreCommentController *othersController;
 @end

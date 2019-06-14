@@ -8,13 +8,14 @@
 
 #import "CFBaseController.h"
 #import "DCFeatureItem.h"
-
+#import "CFDetailInfoController.h"
 @interface CFDetailViewController : CFBaseController
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIImageView *headerImageView;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSString *productId;
+@property (nonatomic, strong) CFDetailInfoController* basecontroller;
 
 @property (nonatomic, strong) void (^addActionWithBlock)(NSInteger tag);
 @property (nonatomic, strong) void (^featureBlock)(DCFeatureItem* features);

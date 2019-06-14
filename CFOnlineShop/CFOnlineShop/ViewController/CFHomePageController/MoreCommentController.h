@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MoreCommentController : CFBaseController
 @property (nonatomic, strong) NSString *productId;
+-(void)postRecordUI;
 
 @end
 
