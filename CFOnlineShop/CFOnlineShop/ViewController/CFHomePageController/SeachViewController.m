@@ -211,7 +211,13 @@
     HomeCollectionCatCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:collectionCell forIndexPath:indexPath];
     productModel* p=[_productList objectAtIndex:indexPath.row];
     cell.titleStr.text = p.productName;
+    [cell.addButton setTitle:[NSString stringWithFormat:@"¥%@",p.priceName] forState:UIControlStateNormal];
     
+    NSMutableAttributedString *str1 = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@"¥%@",p.costPrice]];
+    NSRange strRange1 = {0,[str1 length]};
+    [str1 addAttribute:NSStrikethroughStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:strRange1];
+    [cell.titleStr2 setAttributedText:str1];
+    cell.titleStr1.text=[NSString stringWithFormat:@"销量:%@",p.saleCount];
     NSString *imageName = [NSString stringWithFormat:@"commodity_%ld",(long)indexPath.row + 1];
     
     [cell.imageView sd_setImageWithURL:p.logo];

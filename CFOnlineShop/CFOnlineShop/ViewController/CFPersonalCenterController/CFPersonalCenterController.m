@@ -75,7 +75,7 @@
     imageView.layer.borderColor = KLineGrayColor.CGColor;
     imageView.layer.borderWidth = 1;
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(Main_Screen_Width/2-50, -40, 100, 20)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(Main_Screen_Width/2-60, -40, 120, 20)];
 //    label.backgroundColor = kWhiteColor;
     label.textAlignment = NSTextAlignmentCenter;
     label.textColor = kWhiteColor;
