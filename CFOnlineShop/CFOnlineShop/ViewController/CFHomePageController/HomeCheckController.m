@@ -20,6 +20,8 @@
 @property (nonatomic,strong) NSMutableArray* checkList;
 @property (nonatomic,strong) UITableView* tableView;
 @property (nonatomic,assign) NSInteger current;
+@property (nonatomic,strong) UILabel* label;
+
 @end
 
 @implementation HomeCheckController
@@ -54,6 +56,15 @@
 
     [uv addSubview:progressView1];
     
+    UILabel* label=[UILabel new];
+    label.text=[NSString stringWithFormat:@"积分:xxxx%@",@""];
+    label.font=[UIFont systemFontOfSize:16];
+    label.textColor=[UIColor whiteColor];
+    [label sizeToFit];
+    label.frame=CGRectMake(20, 77, label.frame.size.width, label.frame.size.height);
+    _label=label;
+    [uv addSubview:label];
+    
     tableView.tableHeaderView=uv;
     tableView.delegate=self;
     tableView.dataSource=self;
@@ -66,6 +77,7 @@
     _segmentTitles = @[@"积分规则",@"获得记录"];
     _current=0;
     [self postInfo];
+    [self postRecordUI];
 }
 -(void)postUI
 {
@@ -139,6 +151,8 @@
 
             });
         }
+        _label.text=[NSString stringWithFormat:@"积分:%d分",_checkList.count];
+
     } failure:^(NSError *error) {
         NSLog(@"");
     }];

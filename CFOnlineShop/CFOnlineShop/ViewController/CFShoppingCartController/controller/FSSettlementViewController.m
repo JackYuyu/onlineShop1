@@ -42,6 +42,7 @@ static NSString *const kOrderCellWithIdentifier = @"kOrderCellWithIdentifier";
 @property (nonatomic, strong) NSArray *rightTitles;
 
 @property (nonatomic, copy) NSString * totalPrice;
+@property (nonatomic,strong) NSMutableArray* checkList;
 
 @end
 static NSInteger num_;
@@ -85,6 +86,7 @@ static NSInteger num_;
 //    if ([_productList count]>0) {
 //        [self setBottomView];
 //    }
+    [self postRecordUI];
 }
 
 - (void)initSubview {
@@ -121,6 +123,9 @@ static NSInteger num_;
     _nameLabel.text=[userd objectForKey:@"nickname"];
     _telLabel.text=[userd objectForKey:@"cartPhone"];
     _addressLabel.text=[NSString stringWithFormat:@"%@%@",[userd objectForKey:@"address"],[userd objectForKey:@"street"]];
+    if (![userd objectForKey:@"nickname"]) {
+        _nameLabel.text=@"去设置收货地址";
+    }
 }
 
 #pragma mark - Request
@@ -277,6 +282,10 @@ static NSInteger num_;
             }
 
         }
+        if (indexPath.section==2 && indexPath.row==0) {
+            cell.textLabel.text=@"当前积分";
+            cell.detailTextLabel.text=[NSString stringWithFormat:@"积分:%d分",_checkList.count];
+        }
         return cell;
     }
 }
@@ -362,6 +371,38 @@ static NSInteger num_;
         NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
         NSLog(@"");
         [MBProgressHUD showMBProgressHud:self.view withText:@"新增订单成功" withTime:1];
+    } failure:^(NSError *error) {
+        NSLog(@"");
+    }];
+}
+-(void)postRecordUI
+{
+    if (![MySingleton sharedMySingleton].openId) {
+        [self.navigationController pushViewController:[[MMZCViewController alloc]init] animated:YES];
+        
+        return;
+    }
+    NSDictionary *params = @{
+                             @"openId" : [MySingleton sharedMySingleton].openId,
+                             @"todayScore" : @"1",
+                             @"conDays" : @"1",
+                             @"score" : @"1"
+                             };
+    WeakSelf(self)
+    [HttpTool get:[NSString stringWithFormat:@"renren-fast/mall/usersigininfo/list"] params:params success:^(id responseObj) {
+        NSDictionary* a=responseObj[@"page"][@"list"];
+        _checkList=[[NSMutableArray alloc] init];
+        //
+        for (NSDictionary* products in responseObj[@"page"][@"list"]) {
+            checkModel* t=[checkModel mj_objectWithKeyValues:products];
+            NSLog(@"");
+            //            [_topicList addObject:t];
+            [_checkList addObject:t];
+        }
+        [_curTabView reloadData];
+
+//        _label.text=[NSString stringWithFormat:@"积分:%d分",_checkList.count];
+        
     } failure:^(NSError *error) {
         NSLog(@"");
     }];
