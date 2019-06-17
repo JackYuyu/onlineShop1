@@ -2749,6 +2749,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/CFOnlineShop/Library/HelpDeskUI/HDUIKit/3rdparty/DeviceHelper/HDVoiceConvert/opencore-amrnb",
 					"$(PROJECT_DIR)/CFOnlineShop/Library/HelpDeskUI/HDUIKit/3rdparty/DeviceHelper/HDVoiceConvert/opencore-amrwb",
+					"$(PROJECT_DIR)/CFOnlineShop/Library/WeChatSDK1.8.4",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.jackyu.supcat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2781,6 +2782,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/CFOnlineShop/Library/HelpDeskUI/HDUIKit/3rdparty/DeviceHelper/HDVoiceConvert/opencore-amrnb",
 					"$(PROJECT_DIR)/CFOnlineShop/Library/HelpDeskUI/HDUIKit/3rdparty/DeviceHelper/HDVoiceConvert/opencore-amrwb",
+					"$(PROJECT_DIR)/CFOnlineShop/Library/WeChatSDK1.8.4",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.jackyu.supcat;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -371,6 +371,8 @@ static NSInteger num_;
         NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
         NSLog(@"");
         [MBProgressHUD showMBProgressHud:self.view withText:@"新增订单成功" withTime:1];
+        
+        [self postOrderUI];
     } failure:^(NSError *error) {
         NSLog(@"");
     }];
@@ -402,6 +404,52 @@ static NSInteger num_;
         [_curTabView reloadData];
 
 //        _label.text=[NSString stringWithFormat:@"积分:%d分",_checkList.count];
+        
+    } failure:^(NSError *error) {
+        NSLog(@"");
+    }];
+}
+
+-(void)postOrderUI
+{
+    if (![MySingleton sharedMySingleton].openId) {
+        [self.navigationController pushViewController:[[MMZCViewController alloc]init] animated:YES];
+        
+        return;
+    }
+    
+    NSUserDefaults* user=[NSUserDefaults standardUserDefaults];
+    NSString* tp=[user objectForKey:@"phone"];
+    NSTimeInterval timestamp=[[NSDate date] timeIntervalSince1970];
+    NSString* tradeno=[NSString stringWithFormat:@"%@%.0f",tp,timestamp];
+    NSDictionary *params = @{
+                             @"openId" : [MySingleton sharedMySingleton].openId,
+                             @"body" : @"商品购买",
+                             @"detail" : @"确认订单",
+                             @"outTradeNo" : tradeno,
+                             @"totalFee" : [NSString stringWithFormat:@"%.0f",[_totalPrice doubleValue]*100],
+                             @"spbillCreateIp" : @"14.23.14.24",
+                             @"notifyUrl" : @"http://wxpay.wxutil.com/pub_v2/pay/notify.v2.php",
+                             @"tradeType" : @"APP",
+                             };
+    WeakSelf(self)
+    NSData *data =    [NSJSONSerialization dataWithJSONObject:params options:NSUTF8StringEncoding error:nil];
+    [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/weChatPay/createOrder"] body:data showLoading:false success:^(NSDictionary *responseObj) {
+//    [HttpTool post:[NSString stringWithFormat:@"renren-fast/weChatPay/createOrder"] params:params success:^(id responseObj) {
+        NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:responseObj options:NSJSONReadingMutableLeaves error:nil];
+
+//        NSDictionary* a=responseObj[@"page"][@"list"];
+        _checkList=[[NSMutableArray alloc] init];
+        //
+//        for (NSDictionary* products in responseObj[@"page"][@"list"]) {
+//            checkModel* t=[checkModel mj_objectWithKeyValues:products];
+//            NSLog(@"");
+//            //            [_topicList addObject:t];
+//            [_checkList addObject:t];
+//        }
+//        [_curTabView reloadData];
+        
+        //        _label.text=[NSString stringWithFormat:@"积分:%d分",_checkList.count];
         
     } failure:^(NSError *error) {
         NSLog(@"");
