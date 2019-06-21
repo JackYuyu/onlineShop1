@@ -461,7 +461,7 @@ static NSInteger num_;
                              @"outTradeNo" : order.payTradeNo,
                              @"totalFee" : [NSString stringWithFormat:@"%.0f",[order.totalPrice doubleValue]*100],
                              @"spbillCreateIp" : @"14.23.14.24",
-                             @"notifyUrl" : @"http://192.168.0.198:8080/renren-fast/weChatPay/notify/order",
+                             @"notifyUrl" : @"http://101.69.120.244:8082/renren-fast/weChatPay/notify/order",
                              @"tradeType" : @"APP",
                              };
     WeakSelf(self)
