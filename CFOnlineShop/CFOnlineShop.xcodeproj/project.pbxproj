@@ -14,6 +14,8 @@
 		04041D8422B76A3E00CE74D1 /* WXApiResponseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 04041D8222B76A3E00CE74D1 /* WXApiResponseHandler.m */; };
 		04041DC822B8752100CE74D1 /* WXApiObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 04041DC622B8752000CE74D1 /* WXApiObject.m */; };
 		0464A6E2229A33BC004381DF /* HttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0464A6E1229A33BC004381DF /* HttpTool.m */; };
+		048DBAC722BC7B5F009D3275 /* commonOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 048DBAC622BC7B5F009D3275 /* commonOrder.m */; };
+		048DBACA22BC89BE009D3275 /* checkModelCon.m in Sources */ = {isa = PBXBuildFile; fileRef = 048DBAC922BC89BE009D3275 /* checkModelCon.m */; };
 		04CABD8C22ACC93F008C53DD /* cartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CABD8B22ACC93F008C53DD /* cartModel.m */; };
 		04CABD8F22ACC967008C53DD /* cartItemList.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CABD8E22ACC967008C53DD /* cartItemList.m */; };
 		04CABD9222ACCA18008C53DD /* cartOrderEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CABD9122ACCA18008C53DD /* cartOrderEntity.m */; };
@@ -359,6 +361,10 @@
 		04041DC722B8752100CE74D1 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		0464A6E0229A33BC004381DF /* HttpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpTool.h; sourceTree = "<group>"; };
 		0464A6E1229A33BC004381DF /* HttpTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpTool.m; sourceTree = "<group>"; };
+		048DBAC522BC7B5F009D3275 /* commonOrder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = commonOrder.h; sourceTree = "<group>"; };
+		048DBAC622BC7B5F009D3275 /* commonOrder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = commonOrder.m; sourceTree = "<group>"; };
+		048DBAC822BC89BE009D3275 /* checkModelCon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = checkModelCon.h; sourceTree = "<group>"; };
+		048DBAC922BC89BE009D3275 /* checkModelCon.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = checkModelCon.m; sourceTree = "<group>"; };
 		04CABD8A22ACC93F008C53DD /* cartModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cartModel.h; sourceTree = "<group>"; };
 		04CABD8B22ACC93F008C53DD /* cartModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cartModel.m; sourceTree = "<group>"; };
 		04CABD8D22ACC967008C53DD /* cartItemList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cartItemList.h; sourceTree = "<group>"; };
@@ -1331,6 +1337,8 @@
 				DD27DD8422A509E600A96EFF /* CommentModel.m */,
 				DD27DD8622A51CEE00A96EFF /* checkModel.h */,
 				DD27DD8722A51CEE00A96EFF /* checkModel.m */,
+				048DBAC822BC89BE009D3275 /* checkModelCon.h */,
+				048DBAC922BC89BE009D3275 /* checkModelCon.m */,
 				DD09D87C22A646630088264E /* addressModel.h */,
 				DD09D87D22A646630088264E /* addressModel.m */,
 				04CABDA822AD010A008C53DD /* skuModel.h */,
@@ -2164,6 +2172,8 @@
 		DD759DA6229BC5CB00B71414 /* model */ = {
 			isa = PBXGroup;
 			children = (
+				048DBAC522BC7B5F009D3275 /* commonOrder.h */,
+				048DBAC622BC7B5F009D3275 /* commonOrder.m */,
 				DD759DA8229BC5E000B71414 /* FSShopCartList.h */,
 				DD759DA7229BC5E000B71414 /* FSShopCartList.m */,
 				04CABD8A22ACC93F008C53DD /* cartModel.h */,
@@ -2408,6 +2418,7 @@
 				DD6910B322A915F700595D6C /* HDBubbleView+Track.m in Sources */,
 				0C79152721095E0A00D23547 /* CFShoppingCartHeaderView.m in Sources */,
 				04CABD9822ACF07D008C53DD /* DCFeatureItemCell.m in Sources */,
+				048DBACA22BC89BE009D3275 /* checkModelCon.m in Sources */,
 				DD69108B22A915F700595D6C /* HAppraiseTagsModel.m in Sources */,
 				DD69109522A915F700595D6C /* HDEmojiEmoticons.m in Sources */,
 				DD690E8322A8F32600595D6C /* CommentController.m in Sources */,
@@ -2420,6 +2431,7 @@
 				0CA8CB5421085FF200DC7DF6 /* CFShoppingCartCell2.m in Sources */,
 				0C73E088211849D700D413A4 /* CFOthersController.m in Sources */,
 				DD69105C22A915F700595D6C /* UIImage+EMGIF.m in Sources */,
+				048DBAC722BC7B5F009D3275 /* commonOrder.m in Sources */,
 				DD6910A622A915F700595D6C /* HDMessageCell.m in Sources */,
 				DD69104522A915F700595D6C /* MJRefreshConst.m in Sources */,
 				DD69108922A915F700595D6C /* UIView+FLExtension.m in Sources */,

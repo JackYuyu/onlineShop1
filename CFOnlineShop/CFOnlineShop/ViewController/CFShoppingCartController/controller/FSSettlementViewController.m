@@ -19,6 +19,7 @@
 #import "WXApiManager.h"
 #import "WechatAuthSDK.h"
 #import "WXApiObject.h"
+#import "commonOrder.h"
 static NSString *const kOrderCellWithIdentifier = @"kOrderCellWithIdentifier";
 
 @interface FSSettlementViewController ()<WXApiManagerDelegate,UITextFieldDelegate>
@@ -402,8 +403,8 @@ static NSInteger num_;
         NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
         NSLog(@"");
         [MBProgressHUD showMBProgressHud:self.view withText:@"新增订单成功" withTime:1];
-        
-        [self postOrderUI];
+        commonOrder* order=[commonOrder mj_objectWithKeyValues:jsonDict[@"GoodsOrderEntity"]];
+        [self postOrderUI:order];
     } failure:^(NSError *error) {
         NSLog(@"");
     }];
@@ -441,7 +442,7 @@ static NSInteger num_;
     }];
 }
 
--(void)postOrderUI
+-(void)postOrderUI:(commonOrder*)order
 {
     if (![MySingleton sharedMySingleton].openId) {
         [self.navigationController pushViewController:[[MMZCViewController alloc]init] animated:YES];
@@ -457,8 +458,8 @@ static NSInteger num_;
 //                             @"openId" : [MySingleton sharedMySingleton].openId,
                              @"body" : @"商品购买",
                              @"detail" : @"确认订单",
-                             @"outTradeNo" : tradeno,
-                             @"totalFee" : [NSString stringWithFormat:@"%.0f",[_totalPrice doubleValue]*100],
+                             @"outTradeNo" : order.payTradeNo,
+                             @"totalFee" : [NSString stringWithFormat:@"%.0f",[order.totalPrice doubleValue]*100],
                              @"spbillCreateIp" : @"14.23.14.24",
                              @"notifyUrl" : @"http://192.168.0.198:8080/renren-fast/weChatPay/notify/order",
                              @"tradeType" : @"APP",

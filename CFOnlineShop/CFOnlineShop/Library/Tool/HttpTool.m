@@ -26,7 +26,7 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
     // 2.发送GET请求
-    [mgr GET:[NSString stringWithFormat:@"%@/%@", kBaseUrl, url] parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [mgr GET:[NSString stringWithFormat:@"%@/%@", tempurl, url] parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (success) {
             success(responseObject);
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -86,7 +86,7 @@
 //参数放在body里面
 + (void)postWithUrl:(NSString *)url body:(NSData *)body showLoading:(BOOL)show success:(void(^)(NSDictionary *response))success failure:(void(^)(NSError *error))failure
 {
-    NSString *requestUrl = [NSString stringWithFormat:@"%@/%@", kBaseUrl, url];
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/%@", tempurl, url];
     AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     
     NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"POST" URLString:requestUrl parameters:nil error:nil];

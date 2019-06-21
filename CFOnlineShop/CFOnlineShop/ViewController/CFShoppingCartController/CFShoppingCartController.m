@@ -36,6 +36,7 @@ static NSInteger num_;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     _productListM=[NSMutableArray new];
+    _productList=[NSMutableArray new];
     
     [self setTitle:@"购物车"];
     self.navigationBgView.backgroundColor = kWhiteColor;
@@ -46,7 +47,7 @@ static NSInteger num_;
 -(void)viewWillAppear:(BOOL)animated
 {
     if (![MySingleton sharedMySingleton].openId) {
-        [_productList removeAllObjects];
+//        [_productList removeAllObjects];
         return;
     }
     [self postUI];
@@ -83,13 +84,21 @@ static NSInteger num_;
                              };
     [HttpTool get:[NSString stringWithFormat:@"renren-fast/mall/goodsshoppingcar/querylist"] params:params success:^(id responseObj) {
         NSDictionary* a=responseObj[@"list"];
-        _productList=[NSMutableArray new];
+//        _productList=[NSMutableArray new];
+        bool psel=false;
         for (NSDictionary* products in responseObj[@"list"]) {
             productModel* p=[productModel mj_objectWithKeyValues:products];
             p.productName=[products objectForKey:@"name"];
             p.productId=[products objectForKey:@"id"];
             NSLog(@"");
-            [_productList addObject:p];
+            for (productModel* model in _productList) {
+                if ([model.productId isEqualToString:p.productId]) {
+                    psel=true;
+                }
+            }
+            if (!psel) {
+                [_productList addObject:p];
+            }
         }
         
         double pro;
@@ -377,9 +386,16 @@ static NSInteger num_;
     CFShoppingCartCell1 *cell = (CFShoppingCartCell1 *)[collectionView cellForItemAtIndexPath:indexPath];
     [cell.imageView1 setImage:[UIImage imageNamed:@"circular"]];
     productModel* p=[_productList objectAtIndex:indexPath.row];
-    if (![_productListM containsObject:p]) {
+    bool psel=false;
+    for (productModel* model in _productListM) {
+        if ([model.productId isEqualToString:p.productId]) {
+            psel=true;
+        }
+    }
+    if (!psel) {
         [_productListM addObject:p];
     }
+    
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -387,7 +403,13 @@ static NSInteger num_;
     CFShoppingCartCell1 *cell = (CFShoppingCartCell1 *)[collectionView cellForItemAtIndexPath:indexPath];
     [cell.imageView1 setImage:[UIImage imageNamed:@"circle"]];
     productModel* p=[_productList objectAtIndex:indexPath.row];
-    if ([_productListM containsObject:p]) {
+    bool psel=false;
+    for (productModel* model in _productListM) {
+        if ([model.productId isEqualToString:p.productId]) {
+            psel=true;
+        }
+    }
+    if (psel) {
         [_productListM removeObject:p];
     }
     //    [cell.contentView setBackgroundColor:[UIColor whiteColor]];

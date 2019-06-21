@@ -11,6 +11,7 @@
 #import "math.h"
 #import "CFSegmentedControl.h"
 #import "checkModel.h"
+#import "checkModelCon.h"
 #define COLOR1 [UIColor colorWithRed:1.0 green:0.2 blue:0.31 alpha:1.0]
 
 @interface HomeCheckController ()<UITableViewDataSource,UITableViewDelegate,CFSegmentedControlDataSource,CFSegmentedControlDelegate>
@@ -175,6 +176,7 @@
     [HttpTool get:[NSString stringWithFormat:urlstring] params:nil success:^(id responseObj) {
         NSDictionary* a=responseObj[@"userSiginInfo"][@"list"][@"userSiginInfoEntity"];
         //
+        checkModelCon* con=[checkModelCon mj_objectWithKeyValues:responseObj[@"userSiginInfo"][@"list"]];
         for (NSDictionary* products in responseObj[@"userSiginInfo"][@"list"][@"userSiginInfoEntity"]) {
             checkModel* t=[checkModel mj_objectWithKeyValues:products];
             NSDate *date = [NSDate date];
@@ -185,6 +187,7 @@
                 NSLog(@"");
                 dispatch_async(dispatch_get_main_queue(), ^{
                     self.progressView1.check.text=@"已签到";
+                    self.progressView1.check1.text=[NSString stringWithFormat:@"连续%@天",con.conDays];
                     [self.progressView1 reload];
                 });
             }
