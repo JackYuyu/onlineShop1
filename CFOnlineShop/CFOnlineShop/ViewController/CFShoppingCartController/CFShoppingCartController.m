@@ -377,7 +377,9 @@ static NSInteger num_;
     CFShoppingCartCell1 *cell = (CFShoppingCartCell1 *)[collectionView cellForItemAtIndexPath:indexPath];
     [cell.imageView1 setImage:[UIImage imageNamed:@"circular"]];
     productModel* p=[_productList objectAtIndex:indexPath.row];
-    [_productListM addObject:p];
+    if (![_productListM containsObject:p]) {
+        [_productListM addObject:p];
+    }
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{

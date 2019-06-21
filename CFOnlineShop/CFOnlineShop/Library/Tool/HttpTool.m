@@ -86,7 +86,7 @@
 //参数放在body里面
 + (void)postWithUrl:(NSString *)url body:(NSData *)body showLoading:(BOOL)show success:(void(^)(NSDictionary *response))success failure:(void(^)(NSError *error))failure
 {
-    NSString *requestUrl = [NSString stringWithFormat:@"%@/%@", tempurl, url];
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/%@", kBaseUrl, url];
     AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     
     NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"POST" URLString:requestUrl parameters:nil error:nil];

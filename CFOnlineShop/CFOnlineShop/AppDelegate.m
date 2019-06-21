@@ -8,7 +8,8 @@
 
 #import "AppDelegate.h"
 #import "CFTabBarController.h"
-
+#import "WXApiManager.h"
+#import "OrderController.h"
 @interface AppDelegate ()
 
 @end
@@ -48,10 +49,25 @@
     if (initError) { // 初始化错误
         NSLog(@"");
     }
+    
+    [WXApi startLogByLevel:WXLogLevelNormal logBlock:^(NSString *log) {
+        NSLog(@"log : %@", log);
+    }];
+    
+    //向微信注册,发起支付必须注册
+    [WXApi registerApp:@"wxdca853e0d211f315" enableMTA:YES];
     return YES;
 }
 
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return  [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
+}
 
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    
+    [self.baseWindowNav pushViewController:[OrderController new] animated:YES];
+    return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
+}
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

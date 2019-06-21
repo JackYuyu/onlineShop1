@@ -67,7 +67,7 @@
 {
     _content = content;
     NSString* a=content.infoname;
-    _attLabel.text = content.infoname;
+    _attLabel.text = content.goodsSkuVals;
     
     if (content.isSelect) {
         _attLabel.textColor = [UIColor redColor];

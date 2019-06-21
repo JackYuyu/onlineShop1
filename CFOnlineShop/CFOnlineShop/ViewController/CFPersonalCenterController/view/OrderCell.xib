@@ -66,7 +66,7 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cfj-H3-vgO" userLabel="line">
-                        <rect key="frame" x="0.0" y="72" width="320" height="0.5"/>
+                        <rect key="frame" x="10" y="72" width="310" height="0.5"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="0.5" id="krr-VS-fnR"/>
@@ -121,7 +121,7 @@
                     <constraint firstAttribute="bottom" secondItem="Bll-hF-wwy" secondAttribute="bottom" constant="-0.5" id="J9b-9q-GcV"/>
                     <constraint firstItem="Bll-hF-wwy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="MoS-o8-hY4"/>
                     <constraint firstItem="Bll-hF-wwy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="VaO-BL-eqA"/>
-                    <constraint firstItem="Cfj-H3-vgO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="WPY-aO-leP"/>
+                    <constraint firstItem="Cfj-H3-vgO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="WPY-aO-leP"/>
                     <constraint firstItem="rvP-gr-hRM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="bMs-1S-RJy"/>
                     <constraint firstItem="Cfj-H3-vgO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="72" id="hon-nl-QB2"/>
                     <constraint firstAttribute="trailing" secondItem="Cfj-H3-vgO" secondAttribute="trailing" id="kQK-gC-taW"/>

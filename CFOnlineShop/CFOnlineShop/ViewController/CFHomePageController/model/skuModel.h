@@ -17,6 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * priceName;
 @property (nonatomic, copy) NSString * id;
 
+//新skulogolist接口字段
+@property (nonatomic, copy) NSString *thumLogo;
+@property (nonatomic, copy) NSString *stockNum;
+@property (nonatomic, copy) NSString *goodsName;
+@property (nonatomic, copy) NSString *goodsId;
 @end
 
 NS_ASSUME_NONNULL_END

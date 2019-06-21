@@ -13,11 +13,15 @@
 #import "FSShopCartList.h"
 #import "checkModel.h"
 #import "commModel.h"
-
 #import "cartModel.h"
+
+#import "WXApiRequestHandler.h"
+#import "WXApiManager.h"
+#import "WechatAuthSDK.h"
+#import "WXApiObject.h"
 static NSString *const kOrderCellWithIdentifier = @"kOrderCellWithIdentifier";
 
-@interface FSSettlementViewController ()
+@interface FSSettlementViewController ()<WXApiManagerDelegate,UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *telLabel;
 
@@ -43,7 +47,7 @@ static NSString *const kOrderCellWithIdentifier = @"kOrderCellWithIdentifier";
 
 @property (nonatomic, copy) NSString * totalPrice;
 @property (nonatomic,strong) NSMutableArray* checkList;
-
+@property (nonatomic,strong) NSString* input;
 @end
 static NSInteger num_;
 
@@ -87,6 +91,7 @@ static NSInteger num_;
 //        [self setBottomView];
 //    }
     [self postRecordUI];
+    [WXApiManager sharedManager].delegate = self;
 }
 
 - (void)initSubview {
@@ -286,6 +291,18 @@ static NSInteger num_;
             cell.textLabel.text=@"当前积分";
             cell.detailTextLabel.text=[NSString stringWithFormat:@"积分:%d分",_checkList.count];
         }
+        if (indexPath.section==1&& indexPath.row==1) {
+            cell.detailTextLabel.hidden=YES;
+            UITextField* input=[UITextField new];
+            input.placeholder=@"请输入留言";
+            input.delegate=self;
+            [cell.contentView addSubview:input];
+            [input mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.mas_equalTo(cell.contentView).offset(10);
+                make.centerY.mas_equalTo(cell.contentView);
+                make.left.mas_equalTo(cell.textLabel.right).offset(100);
+            }];
+        }
         return cell;
     }
 }
@@ -331,6 +348,16 @@ static NSInteger num_;
     NSLog(@"");
     [self postUI];
 }
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    int b=textField.tag;
+    if (b==0) {
+    }
+    textField.backgroundColor = [UIColor whiteColor];
+    _input=[textField.text stringByAppendingString:string];
+
+    NSLog(@"结束编辑");
+    return YES;
+}
 -(void)postUI
 {
     NSMutableArray* comm=[NSMutableArray new];
@@ -359,7 +386,11 @@ static NSInteger num_;
     ce.actualPrice=_totalPrice;
     ce.openId=[MySingleton sharedMySingleton].openId;
     ce.status=@"0";
-    ce.remarks=@"买入一件";
+    if (_input) {
+        ce.remarks=_input;
+    }
+    else
+        ce.remarks=@"买入一件";
     
     m.goodsOrderEntity=ce;
     NSString* a=m.mj_JSONString;
@@ -423,13 +454,13 @@ static NSInteger num_;
     NSTimeInterval timestamp=[[NSDate date] timeIntervalSince1970];
     NSString* tradeno=[NSString stringWithFormat:@"%@%.0f",tp,timestamp];
     NSDictionary *params = @{
-                             @"openId" : [MySingleton sharedMySingleton].openId,
+//                             @"openId" : [MySingleton sharedMySingleton].openId,
                              @"body" : @"商品购买",
                              @"detail" : @"确认订单",
                              @"outTradeNo" : tradeno,
                              @"totalFee" : [NSString stringWithFormat:@"%.0f",[_totalPrice doubleValue]*100],
                              @"spbillCreateIp" : @"14.23.14.24",
-                             @"notifyUrl" : @"http://wxpay.wxutil.com/pub_v2/pay/notify.v2.php",
+                             @"notifyUrl" : @"http://192.168.0.198:8080/renren-fast/weChatPay/notify/order",
                              @"tradeType" : @"APP",
                              };
     WeakSelf(self)
@@ -450,9 +481,22 @@ static NSInteger num_;
 //        [_curTabView reloadData];
         
         //        _label.text=[NSString stringWithFormat:@"积分:%d分",_checkList.count];
-        
+        NSDictionary* d=[jsonDict copy];
+        [self wechatPay:d];
     } failure:^(NSError *error) {
         NSLog(@"");
     }];
+}
+-(void)wechatPay:(NSDictionary*)d
+{
+    [self.navigationController popViewControllerAnimated:NO];
+//    NSDictionary* d=[NSDictionary new];
+//    [[WXApiObject shareInstance]WXApiPayWithParam:d];
+    NSString *res = [WXApiRequestHandler jumpToBizPay:d];
+    if( ![@"" isEqual:res] ){
+        UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"支付失败" message:res delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
+        [alter show];
+    }
 }
 @end

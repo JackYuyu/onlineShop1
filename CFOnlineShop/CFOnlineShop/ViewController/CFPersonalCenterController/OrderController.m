@@ -45,7 +45,7 @@
     self.navigationBgView.backgroundColor = kWhiteColor;
     self.navigationBgView.alpha = 1;
     [self showLeftBackButton];
-    _segmentTitles = @[@"全部订单",@"待支付",@"待发货",@"待收货",@"已完成"];
+    _segmentTitles = @[@"全部",@"待支付",@"待发货",@"待收货",@"已完成"];
     
 //    UIView * view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50)];
 //    view.backgroundColor = [UIColor whiteColor];
@@ -276,14 +276,14 @@
 //设置表格视图有多少行
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     //    if (section==0) {
-    return [_checkList count];
+    return 1;
     //    }else{
     //        return 10;
     //    }
     
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
+    return [_checkList count];
 }
 //设置每行的UITableViewCell
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -300,7 +300,7 @@
     //    cell.showsReorderControl=YES;
     //    cell.shouldIndentWhileEditing=YES;
     //    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    OrderEntity* e=[_checkList objectAtIndex:indexPath.row];
+    OrderEntity* e=[_checkList objectAtIndex:indexPath.section];
     cell.orderno.text=[NSString stringWithFormat:@"订单号: %@",e.orderNo];
     cell.date.text=[NSString stringWithFormat:@"提交时间: %@",e.createTime];
     
@@ -309,11 +309,11 @@
     [cell.paybtn setBackgroundColor:[UIColor redColor]];
     [cell.paybtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [cell.paybtn addTarget:self action:@selector(pay:) forControlEvents:UIControlEventTouchUpInside];
-    cell.paybtn.tag=indexPath.row;
+    cell.paybtn.tag=indexPath.section;
     
     [cell.cancel setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [cell.cancel addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
-    cell.cancel.tag=indexPath.row;
+    cell.cancel.tag=indexPath.section;
 //    cell.detailTextLabel.text=c.signTime;
     //    cell.
     [cell.paybtn.layer setMasksToBounds:YES]; [cell.paybtn.layer setCornerRadius:3.0];
@@ -466,6 +466,9 @@
     [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/mall/goodsorder/update"] body:data showLoading:false success:^(NSDictionary *response) {
         NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
         NSLog(@"");
+        if (![[jsonDict objectForKey:@"msg"] isEqualToString:@"success"]) {
+            [MBProgressHUD showMBProgressHud:self.view withText:[jsonDict objectForKey:@"msg"] withTime:1];
+        }
         [self postRecordUI];
     } failure:^(NSError *error) {
         NSLog(@"");
@@ -542,7 +545,7 @@
 }
 //设置分区尾视图高度
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 0.01;
+    return 5.01;
 }
 //设置分区头视图高度
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -550,8 +553,8 @@
 }
 //设置分区的尾视图
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    UIView * view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50)];
-    view.backgroundColor = [UIColor greenColor];
+    UIView * view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 5)];
+    view.backgroundColor = KBackgroundColor;
     return view;
 }
 //设置分区的头视图
@@ -575,7 +578,7 @@
 //选中cell时调用的方法
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     FSSettlementViewController1* confirmOrder=[[FSSettlementViewController1 alloc] initWithNibName:@"FSSettlementViewController1" bundle:nil];
-    OrderEntity* e=[_checkList objectAtIndex:indexPath.row];
+    OrderEntity* e=[_checkList objectAtIndex:indexPath.section];
     confirmOrder.entity=e;
     NSMutableArray* source=[NSMutableArray new];
     for (productModel* p in e.productLists) {

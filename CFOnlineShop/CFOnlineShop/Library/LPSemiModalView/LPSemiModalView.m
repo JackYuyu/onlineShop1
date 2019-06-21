@@ -28,6 +28,7 @@
 @property (nonatomic,assign) NSInteger tag;
 @property (nonatomic,assign) BOOL norm;
 
+@property (nonatomic,strong) UILabel* stockLabel;
 @end
 
 static NSInteger num_;
@@ -120,7 +121,7 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
 }
 -(void)setup{
 //    self.backgroundColor=[UIColor whiteColor];
-    self.tableView.frame = CGRectMake(0, Main_Screen_Height-360, Main_Screen_Width, 100);
+    self.tableView.frame = CGRectMake(0, Main_Screen_Height-360, Main_Screen_Width, 360);
     self.tableView.rowHeight = 100;
     
     self.collectionView.frame = CGRectMake(0, Main_Screen_Height-360+100 ,Main_Screen_Width , 150);
@@ -181,6 +182,7 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
             l.isSelect=YES;
             _cartItem.goodsSkuId=l.goodsSkuId;
             _cartItem.goodNorm=l.infoname;
+            _stockLabel.text=[NSString stringWithFormat:@"库存:%@件",l.stockNum];
         }
         
     }
@@ -202,7 +204,7 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
 #pragma mark - <HorizontalCollectionLayoutDelegate>
 #pragma mark - 自定义layout必须实现的方法
 - (NSString *)collectionViewItemSizeWithIndexPath:(NSIndexPath *)indexPath {
-    return _featureAttr[indexPath.section].list[indexPath.row].infoname;
+    return _featureAttr[indexPath.section].list[indexPath.row].goodsSkuVals;
 }
 
 #pragma mark - 底部按钮
@@ -229,7 +231,14 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
     [self addSubview:numLabel];
     numLabel.frame = CGRectMake(10, Main_Screen_Height-100, 50, 35);
     
-    PPNumberButton *numberButton = [PPNumberButton numberButtonWithFrame:CGRectMake(CGRectGetMaxX(numLabel.frame), numLabel.frame.origin.y, 110, numLabel.frame.size.height)];
+    UILabel *stockLabel = [UILabel new];
+    stockLabel.text = @"库存:0件";
+    stockLabel.font = [UIFont systemFontOfSize:14];
+    _stockLabel=stockLabel;
+    [self addSubview:stockLabel];
+    stockLabel.frame = CGRectMake(CGRectGetMaxX(numLabel.frame)+10, Main_Screen_Height-100, 150, 35);
+    
+    PPNumberButton *numberButton = [PPNumberButton numberButtonWithFrame:CGRectMake(CGRectGetMaxX(stockLabel.frame), numLabel.frame.origin.y, 110, numLabel.frame.size.height)];
     numberButton.shakeAnimation = YES;
     numberButton.minValue = 1;
     numberButton.inputFieldFont = 23;
@@ -523,10 +532,14 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
         UIControl *closeControl             = [[UIControl alloc] initWithFrame:self.bounds];
         closeControl.userInteractionEnabled = NO;
         closeControl.backgroundColor        = [UIColor clearColor];
-        [closeControl addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
+        [closeControl addTarget:self action:@selector(close1) forControlEvents:UIControlEventTouchUpInside];
         self.closeControl = closeControl;
     }
     return _closeControl;
+}
+-(void)close1
+{
+    [self dismissFeatureViewControllerWithTag:100];
 }
 
 - (UIImageView *)maskImageView

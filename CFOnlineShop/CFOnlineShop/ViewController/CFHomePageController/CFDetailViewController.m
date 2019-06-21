@@ -46,7 +46,7 @@
     [self setUpLeftTwoButton];
     [self postUI];
     [self postCommentUI];
-    [self postSkuUI];
+    [self postSkuLogoUI];
     [self postBrowseInfoUI];
     [self postFavUI];
 }
@@ -178,6 +178,52 @@
             list.plusprice=p.priceName;
             list.priceId=p.priceId;
             list.goodsSkuId=p.id;
+            [feat addObject:list];
+            //            [_productList addObject:p];
+        }
+        item.list=[feat copy];
+        if (weakself.featureBlock) {
+            weakself.featureBlock(item);
+        }
+        [_tableView reloadData];
+    } failure:^(NSError *error) {
+        NSLog(@"");
+    }];
+}
+-(void)postSkuLogoUI
+{
+    NSMutableDictionary* dic=[NSMutableDictionary new];
+    NSDictionary *params = @{
+                             @"goodsId" : _productId,
+                             @"page" : @"1",
+                             @"limits": @"10"
+                             };
+    WeakSelf(self)
+    [HttpTool get:[NSString stringWithFormat:@"renren-fast/mall/goodslogosku/list"] params:params success:^(id responseObj) {
+        NSDictionary* a=responseObj[@"page"][@"list"];
+        NSLog(@"");
+        DCFeatureItem* item=[DCFeatureItem new];
+        NSMutableArray* feat=[NSMutableArray new];
+        DCFeatureTitleItem* title=[DCFeatureTitleItem new];
+        title.attrname=@"尺码";
+        item.attr=title;
+        for (NSDictionary* products in responseObj[@"page"][@"list"]) {
+            skuModel* p=[skuModel mj_objectWithKeyValues:products];
+            //            p.productName=[products objectForKey:@"description"];
+            //            p.productId=[products objectForKey:@"id"];
+            NSLog(@"");
+            
+            DCFeatureList* list=[DCFeatureList new];
+            list.infoname=p.goodsNorm;
+            list.plusprice=p.priceName;
+            list.priceId=p.priceId;
+            list.goodsSkuId=p.id;
+            //
+            list.thumLogo=p.thumLogo;
+            list.goodsSkuVals=p.goodsSkuVals;
+            list.stockNum=p.stockNum;
+            list.goodsName=p.goodsName;
+            list.goodsId=p.goodsId;
             [feat addObject:list];
             //            [_productList addObject:p];
         }
@@ -556,13 +602,13 @@
         
         [b mas_makeConstraints:^(MASConstraintMaker *make) {
             [make.centerY.mas_equalTo(cell.contentView)setOffset:(0)];
-            [make.left.mas_equalTo(cell.contentView)setOffset:(0)];
+            [make.left.mas_equalTo(cell.contentView)setOffset:(-5)];
             make.size.mas_equalTo(CGSizeMake(120, 40));
         }];
         cell.textLabel.text=@"";
         return cell;
     }
-    if (indexPath.section==1&&indexPath.row==1) {
+    if (indexPath.section==1&&indexPath.row==1&&_commentList.count>0) {
         UIView* v=[[UIView alloc] initWithFrame:CGRectMake(0, 0, Main_Screen_Width, 80)];
         UILabel*comName=[UILabel new];
         StarView* star=[StarView new];

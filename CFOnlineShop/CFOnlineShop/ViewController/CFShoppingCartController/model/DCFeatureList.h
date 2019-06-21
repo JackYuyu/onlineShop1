@@ -15,6 +15,12 @@
 /** 额外价格 */
 @property (nonatomic, copy) NSString *plusprice;
 @property (nonatomic, copy) NSString *priceId;
+//新skulogolist接口字段
+@property (nonatomic, copy) NSString *thumLogo;
+@property (nonatomic, copy) NSString *goodsSkuVals;
+@property (nonatomic, copy) NSString *stockNum;
+@property (nonatomic, copy) NSString *goodsName;
+@property (nonatomic, copy) NSString *goodsId;
 
 /** 是否点击 */
 @property (nonatomic,assign)BOOL isSelect;

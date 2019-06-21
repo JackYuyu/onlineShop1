@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		04014B9822A66BFC00A16C66 /* OrderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 04014B9722A66BFC00A16C66 /* OrderModel.m */; };
 		04014B9B22A673C200A16C66 /* OrderEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 04014B9A22A673C200A16C66 /* OrderEntity.m */; };
+		04041D7E22B7699E00CE74D1 /* WXApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 04041D7D22B7699E00CE74D1 /* WXApiManager.m */; };
+		04041D8322B76A3E00CE74D1 /* WXApiRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 04041D8022B76A3D00CE74D1 /* WXApiRequestHandler.m */; };
+		04041D8422B76A3E00CE74D1 /* WXApiResponseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 04041D8222B76A3E00CE74D1 /* WXApiResponseHandler.m */; };
+		04041DC822B8752100CE74D1 /* WXApiObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 04041DC622B8752000CE74D1 /* WXApiObject.m */; };
 		0464A6E2229A33BC004381DF /* HttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0464A6E1229A33BC004381DF /* HttpTool.m */; };
 		04CABD8C22ACC93F008C53DD /* cartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CABD8B22ACC93F008C53DD /* cartModel.m */; };
 		04CABD8F22ACC967008C53DD /* cartItemList.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CABD8E22ACC967008C53DD /* cartItemList.m */; };
@@ -345,6 +349,14 @@
 		04014B9722A66BFC00A16C66 /* OrderModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderModel.m; sourceTree = "<group>"; };
 		04014B9922A673C200A16C66 /* OrderEntity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderEntity.h; sourceTree = "<group>"; };
 		04014B9A22A673C200A16C66 /* OrderEntity.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderEntity.m; sourceTree = "<group>"; };
+		04041D7C22B7699D00CE74D1 /* WXApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiManager.h; sourceTree = "<group>"; };
+		04041D7D22B7699E00CE74D1 /* WXApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXApiManager.m; sourceTree = "<group>"; };
+		04041D7F22B76A3D00CE74D1 /* WXApiResponseHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiResponseHandler.h; sourceTree = "<group>"; };
+		04041D8022B76A3D00CE74D1 /* WXApiRequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXApiRequestHandler.m; sourceTree = "<group>"; };
+		04041D8122B76A3E00CE74D1 /* WXApiRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiRequestHandler.h; sourceTree = "<group>"; };
+		04041D8222B76A3E00CE74D1 /* WXApiResponseHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXApiResponseHandler.m; sourceTree = "<group>"; };
+		04041DC622B8752000CE74D1 /* WXApiObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXApiObject.m; sourceTree = "<group>"; };
+		04041DC722B8752100CE74D1 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		0464A6E0229A33BC004381DF /* HttpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpTool.h; sourceTree = "<group>"; };
 		0464A6E1229A33BC004381DF /* HttpTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpTool.m; sourceTree = "<group>"; };
 		04CABD8A22ACC93F008C53DD /* cartModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cartModel.h; sourceTree = "<group>"; };
@@ -971,6 +983,21 @@
 			path = model;
 			sourceTree = "<group>";
 		};
+		04041D7B22B7697000CE74D1 /* Wechat */ = {
+			isa = PBXGroup;
+			children = (
+				04041D7C22B7699D00CE74D1 /* WXApiManager.h */,
+				04041D7D22B7699E00CE74D1 /* WXApiManager.m */,
+				04041D8122B76A3E00CE74D1 /* WXApiRequestHandler.h */,
+				04041D8022B76A3D00CE74D1 /* WXApiRequestHandler.m */,
+				04041D7F22B76A3D00CE74D1 /* WXApiResponseHandler.h */,
+				04041D8222B76A3E00CE74D1 /* WXApiResponseHandler.m */,
+				04041DC722B8752100CE74D1 /* WXApiObject.h */,
+				04041DC622B8752000CE74D1 /* WXApiObject.m */,
+			);
+			path = Wechat;
+			sourceTree = "<group>";
+		};
 		0464A6DF229A33A3004381DF /* Tool */ = {
 			isa = PBXGroup;
 			children = (
@@ -1091,6 +1118,7 @@
 		0CCF568020FEDD6E00B8FE09 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				04041D7B22B7697000CE74D1 /* Wechat */,
 				DD690E9522A915F600595D6C /* HelpDeskUI */,
 				0464A6DF229A33A3004381DF /* Tool */,
 				DDD2790322A7C7AE00D5419E /* PeTimeLine */,
@@ -2476,6 +2504,7 @@
 				0C33B89C210707B600A18FD8 /* CFEditCollectionCell.m in Sources */,
 				DD69113C22A91A2500595D6C /* MASViewConstraint.m in Sources */,
 				0C79152E2109BDBE00D23547 /* CFTabBarController.m in Sources */,
+				04041D8422B76A3E00CE74D1 /* WXApiResponseHandler.m in Sources */,
 				DD6910B722A915F700595D6C /* HDBubbleView.m in Sources */,
 				DD69113922A91A2500595D6C /* MASConstraintMaker.m in Sources */,
 				0CCF569B20FEE2F800B8FE09 /* CFShoppingCartController.m in Sources */,
@@ -2509,6 +2538,7 @@
 				DD69113722A91A2500595D6C /* MASCompositeConstraint.m in Sources */,
 				DD69104E22A915F700595D6C /* MWTapDetectingImageView.m in Sources */,
 				0CCF566220FED2F800B8FE09 /* AppDelegate.m in Sources */,
+				04041D8322B76A3E00CE74D1 /* WXApiRequestHandler.m in Sources */,
 				DD69103722A915F700595D6C /* MJRefreshBackFooter.m in Sources */,
 				DD69104122A915F700595D6C /* MJRefreshGifHeader.m in Sources */,
 				DD561DC82297A28D00DE4DAF /* ZWBackGroundProgressPointView.m in Sources */,
@@ -2542,6 +2572,7 @@
 				04ECF68922A5695C00C25026 /* MyFavController.m in Sources */,
 				DD69106822A915F700595D6C /* PSTCollectionViewItemKey.m in Sources */,
 				DD561DB32296655600DE4DAF /* CollectionCatHeader.m in Sources */,
+				04041D7E22B7699E00CE74D1 /* WXApiManager.m in Sources */,
 				DD69106E22A915F700595D6C /* PSTGridLayoutSection.m in Sources */,
 				DD6910B222A915F700595D6C /* HDBubbleView+Text.m in Sources */,
 				DD69108A22A915F700595D6C /* HDSDKHelper.m in Sources */,
@@ -2572,6 +2603,7 @@
 				DD6910B822A915F700595D6C /* HDFaceView.m in Sources */,
 				DD69103022A915F700595D6C /* HDCDDeviceManager+Microphone.m in Sources */,
 				0CCF56B320FF291900B8FE09 /* UIColor+CFColor.m in Sources */,
+				04041DC822B8752100CE74D1 /* WXApiObject.m in Sources */,
 				DD27DD8822A51CEE00A96EFF /* checkModel.m in Sources */,
 				DD69104C22A915F700595D6C /* MWPhoto.m in Sources */,
 				DD6910A722A915F700595D6C /* HDMessageTimeCell.m in Sources */,
@@ -2751,7 +2783,7 @@
 					"$(PROJECT_DIR)/CFOnlineShop/Library/HelpDeskUI/HDUIKit/3rdparty/DeviceHelper/HDVoiceConvert/opencore-amrwb",
 					"$(PROJECT_DIR)/CFOnlineShop/Library/WeChatSDK1.8.4",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jackyu.supcat;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cloudlink.shop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2784,7 +2816,7 @@
 					"$(PROJECT_DIR)/CFOnlineShop/Library/HelpDeskUI/HDUIKit/3rdparty/DeviceHelper/HDVoiceConvert/opencore-amrwb",
 					"$(PROJECT_DIR)/CFOnlineShop/Library/WeChatSDK1.8.4",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jackyu.supcat;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cloudlink.shop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
