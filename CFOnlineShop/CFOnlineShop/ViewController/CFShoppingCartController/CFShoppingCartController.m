@@ -99,6 +99,7 @@ static NSInteger num_;
             if (!psel) {
                 [_productList addObject:p];
             }
+            psel=false;
         }
         
         double pro;
