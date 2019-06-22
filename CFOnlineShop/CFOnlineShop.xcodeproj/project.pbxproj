@@ -2795,7 +2795,7 @@
 					"$(PROJECT_DIR)/CFOnlineShop/Library/HelpDeskUI/HDUIKit/3rdparty/DeviceHelper/HDVoiceConvert/opencore-amrwb",
 					"$(PROJECT_DIR)/CFOnlineShop/Library/WeChatSDK1.8.4",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cloudlink.shop;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackyu.flight;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2828,7 +2828,7 @@
 					"$(PROJECT_DIR)/CFOnlineShop/Library/HelpDeskUI/HDUIKit/3rdparty/DeviceHelper/HDVoiceConvert/opencore-amrwb",
 					"$(PROJECT_DIR)/CFOnlineShop/Library/WeChatSDK1.8.4",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cloudlink.shop;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackyu.flight;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
