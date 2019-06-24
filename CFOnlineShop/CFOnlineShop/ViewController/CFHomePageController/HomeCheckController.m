@@ -240,6 +240,7 @@
     
     if (_segmentedControl.tapIndex==0) {
         UITextView* t=[[UITextView alloc] initWithFrame:CGRectMake(0, 0, Main_Screen_Width, 160)];
+        t.editable=NO;
         t.text=@"            云邻积分规则\n\n1.签到积分规则\n亲，每天签到送积分啦！\n2.积分使用规则\n亲，签到的积分可以享受满立减，下单更优惠！";
         [t setFont:[UIFont systemFontOfSize:16]];
         [cell.contentView addSubview:t];

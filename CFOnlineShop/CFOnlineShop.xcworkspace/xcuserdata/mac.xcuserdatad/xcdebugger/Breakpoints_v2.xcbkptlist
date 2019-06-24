@@ -36,7 +36,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CFOnlineShop/ViewController/CFShoppingCartController/CFShoppingCartController.m"
-            timestampString = "582800911.3294441"
+            timestampString = "582811987.937083"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "313"
@@ -68,7 +68,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CFOnlineShop/ViewController/CFShoppingCartController/controller/FSSettlementViewController.m"
-            timestampString = "582790682.462291"
+            timestampString = "582811987.937248"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "488"
@@ -148,7 +148,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CFOnlineShop/ViewController/CFShoppingCartController/controller/FSSettlementViewController.m"
-            timestampString = "582790682.4627171"
+            timestampString = "582811987.937363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "407"
@@ -180,7 +180,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CFOnlineShop/ViewController/CFShoppingCartController/CFShoppingCartController.m"
-            timestampString = "582800911.329796"
+            timestampString = "582811987.937464"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "397"
@@ -196,7 +196,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CFOnlineShop/ViewController/CFShoppingCartController/CFShoppingCartController.m"
-            timestampString = "582800911.3298939"
+            timestampString = "582811987.937513"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "414"
@@ -218,6 +218,22 @@
             startingLineNumber = "114"
             endingLineNumber = "114"
             landmarkName = "-postCommentUI"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CFOnlineShop/ViewController/CFHomePageController/CFDetailViewController.m"
+            timestampString = "582811250.126044"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "204"
+            endingLineNumber = "204"
+            landmarkName = "-postSkuLogoUI"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
