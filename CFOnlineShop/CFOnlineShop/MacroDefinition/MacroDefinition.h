@@ -10,7 +10,7 @@
 #define MacroDefinition_h
 
 #define kBaseUrl @"http://101.69.120.244:8082"
-#define tempurl @"http://192.168.0.198:8080"
+//#define kBaseUrl @"http://192.168.0.198:8080"
 
 //获取AppDelegate
 #define kAppdelegate ((AppDelegate *)[[UIApplication sharedApplication] delegate])

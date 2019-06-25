@@ -7,7 +7,7 @@
 //
 
 #import "CFEditCollectionCell.h"
-
+#import "productModel.h"
 @interface CFShoppingCartCell1 : CFEditCollectionCell
 
 @property (nonatomic, strong) UIImageView *imageView;
@@ -16,5 +16,5 @@
 @property (nonatomic, strong) UILabel *normStr;
 
 @property (nonatomic, strong) UIImageView *imageView1;
-
+@property (nonatomic,strong) productModel* model;
 @end

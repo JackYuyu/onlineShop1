@@ -22,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *stockNum;
 @property (nonatomic, copy) NSString *goodsName;
 @property (nonatomic, copy) NSString *goodsId;
+@property (nonatomic, copy) NSString *goodsSkuId;
+
 @end
 
 NS_ASSUME_NONNULL_END

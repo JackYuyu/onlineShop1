@@ -48,7 +48,19 @@
     
     return self;
 }
+-(void)setModel:(productModel *)model
+{
+    if (model.isSelect) {
+        self.imageView1.hidden=NO;
+        [self.imageView1 setImage:[UIImage imageNamed:@"circular"]];
 
+    }
+    else{
+        self.imageView1.hidden=YES;
+//        [self.imageView1 setImage:[UIImage imageNamed:@"circle"]];
+
+    }
+}
 
 -(UIImageView *)imageView1{
     

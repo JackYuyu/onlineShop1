@@ -13,6 +13,8 @@
 #import "OrderModel.h"
 #import "OrderEntity.h"
 #import "FSSettlementViewController1.h"
+#import "FSSettlementViewController.h"
+
 #import "productModel.h"
 #import "LogisticController.h"
 #import "CommentController.h"
@@ -438,6 +440,30 @@
 //    LogisticController* logi=[LogisticController new];
 //    [self.navigationController pushViewController:logi animated:YES ];
 //    }
+    
+    if ([sender.titleLabel.text isEqualToString:@"立即付款"]) {
+        FSSettlementViewController* confirmOrder=[[FSSettlementViewController alloc] initWithNibName:@"FSSettlementViewController" bundle:nil];
+        OrderEntity* e=[_checkList objectAtIndex:sender.tag];
+        confirmOrder.entity=e;
+        NSMutableArray* source=[NSMutableArray new];
+        for (productModel* p in e.productLists) {
+            FSShopCartList *newCart = [FSShopCartList new];
+            newCart.num = [NSString stringWithFormat:@"%d", p.num];
+            newCart.logo = p.logo;
+            newCart.name = p.name;
+            newCart.productPrice=p.priceName;
+            newCart.goodNorm=p.goodsNorm;
+            newCart.idField = @"11111";
+            
+            newCart.goodsId=p.productId;
+            newCart.goodsSkuId=p.goodsSkuId;
+            [source addObject:newCart];
+        }
+        
+        confirmOrder.dataSource = source;
+        confirmOrder.hidesBottomBarWhenPushed=YES;
+        [self.navigationController pushViewController:confirmOrder animated:YES];
+    }
 }
 -(void)delete:(UIButton*)sender
 {
@@ -520,6 +546,8 @@
         [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/mall/goodsorder/update"] body:data showLoading:false success:^(NSDictionary *response) {
             NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
             NSLog(@"");
+            [MBProgressHUD showMBProgressHud:self.view withText:[jsonDict objectForKey:@"msg"] withTime:1];
+
             [self postRecordUI];
         } failure:^(NSError *error) {
             NSLog(@"");

@@ -287,10 +287,19 @@
     NSData *data =    [NSJSONSerialization dataWithJSONObject:params options:NSUTF8StringEncoding error:nil];
     [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/app/update"] body:data showLoading:false success:^(NSDictionary *response) {
         NSString * str  =[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
+        NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+
         NSLog(@"");
+        if ([[jsonDict objectForKey:@"msg"] isEqualToString:@"原密码输入错误"]) {
+            [MBProgressHUD showMBProgressHud:self.view withTitle:@"原密码输入错误" detail:@"" withTime:1 completion:^{
+            }];
+            return;
+        }
+        else{
         [MBProgressHUD showMBProgressHud:self.view withTitle:@"修改密码成功" detail:@"" withTime:1 completion:^{
             [self.navigationController popViewControllerAnimated:YES];
         }];
+        }
         
     } failure:^(NSError *error) {
         [MBProgressHUD showMBProgressHud:self.view withText:@"修改密码失败" withTime:1];

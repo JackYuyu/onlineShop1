@@ -90,7 +90,7 @@
             cart.productPrice=p.priceName;
             cart.logo=p.logo;
             cart.num=@"1";
-            cart.goodNorm=p.goodsNorm;
+            cart.goodNorm=p.goodsSkuVals;
             [MySingleton sharedMySingleton].cartItem=cart;
             NSLog(@"");
 //            [_productList addObject:p];
@@ -217,7 +217,7 @@
             list.infoname=p.goodsNorm;
             list.plusprice=p.priceName;
             list.priceId=p.priceId;
-            list.goodsSkuId=p.id;
+            list.goodsSkuId=p.goodsSkuId;
             //
             list.thumLogo=p.thumLogo;
             list.goodsSkuVals=p.goodsSkuVals;

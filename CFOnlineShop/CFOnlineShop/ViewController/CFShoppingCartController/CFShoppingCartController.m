@@ -26,6 +26,11 @@
 @property (nonatomic,strong) NSString* productId;
 @property (nonatomic, strong) NSString* totalPrice;
 @property (nonatomic,strong) UIButton* addButton;
+@property (nonatomic,strong) UIButton* totalButton;
+@property (nonatomic,assign) BOOL totalStatus;
+@property (nonatomic, strong) UIImageView *gou;
+
+@property (strong , nonatomic)FSShopCartList *cartItem;
 
 @end
 static NSInteger num_;
@@ -90,6 +95,7 @@ static NSInteger num_;
             productModel* p=[productModel mj_objectWithKeyValues:products];
             p.productName=[products objectForKey:@"name"];
             p.productId=[products objectForKey:@"id"];
+            p.marketPrice=p.expressPrice;//用expressprice
             NSLog(@"");
             for (productModel* model in _productList) {
                 if ([model.productId isEqualToString:p.productId]) {
@@ -147,6 +153,26 @@ static NSInteger num_;
         NSLog(@"");
     }];
 }
+-(void)postUpdateUI
+{
+    NSString* checked=@"0";
+    if (_cartItem.isSelect) {
+        checked=@"1";
+    }
+    NSDictionary *params = @{
+                             @"id" : _cartItem.goodsId,
+                             @"openId" : [MySingleton sharedMySingleton].openId,
+                             @"ischecked" : checked,
+                             @"num": _cartItem.num
+                             };
+    NSData *data =    [NSJSONSerialization dataWithJSONObject:params options:NSUTF8StringEncoding error:nil];
+    [HttpTool putWithUrl:[NSString stringWithFormat:@"renren-fast/mall/goodsshoppingcar/update"] body:data showLoading:false success:^(NSDictionary *response) {
+        NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+        NSLog(@"");
+    } failure:^(NSError *error) {
+        NSLog(@"");
+    }];
+}
 - (void)setBottomView
 {
     _bottomHeight = 55+TabbarHeight;
@@ -155,8 +181,36 @@ static NSInteger num_;
     bottomView.backgroundColor = [UIColor whiteColor];;
     [self.view addSubview:bottomView];
     
+    UIImageView* gou=[[UIImageView alloc] init];
+    _gou=gou;
+    if (_totalStatus) {
+        [gou setImage:[UIImage imageNamed:@"circular"]];
+    }
+    [bottomView addSubview:gou];
+
+    [gou mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(bottomView).mas_offset(17);
+        make.left.mas_equalTo(bottomView).mas_offset(5);
+        make.size.mas_equalTo(CGSizeMake(20, 20));
+        //        make.centerX.mas_equalTo(self.contentView);
+    }];
+    
+    UIButton *totalButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
+    totalButton.frame = CGRectMake(25, 0, bottomView.mj_w/4, 55);
+    totalButton.backgroundColor = [UIColor whiteColor];
+    totalButton.titleLabel.font = SYSTEMFONT(16);
+    [totalButton setTitle:[NSString stringWithFormat:@"全选",_totalPrice] forState:(UIControlStateNormal)];
+    [totalButton setTitleColor:kGrayColor forState:(UIControlStateNormal)];
+    [totalButton setTitleColor:[UIColor redColor] forState:UIControlStateSelected];
+    [totalButton addTarget:self action:@selector(totalAction:) forControlEvents:(UIControlEventTouchUpInside)];
+    _totalButton=totalButton;
+    if (_totalStatus) {
+        totalButton.selected=YES;
+    }
+    [bottomView addSubview:totalButton];
+    
     UIButton *addButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
-    addButton.frame = CGRectMake(bottomView.mj_w/2, 0, bottomView.mj_w/4, 55);
+    addButton.frame = CGRectMake(bottomView.mj_w/2, 0, bottomView.mj_w/4+10, 55);
     addButton.backgroundColor = [UIColor whiteColor];
     addButton.titleLabel.font = SYSTEMFONT(16);
     [addButton setTitle:[NSString stringWithFormat:@"合计:%@",_totalPrice] forState:(UIControlStateNormal)];
@@ -166,7 +220,7 @@ static NSInteger num_;
     [bottomView addSubview:addButton];
     
     UIButton *addimButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
-    addimButton.frame = CGRectMake(bottomView.mj_w*3/4, 0, bottomView.mj_w/4, 55);
+    addimButton.frame = CGRectMake(bottomView.mj_w*3/4+10, 0, bottomView.mj_w/4-10, 55);
     addimButton.backgroundColor = kRedColor;
     addimButton.titleLabel.font = SYSTEMFONT(16);
     [addimButton setTitle:@"去结算" forState:(UIControlStateNormal)];
@@ -175,11 +229,32 @@ static NSInteger num_;
     [bottomView addSubview:addimButton];
     
 }
+-(void)totalAction:(UIButton*)sender
+{
+    sender.selected=!sender.selected;
+    if (sender.selected) {
+        _gou.hidden=NO;
+    [_gou setImage:[UIImage imageNamed:@"circular"]];
+    for (productModel* p in _productList) {
+        p.isSelect=YES;
+    }
+        _totalStatus=YES;
+    }
+    else
+    {
+        _gou.hidden=YES;
+        for (productModel* p in _productList) {
+            p.isSelect=NO;
+        }
+        _totalStatus=NO;
+    }
+    [_collectionView reloadData];
+}
 -(void)addAction
 {
-    if (_productListM.count>0) {
-        _productList=[_productListM copy];
-    }
+//    if (_productListM.count>0) {
+//        _productList=[_productListM copy];
+//    }
     FSSettlementViewController* confirmOrder=[[FSSettlementViewController alloc] initWithNibName:@"FSSettlementViewController" bundle:nil];
     NSMutableArray* source=[NSMutableArray new];
     for (productModel* p in _productList) {
@@ -193,7 +268,24 @@ static NSInteger num_;
         
         newCart.goodsId=p.goodsId;
         newCart.goodsSkuId=p.goodsSkuId;
-        [source addObject:newCart];
+        if (p.isSelect) {
+            [source addObject:newCart];
+        }
+    }
+    if (source.count==0) {
+        for (productModel* p in _productList) {
+            FSShopCartList *newCart = [FSShopCartList new];
+            newCart.num = [NSString stringWithFormat:@"%d", p.num];
+            newCart.logo = p.logo;
+            newCart.name = p.name;
+            newCart.productPrice=p.marketPrice;
+            newCart.goodNorm=p.goodsNorm;
+            newCart.idField = @"11111";
+            
+            newCart.goodsId=p.goodsId;
+            newCart.goodsSkuId=p.goodsSkuId;
+            [source addObject:newCart];
+        }
     }
     
     confirmOrder.dataSource = source;
@@ -202,6 +294,8 @@ static NSInteger num_;
 }
 - (void)pp_numberButton:(__kindof UIView *)numberButton number:(NSInteger)number increaseStatus:(BOOL)increaseStatus
 {
+    FSShopCartList *cartItem=[FSShopCartList new];
+    _cartItem=cartItem;
     double pro;
     double sum=0.0;
     for (int i=0; i<_productList.count; i++) {
@@ -209,6 +303,11 @@ static NSInteger num_;
             productModel* p=[_productList objectAtIndex:i];
             p.num=number;
             pro=[p.marketPrice doubleValue]*number;
+            //
+            _cartItem.goodsId=p.productId;
+            _cartItem.num=[NSString stringWithFormat:@"%d",p.num];
+            _cartItem.isSelect=NO;
+            [self postUpdateUI];
         }
         else
         {
@@ -222,6 +321,7 @@ static NSInteger num_;
 
     NSInteger b=numberButton.tag;
     NSLog(@"");
+    
 }
 -(void) labelTouchUpInside:(UITapGestureRecognizer *)recognizer{
     
@@ -229,7 +329,7 @@ static NSInteger num_;
     productModel* p=[_productList objectAtIndex:label.tag];
 
     CFDetailInfoController *vc = [[CFDetailInfoController alloc] init];
-    vc.productId=p.productId;
+    vc.productId=p.goodsId;
     UIImageView* iv=[UIImageView new];
     [iv sd_setImageWithURL:[NSURL URLWithString:p.logo]];
     vc.image = iv.image;
@@ -259,6 +359,7 @@ static NSInteger num_;
         CFShoppingCartCell1 *cell = [collectionView dequeueReusableCellWithReuseIdentifier:collectionCell forIndexPath:indexPath];
         [cell configCollectionCellType:(CFEditCollectionCellTypeWithDelete)];
         productModel* p=[_productList objectAtIndex:indexPath.row];
+        cell.model=p;
         //cell.backgroundColor = kRedColor;
         cell.titleStr.text = p.productName;
         cell.titleStr.userInteractionEnabled=YES;
@@ -386,33 +487,42 @@ static NSInteger num_;
     NSLog(@"click collectionView row");
     CFShoppingCartCell1 *cell = (CFShoppingCartCell1 *)[collectionView cellForItemAtIndexPath:indexPath];
     [cell.imageView1 setImage:[UIImage imageNamed:@"circular"]];
+//    cell.imageView1.hidden=NO;
     productModel* p=[_productList objectAtIndex:indexPath.row];
     bool psel=false;
     for (productModel* model in _productListM) {
         if ([model.productId isEqualToString:p.productId]) {
             psel=true;
+            p.isSelect=YES;
         }
     }
+    p.isSelect=YES;
     if (!psel) {
         [_productListM addObject:p];
     }
-    
+    cell.imageView1.hidden=NO;
+    [cell.imageView1 setImage:[UIImage imageNamed:@"circular"]];
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     CFShoppingCartCell1 *cell = (CFShoppingCartCell1 *)[collectionView cellForItemAtIndexPath:indexPath];
     [cell.imageView1 setImage:[UIImage imageNamed:@"circle"]];
+//    cell.imageView1.hidden=YES;
     productModel* p=[_productList objectAtIndex:indexPath.row];
     bool psel=false;
     for (productModel* model in _productListM) {
         if ([model.productId isEqualToString:p.productId]) {
             psel=true;
+            p.isSelect=NO;
         }
     }
+    p.isSelect=NO;
     if (psel) {
         [_productListM removeObject:p];
     }
+    cell.imageView1.hidden=YES;
+
     //    [cell.contentView setBackgroundColor:[UIColor whiteColor]];
 }
 #pragma mark - <DZNEmptyDataSetSource>

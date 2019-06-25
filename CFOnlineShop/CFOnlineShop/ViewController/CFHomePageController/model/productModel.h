@@ -21,13 +21,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * productId;
 @property (nonatomic, copy) NSString * goodsSkuId;
 @property (nonatomic, copy) NSString * marketPrice;
+@property (nonatomic, copy) NSString * expressPrice;
 @property (nonatomic, copy) NSString * detailInfo;
 
 @property (nonatomic, copy) NSString * name;
 @property (nonatomic, copy) NSString * goodsNorm;
+@property (nonatomic, copy) NSString * goodsSkuVals;
 @property (nonatomic, assign) int num;
 @property (nonatomic, copy) NSString * saleCount;
 @property (nonatomic, copy) NSString * goodsId;
+@property (nonatomic, assign) BOOL isSelect;
 
 @end
 

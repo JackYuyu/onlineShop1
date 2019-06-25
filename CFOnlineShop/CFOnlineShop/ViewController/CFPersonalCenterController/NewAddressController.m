@@ -69,7 +69,7 @@
         [MBProgressHUD showMBProgressHud:self.view withText:@"您输入的手机号码格式不正确" withTime:1];
         return;
     }
-    else if (_input1.length <11)
+    else if (_input1.length !=11)
     {
         [MBProgressHUD showMBProgressHud:self.view withText:@"您输入的手机号码格式不正确" withTime:1];
         return;

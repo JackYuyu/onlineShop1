@@ -29,6 +29,9 @@
 @property (nonatomic,assign) BOOL norm;
 
 @property (nonatomic,strong) UILabel* stockLabel;
+@property (nonatomic,strong) UILabel* stockLabel1;
+@property (nonatomic,assign) BOOL ibuy;
+
 @end
 
 static NSInteger num_;
@@ -181,8 +184,14 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
             l=[item.list objectAtIndex:indexPath.row];
             l.isSelect=YES;
             _cartItem.goodsSkuId=l.goodsSkuId;
-            _cartItem.goodNorm=l.infoname;
+            _cartItem.goodNorm=l.goodsSkuVals;
+            if (_ibuy) {
+                _stockLabel1.text=[NSString stringWithFormat:@"库存:%@件",l.stockNum];
+            }
+            else
+            {
             _stockLabel.text=[NSString stringWithFormat:@"库存:%@件",l.stockNum];
+            }
         }
         
     }
@@ -232,9 +241,17 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
     numLabel.frame = CGRectMake(10, Main_Screen_Height-100, 50, 35);
     
     UILabel *stockLabel = [UILabel new];
-    stockLabel.text = @"库存:0件";
+    stockLabel.text = @"";
     stockLabel.font = [UIFont systemFontOfSize:14];
+    if (_ibuy) {
+        [_stockLabel removeFromSuperview];
+        _stockLabel1=stockLabel;
+    }
+    else
+    {
+        [_stockLabel1 removeFromSuperview];
     _stockLabel=stockLabel;
+    }
     [self addSubview:stockLabel];
     stockLabel.frame = CGRectMake(CGRectGetMaxX(numLabel.frame)+10, Main_Screen_Height-100, 150, 35);
     
@@ -280,6 +297,7 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
                              @"goodsId" : _cartItem.goodsId,
                              @"openId" : [MySingleton sharedMySingleton].openId,
                              @"goodsSkuId" : _cartItem.goodsSkuId,
+                             @"expressPrice" : _cartItem.productPrice,
                              @"num": _cartItem.num
                              };
     NSData *data =    [NSJSONSerialization dataWithJSONObject:params options:NSUTF8StringEncoding error:nil];
@@ -293,6 +311,13 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
 - (void)open:(NSInteger)tag
 {
     self.tag=tag;
+    if (tag==0) {
+        _ibuy=NO;
+    }
+    else
+    {
+        _ibuy=YES;
+    }
     if (!self.narrowedOff) {
         //self.contentView.hidden = YES;
         CATransform3D t = CATransform3DIdentity;
