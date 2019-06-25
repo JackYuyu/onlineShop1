@@ -109,6 +109,10 @@
     [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/app/register"] body:data showLoading:false success:^(NSDictionary *response) {
         NSString * str  =[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
         NSLog(@"");
+        if ([str containsString:@"500"]) {
+            [MBProgressHUD showMBProgressHud:self.view withText:@"已注册该手机号" withTime:1];
+            return;
+        }
         [self.navigationController pushViewController:[[MMZCViewController alloc]init] animated:YES];
 
     } failure:^(NSError *error) {
