@@ -43,7 +43,10 @@
     //    [view addSubview:_segmentedControl];
     [self.view addSubview:_segmentedControl];
     [_segmentedControl didSelectIndex:1];
-    [self postRecordUI];
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self postRecordUI]; 
 }
 -(void)postUI
 {

@@ -58,7 +58,7 @@
     [uv addSubview:progressView1];
     
     UILabel* label=[UILabel new];
-    label.text=[NSString stringWithFormat:@"积分:xxxx%@",@""];
+    label.text=[NSString stringWithFormat:@"积分:xxxxxx%@",@""];
     label.font=[UIFont systemFontOfSize:16];
     label.textColor=[UIColor whiteColor];
     [label sizeToFit];
@@ -122,11 +122,11 @@
 }
 -(void)postRecordUI
 {
-    if (![MySingleton sharedMySingleton].openId) {
-        [self.navigationController pushViewController:[[MMZCViewController alloc]init] animated:YES];
-
-        return;
-    }
+//    if (![MySingleton sharedMySingleton].openId) {
+//        [self.navigationController pushViewController:[[MMZCViewController alloc]init] animated:YES];
+//
+//        return;
+//    }
     NSDictionary *params = @{
                              @"openId" : [MySingleton sharedMySingleton].openId,
                              @"todayScore" : @"1",

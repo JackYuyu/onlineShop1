@@ -30,6 +30,7 @@
 //@property (nonatomic, strong) CFDetailView *detailView;
 @property (nonatomic, strong) NSMutableArray *commentList;
 @property (strong , nonatomic)NSMutableArray <DCFeatureItem *> *featureAttr;
+@property (nonatomic, strong) UIButton *shouchang;
 
 @end
 
@@ -138,12 +139,16 @@
                              };
     [HttpTool get:[NSString stringWithFormat:@"renren-fast/mall/goodsfavorite/list"] params:params success:^(id responseObj) {
         NSDictionary* a=responseObj[@"page"][@"list"];
+        NSMutableArray* ss=[NSMutableArray new];
         for (NSDictionary* products in responseObj[@"page"][@"list"]) {
-            //            productModel* p=[productModel mj_objectWithKeyValues:products];
+                        productModel* p=[productModel mj_objectWithKeyValues:products];
             //            p.productName=[products objectForKey:@"description"];
             //            p.productId=[products objectForKey:@"id"];
             NSLog(@"");
-            //            [_productList addObject:p];
+                        [ss addObject:p];
+        }
+        if (ss.count>0) {
+            _shouchang.selected=YES;
         }
         [_tableView reloadData];
     } failure:^(NSError *error) {
@@ -283,9 +288,17 @@
                              @"limits": @"10"
                              };
     NSData *data =    [NSJSONSerialization dataWithJSONObject:params options:NSUTF8StringEncoding error:nil];
-    [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/mall/goodsfavorite/delete"] body:data showLoading:false success:^(NSDictionary *response) {
-        NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
-        
+//    [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/mall/goodsfavorite/delete"] body:data showLoading:false success:^(NSDictionary *response) {
+//        NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+//
+//        [_tableView reloadData];
+//    } failure:^(NSError *error) {
+//        NSLog(@"");
+//    }];
+    
+    [HttpTool get:[NSString stringWithFormat:@"renren-fast/mall/goodsfavorite/delete"] params:params success:^(id responseObj) {
+        NSDictionary* a=responseObj[@"page"][@"list"];
+
         [_tableView reloadData];
     } failure:^(NSError *error) {
         NSLog(@"");
@@ -410,7 +423,9 @@
         [button addTarget:self action:@selector(bottomButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         CGFloat buttonX = (buttonW * i);
         button.frame = CGRectMake(buttonX, buttonY, buttonW, buttonH);
-        
+        if (i==0) {
+            _shouchang=button;
+        }
         [self.view addSubview:button];
     }
 }

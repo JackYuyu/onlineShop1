@@ -10,6 +10,7 @@
 #import "CFTabBarController.h"
 #import "WXApiManager.h"
 #import "OrderController.h"
+#import <JJException.h>
 @interface AppDelegate ()
 
 @end
@@ -19,6 +20,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [JJException configExceptionCategory:JJExceptionGuardAll];
+//    [JJException startGuardException];
     
     //初始化window
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

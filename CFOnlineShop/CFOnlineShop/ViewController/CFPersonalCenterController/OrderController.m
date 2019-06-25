@@ -546,7 +546,7 @@
         [HttpTool postWithUrl:[NSString stringWithFormat:@"renren-fast/mall/goodsorder/update"] body:data showLoading:false success:^(NSDictionary *response) {
             NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
             NSLog(@"");
-            [MBProgressHUD showMBProgressHud:self.view withText:[jsonDict objectForKey:@"msg"] withTime:1];
+            [MBProgressHUD showMBProgressHud:self.view withText:@"申请退款成功" withTime:1];
 
             [self postRecordUI];
         } failure:^(NSError *error) {
