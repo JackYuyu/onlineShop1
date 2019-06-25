@@ -110,9 +110,12 @@ static NSInteger num_;
     self.totalPriceLab.text = @"￥0.0";
     
     [self initTabView];
+//    [self initAddress];
+}
+-(void)viewWillAppear:(BOOL)animated
+{
     [self initAddress];
 }
-
 - (void)initTabView {
     
     self.curTabView.delegate = self;

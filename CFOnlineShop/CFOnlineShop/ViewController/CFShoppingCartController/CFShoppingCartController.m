@@ -391,6 +391,7 @@ static NSInteger num_;
         numberButton.decreaseTitle = @"－";
         num_ = p.num;
         numberButton.currentNumber = num_;
+        numberButton.editing=NO;
         numberButton.delegate = self;
         numberButton.tag=indexPath.row;
         
