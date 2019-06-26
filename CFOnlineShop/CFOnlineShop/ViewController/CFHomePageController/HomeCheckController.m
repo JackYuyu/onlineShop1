@@ -122,11 +122,9 @@
 }
 -(void)postRecordUI
 {
-//    if (![MySingleton sharedMySingleton].openId) {
-//        [self.navigationController pushViewController:[[MMZCViewController alloc]init] animated:YES];
-//
-//        return;
-//    }
+    if (![MySingleton sharedMySingleton].openId) {
+        return;
+    }
     NSDictionary *params = @{
                              @"openId" : [MySingleton sharedMySingleton].openId,
                              @"todayScore" : @"1",

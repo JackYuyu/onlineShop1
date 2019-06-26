@@ -263,6 +263,7 @@ static NSString *const DCFeatureItemCellID = @"DCFeatureItemCell";
     numberButton.decreaseTitle = @"－";
     num_ = (_lastNum == 0) ?  1 : [_lastNum integerValue];
     numberButton.currentNumber = num_;
+    numberButton.editing=NO;
     numberButton.delegate = self;
     
     numberButton.resultBlock = ^(NSInteger num ,BOOL increaseStatus){

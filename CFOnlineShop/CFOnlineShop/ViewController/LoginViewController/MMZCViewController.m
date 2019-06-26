@@ -69,7 +69,7 @@
 //    [but addTarget:self action:@selector(clickaddBtn:) forControlEvents:UIControlEventTouchUpInside];
 //    [self.view addSubview:but];
     
-    UIButton *zhuce =[[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-60, 30+24, 50, 30)];
+    UIButton *zhuce =[[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-60, 30, 50, 30)];
     [zhuce setTitle:@"注册" forState:UIControlStateNormal];
     [zhuce setTitleColor:[UIColor colorWithRed:248/255.0f green:144/255.0f blue:34/255.0f alpha:1] forState:UIControlStateNormal];
     zhuce.font=[UIFont systemFontOfSize:17];

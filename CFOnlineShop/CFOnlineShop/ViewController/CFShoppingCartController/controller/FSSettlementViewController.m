@@ -235,6 +235,7 @@ static NSInteger num_;
         FSShopCartList* p=[self.dataSource objectAtIndex:indexPath.row];
 
         numberButton.currentNumber = [p.num integerValue];
+        numberButton.editing=NO;
         numberButton.delegate = self;
         numberButton.tag=indexPath.row;
 

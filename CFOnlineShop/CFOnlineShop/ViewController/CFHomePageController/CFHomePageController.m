@@ -22,6 +22,7 @@
 #import "topicModel.h"
 #import "HomeSpecialController.h"
 #import "SeachViewController.h"
+#import "AFNetworking.h"
 @interface CFHomePageController ()<UICollectionViewDelegate,UICollectionViewDataSource,SDCycleScrollViewDelegate>
 
 @property (nonatomic, strong) UIButton *searchBtn;
@@ -41,7 +42,13 @@
     
     _recommendList=[[NSMutableArray alloc] init];
     _adList=[[NSMutableArray alloc] init];
-
+    //
+    NSUserDefaults* first=[NSUserDefaults standardUserDefaults];
+    NSString* a=[first valueForKey:@"first"];
+    if (!a) {
+        [self reachbality];
+    }
+    
     [self setUI];
     [self postTopicUI];
     [self postUI];
@@ -489,14 +496,59 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(void)reachbality
+{
+    // 网络监控
+    AFNetworkReachabilityManager *networkReachbilityManager = [AFNetworkReachabilityManager sharedManager];
+    
+    [networkReachbilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        
+        switch (status) {
+                
+            case AFNetworkReachabilityStatusUnknown:
+                NSLog(@"GZQ1-未知网络");
+                [self firstLoad];
+                break;
+                
+            case AFNetworkReachabilityStatusNotReachable:
+                NSLog(@"GZQ1-断网");
+                break;
+                
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+                NSLog(@"GZQ1-蜂窝数据");
+                [self firstLoad];
+                break;
+                
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+                NSLog(@"GZQ1-WiFi网络");
+                [self firstLoad];
+                break;
+                
+            default:
+                break;
+        }
+    }];
+    
+    // 开启监控
+    [networkReachbilityManager startMonitoring];
 }
-*/
+-(void)firstLoad
+{
+    NSUserDefaults* first=[NSUserDefaults standardUserDefaults];
+    NSString* a=[first valueForKey:@"first"];
+    if (!a) {
+        [_searchBtn removeFromSuperview];
+        [_searchImageView removeFromSuperview];
+        [_collectionView removeFromSuperview];
+        [self setUI];
+        [self postTopicUI];
+        [self postUI];
+        
+        [first setObject:@"YES" forKey:@"first"];
+        [first synchronize];
+        AFNetworkReachabilityManager *networkReachbilityManager = [AFNetworkReachabilityManager sharedManager];
+        [networkReachbilityManager stopMonitoring];
+    }
 
+}
 @end

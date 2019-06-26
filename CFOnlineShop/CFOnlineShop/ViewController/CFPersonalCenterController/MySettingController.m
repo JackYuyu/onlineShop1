@@ -31,6 +31,10 @@
     [self showLeftBackButton];
     _checkList = @[@"昵称",@"我的手机",@"收货地址"];
 }
+-(void)viewWillAppear:(BOOL)animated
+{
+    [_tableView reloadData];
+}
 -(void)postUI
 {
     NSDictionary *params = @{
